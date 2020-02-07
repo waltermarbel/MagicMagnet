@@ -14,16 +14,9 @@ class GetMagnet:
 		search_content = urllib.parse.quote_plus(f"{search_content}")
 		
 		if google:
-			data = {
-				"search_url": f"https://www.google.com/search?q={search_content}+download+torrent",
-				"startswith": "/url?q=", "not_in": ["accounts.google.com", "youtube.com", "facebook.com", ".org"],
-				"slice": [7, -88]
-				}
-			print(data["search_url"])
-			pages = self.get_download_pages_from_test(data["search_url"], startswith = data["startswith"], not_in = data["not_in"], slice = data["slice"])
-			# print(pages)
-			# link = self.get_download_links(pages)
-			# self.links.update(link)
+			pages = self.get_download_pages_from_google(search_content)
+			link = self.get_download_links(pages)
+			self.links.update(link)
 		
 		if tpb:
 			pages = []
