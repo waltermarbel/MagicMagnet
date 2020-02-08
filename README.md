@@ -5,6 +5,9 @@
 <p align="center">
   <img src="http://ForTheBadge.com/images/badges/made-with-python.svg" alt="Made with Python"/>
 
+<p align="center">
+  <a align="center"href="https://sourceforge.net/projects/magnetlinkcatcher/files/latest/download"><img src="https://a.fsdn.com/con/app/sf-download-button"><a/>
+
 [![Download Magnet Link Catcher](https://img.shields.io/sourceforge/dt/magnetlinkcatcher.svg)](https://sourceforge.net/projects/magnetlinkcatcher/files/latest/download)
 ![GitHub repo size](https://img.shields.io/github/repo-size/pedrolemoz/MagnetLinkCatcher?color=red)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/pedrolemoz/MagnetLinkCatcher)
@@ -41,7 +44,7 @@ To install Python3, please visit [Python official website](https://www.python.or
 
 To install Git, please visit [Git official website](https://git-scm.com/downloads), download and install the latest package available. Setup Git with your name and email. Clone the repository to your machine using the following command:
 
-```
+``` 
 git clone https://github.com/pedrolemoz/MagnetLinkCatcher.git
 ```
 
