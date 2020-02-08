@@ -5,9 +5,7 @@ class Settings():
         try:
             with open("settings.json", "r") as file:
                 settings = json.loads(file.read())
-        except:
-            print("Cannot read settings. New settings will be created.")
-            
+        except:            
             settings = {
                 "theme": "MagnetLinkCatcherLight"
             }
@@ -16,7 +14,6 @@ class Settings():
                 data = json.dumps(settings, indent = 4)
                 file.write(data)
 
-                print("Sucessfully created new settings.")
         finally:
             return settings
     
@@ -30,4 +27,4 @@ class Settings():
                 data = json.dumps(settings, indent = 4)
                 file.write(data)
 
-                print("Sucessfully changed theme.")
+                return True

@@ -44,13 +44,13 @@ main_layout = [
     [sg.Text("  "), sg.Checkbox("Nyaa", font=("Segoe UI Light", 12), size=(11, 1)), sg.Checkbox("EZTV", font=("Segoe UI Light", 12), size=(16, 1)), sg.Checkbox("YTS", font=("Segoe UI Light", 12))],
     [sg.Text("  "), sg.Checkbox("Demonoid", font=("Segoe UI Light", 12), size=(11, 1)), sg.Checkbox("ETTV", font=("Segoe UI Light", 12), size=(16, 1))],
     [sg.Text("\n", font=("Segoe UI Light", 1))],
-    [sg.Text(f"    Application theme       ", font=("Segoe UI Light", 14)), sg.Radio("Light", "theme", default = True if "Light" in setting["theme"] else False, font=("Segoe UI Light", 14)), sg.Radio("Dark", "theme", default = True if "Dark" in setting["theme"] else False, font=("Segoe UI Light", 14))],
+    [sg.Text(f"    Application theme", font=("Segoe UI Light", 14)), sg.Radio("Light", "theme", default = True if "Light" in setting["theme"] else False, font=("Segoe UI Light", 12)), sg.Radio("Dark", "theme", default = True if "Dark" in setting["theme"] else False, font=("Segoe UI Light", 12)), sg.Button("Apply", size=(7, 0), font=("Segoe UI Light", 10, "bold"))],
     [sg.Text("\n", font=("Segoe UI Light", 1))],
     [sg.Text("  "), sg.Button("Support this project", size=(17, 0), font=("Segoe UI Light", 10, "bold")), sg.VerticalSeparator(pad=(6, 3)), sg.Button("About", size=(7, 0), font=("Segoe UI Light", 10, "bold")), sg.VerticalSeparator(pad=(6, 3)), sg.Button("Exit", size=(12, 0), font=("Segoe UI Light", 10, "bold"))],
     [sg.Text("\nDeveloped by Pedro Lemos (@pedrolemoz)", font=("Segoe UI Light", 12), size=(42, 0), justification="center")]
 ]
 
-window = sg.Window("Magnet Link Catcher", main_layout, size=(430, 500), icon="icon.ico")
+window = sg.Window("Magnet Link Catcher", main_layout, size=(430, 510), icon="icon.ico")
 
 process = GetMagnet()
 
@@ -60,6 +60,26 @@ while True:
     if event in (None, "Exit"):
         window.close()
         break
+    
+    if event == "Apply":
+        status = False
+
+        if values[10]:
+            status = settings.change_theme("MagnetLinkCatcherLight")
+        
+        elif values[11]:
+            status = settings.change_theme("MagnetLinkCatcherDark")
+
+        if status:
+            restart_layout = [
+                [sg.Text("\n", font=("Segoe UI Light", 5))],
+                [sg.Text("Restart to apply changes", font=("Segoe UI Light", 14), size=(20, 0), justification="left")],
+                [sg.Text("\n", font=("Segoe UI Light", 1))]
+            ]
+
+            restart_window = sg.Window("Sucess!", restart_layout, auto_close=True, icon="icon.ico")
+
+            restart_event, restart_result = restart_window.read()
 
     if event == "Support this project":
         os.startfile("https://github.com/pedrolemoz/MagnetLinkCatcher/")
