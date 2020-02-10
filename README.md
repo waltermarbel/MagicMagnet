@@ -94,6 +94,10 @@ By now, supported sources are:
 * Demonoid (Very slow, focused in TV Shows)
 * ETTV (Slow, focused in TV Shows)
 
+In future:
+
+* Torrentz2
+
 After the search is finished, you can:
 
 * Save all links to a text file
@@ -106,3 +110,5 @@ We plan to add new features, such:
 * Save magnet links as a ```.torrent``` file
 * Get info about seeders and leechers and use it to rate torrents
 * Download torrents without a external client
+
+For development, we plan to use the ´´´asyncio´´´ library (for a asynchronous code), since we are dealing with web requests to fetch our magnet links, and try to optimize the speed and stability.

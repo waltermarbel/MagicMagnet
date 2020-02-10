@@ -1,6 +1,5 @@
 import requests
 import os
-import time
 import PySimpleGUI as sg
 import urllib.parse
 from pathlib import Path
@@ -41,16 +40,15 @@ class GetMagnet():
         if nyaa:
             pages = []
 
-            for i in range(5):
-                pages.append(f"https://nyaa.si/?q={search_content}&f=0&c=0_0&s=seeders&o=desc&p={i + 1}")
+            [pages.append(f"https://nyaa.si/?q={search_content}&f=0&c=0_0&s=seeders&o=desc&p={i + 1}") for i in range(5)]
 
             link = self.get_download_links(pages)
             self.links.update(link)
 
         if eztv:
-            pages = [f"https://eztv.io/search/{search_content}"]
+            pages = f"https://eztv.io/search/{search_content}"
 
-            link = self.get_download_links(pages)
+            link = self.get_download_links(list(pages))
             self.links.update(link)
 
         if yts:
