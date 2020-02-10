@@ -69,7 +69,7 @@ while True:
         
         elif values[11]:
             status = settings.change_theme("MagnetLinkCatcherDark")
-
+        
         if status:
             restart_layout = [
                 [sg.Text("\n", font=("Segoe UI Light", 5))],
@@ -87,6 +87,7 @@ while True:
     if event == "About":
         about_layout = [
             [sg.Text("\n", font=("Segoe UI Light", 1))],
+    
             [sg.Text("This project was born with an idea for automatize torrent downloading.\nI don't wanna search for torrent and see boring adverts. This program search on many sources and return all found magnet links and is able to start the default torrent application, copy links and save its to file.", font = ("Segoe UI", 12), size = (56, 0), justification="left")],
             [sg.Text("\n", font=("Segoe UI Light", 1))],
             [sg.Text(" " * 101), sg.Button("Close", size=(12, 0), font = ("Segoe UI Light", 10, "bold"))],
@@ -102,11 +103,11 @@ while True:
                 break
 
     if event == "Search":
-        dict_download_links = process.get_magnet(values[1], google = values[2], tpb = values[3], l337x = values[4], nyaa = values[5], eztv = values[6], yts = values[7], demonoid = values[8], ettv = values[9])
+        process.get_magnet(values[1], google = values[2], tpb = values[3], l337x = values[4], nyaa = values[5], eztv = values[6], yts = values[7], demonoid = values[8], ettv = values[9])
 
         download_links = []
 
-        [download_links.append(i) for i in dict_download_links.keys()]
+        [download_links.append(i) for i in process.links.keys()]
 
         results_layout = [
             [sg.Text("\n", font = ("Segoe UI Light", 5))],
