@@ -80,13 +80,17 @@ class GetMagnet():
             start = "/"
             not_in = ["/lorem2", "/search", "/help", "/my", "/verified", "/feed"]
             result_url = "https://torrentz2.eu"
-            download_pages_torrentz2 = self.get_download_pages(search_url = search_url, start = start, result_url = result_url, not_in = not_in)
-
-            sg.Print("Searching for the pages. This may take a while.\n\n")
+            sg.Print("Searching for the pages. This may take a while.\n\n", font=("Segoe UI", 10), no_button=True)
             
-            for i in range(1, 5):
+            download_pages_torrentz2 = self.get_download_pages(search_url = search_url, start = start, result_url = result_url, not_in = not_in)
+            
+            for i in range(1, 20):
                 pages = self.get_download_pages(search_url = download_pages_torrentz2[i], not_in = not_in + ["https://www.google.com/"], start = "http", torrentz2 = True)
-                [self.download_pages_torrentz2.append(page) for page in pages]
+                
+                try:
+                    self.download_pages_torrentz2.append(pages[2])
+                except:
+                    continue
 
             link = self.get_download_links(self.download_pages_torrentz2)
             self.links.update(link)
@@ -105,6 +109,8 @@ class GetMagnet():
                 if torrentz2:
                     if i.get("href") in self.download_pages_torrentz2:
                         continue
+                    elif len(download_pages_links) == 5:
+                        break
 
                 if (start != None) and (not_in != None):
                     for link in not_in:
