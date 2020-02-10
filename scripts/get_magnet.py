@@ -9,8 +9,9 @@ from bs4 import BeautifulSoup, SoupStrainer
 class GetMagnet():
     def __init__(self):
         self.links = {}
+        self.download_pages_torrentz2 = []
 
-    def get_magnet(self, search_content, google = True, tpb = False, l337x = False, nyaa = False, eztv = False, yts = False, demonoid = False, ettv = False):
+    def get_magnet(self, search_content, google = True, tpb = False, l337x = False, nyaa = False, eztv = False, yts = False, demonoid = False, ettv = False, torrentz2 = False):
         search_content = urllib.parse.quote_plus(f"{search_content}")
 
         if google:
@@ -63,7 +64,7 @@ class GetMagnet():
             start = "/files/details"
             result_url = "https://demonoid.is"
             pages = self.get_download_pages(search_url = search_url, start = start, result_url = result_url)
-            link = self.get_download_links(pages)
+            link = self.get_download_links(pages[:20])
             self.links.update(link)
 
         if ettv:
@@ -74,7 +75,23 @@ class GetMagnet():
             link = self.get_download_links(pages)
             self.links.update(link)
 
-    def get_download_pages(self, search_url, result_url = None, start = None, not_in = None, slice = None):
+        if torrentz2:
+            search_url = f"https://torrentz2.eu/search?f={search_content}"
+            start = "/"
+            not_in = ["/lorem2", "/search", "/help", "/my", "/verified", "/feed"]
+            result_url = "https://torrentz2.eu"
+            download_pages_torrentz2 = self.get_download_pages(search_url = search_url, start = start, result_url = result_url, not_in = not_in)
+
+            sg.Print("Searching for the pages. This may take a while.\n\n")
+            
+            for i in range(1, 5):
+                pages = self.get_download_pages(search_url = download_pages_torrentz2[i], not_in = not_in + ["https://www.google.com/"], start = "http", torrentz2 = True)
+                [self.download_pages_torrentz2.append(page) for page in pages]
+
+            link = self.get_download_links(self.download_pages_torrentz2)
+            self.links.update(link)
+
+    def get_download_pages(self, search_url, result_url = None, start = None, not_in = None, slice = None, torrentz2 = False):
         request = requests.get(search_url)
         result = BeautifulSoup(request.content, "lxml", parse_only = SoupStrainer("a"))
 
@@ -85,9 +102,13 @@ class GetMagnet():
                 
                 valid = True
 
+                if torrentz2:
+                    if i.get("href") in self.download_pages_torrentz2:
+                        continue
+
                 if (start != None) and (not_in != None):
-                    for k in not_in:
-                        if k in i.get("href"):
+                    for link in not_in:
+                        if link in i.get("href"):
                             valid = False
 
                 if valid == True:
@@ -115,20 +136,22 @@ class GetMagnet():
             try:
                 request = requests.get(link)
             except:
-                print(True)
-                pass
-
+                print("Something went wrong.")
+                continue
+            
             result = BeautifulSoup(request.content, "lxml", parse_only = SoupStrainer("a"))
 
             for i in result.find_all("a", href = True):
+            
                 if i.get("href").startswith("magnet:?xt="):
                     all_magnet_links.append(i.get("href"))
 
-            for magnet_link in all_magnet_links:
-                if magnet_link not in magnet_links:
-                    magnet_links[self.get_torrent_name(magnet_link)] = magnet_link
-                    
+                for magnet_link in all_magnet_links:
+                    if magnet_link not in magnet_links:
+                        magnet_links[self.get_torrent_name(magnet_link)] = magnet_link
+        
         sg.PrintClose()
+
         return magnet_links
 
     def get_torrent_name(self, magnet_link):
