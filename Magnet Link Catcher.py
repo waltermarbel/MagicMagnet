@@ -64,10 +64,10 @@ while True:
     if event == "Apply":
         status = False
 
-        if values[10]:
+        if values[11]:
             status = settings.change_theme("MagnetLinkCatcherLight")
         
-        elif values[11]:
+        elif values[12]:
             status = settings.change_theme("MagnetLinkCatcherDark")
         
         if status:
