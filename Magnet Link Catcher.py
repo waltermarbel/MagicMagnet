@@ -126,12 +126,12 @@ while True:
 
             if results_event in (None, "Close"):
                 process.links = {}
-                dict_download_links, download_links = {}, []
+                process.links, download_links = {}, []
                 results_window.close()
                 break
 
             if results_event == "Save all links to file":
-                path_to_file = process.magnets_to_file(dict_download_links, values[1])
+                path_to_file = process.magnets_to_file(process.links, values[1])
 
                 save_layout = [
                     [sg.Text("\n", font=("Segoe UI Light", 5))],
@@ -154,10 +154,10 @@ while True:
                         os.startfile(os.path.join(path_to_file, f"{values[1]}.txt"))
 
             if results_event == "Open magnet link":
-                os.startfile(dict_download_links[results_values[0][0]])
+                os.startfile(process.links[results_values[0][0]])
 
             if results_event == "Copy magnet link":
-                pyperclip.copy(dict_download_links[results_values[0][0]])
+                pyperclip.copy(process.links[results_values[0][0]])
 
                 clipboard_layout = [
                     [sg.Text("\n", font=("Segoe UI Light", 5))],

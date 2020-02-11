@@ -24,7 +24,7 @@
   <img src="https://github.com/pedrolemoz/MagnetLinkCatcher/raw/master/assets/screenshot_main_menu_light.png" alt="Menu light"/>
   <img src="https://github.com/pedrolemoz/MagnetLinkCatcher/raw/master/assets/screenshot_main_menu_dark.png" alt="Menu light"/>
   
-*Main menu in light and dark themes (under development)*
+*Main menu in light and dark themes*
 
 ## Getting started
 
