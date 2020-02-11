@@ -41,8 +41,8 @@ main_layout = [
     [sg.Text("    Choose your search source for content", font=("Segoe UI Light", 14))],
     [sg.Text("\n", font=("Segoe UI Light", 1))],
     [sg.Text("  "), sg.Checkbox("Google", font=("Segoe UI Light", 12), size=(11, 1), default=True), sg.Checkbox("The Pirate Bay", font=("Segoe UI Light", 12), size=(16, 1)), sg.Checkbox("1337x", font=("Segoe UI Light", 12))],
-    [sg.Text("  "), sg.Checkbox("Nyaa", font=("Segoe UI Light", 12), size=(11, 1)), sg.Checkbox("EZTV", font=("Segoe UI Light", 12), size=(16, 1)), sg.Checkbox("YTS", font=("Segoe UI Light", 12))],
-    [sg.Text("  "), sg.Checkbox("Demonoid", font=("Segoe UI Light", 12), size=(11, 1)), sg.Checkbox("ETTV", font=("Segoe UI Light", 12), size=(16, 1))],
+    [sg.Text("  "), sg.Checkbox("Nyaa", font=("Segoe UI Light", 12), size=(11, 1)), sg.Checkbox("Torrentz2", font=("Segoe UI Light", 12), size=(16, 1)), sg.Checkbox("YTS", font=("Segoe UI Light", 12))],
+    [sg.Text("  "), sg.Checkbox("Demonoid", font=("Segoe UI Light", 12), size=(11, 1)), sg.Checkbox("ETTV", font=("Segoe UI Light", 12), size=(16, 1)), sg.Checkbox("EZTV", font=("Segoe UI Light", 12), size=(16, 1))],
     [sg.Text("\n", font=("Segoe UI Light", 1))],
     [sg.Text(f"    Application theme", font=("Segoe UI Light", 14)), sg.Radio("Light", "theme", default = True if "Light" in setting["theme"] else False, font=("Segoe UI Light", 12)), sg.Radio("Dark", "theme", default = True if "Dark" in setting["theme"] else False, font=("Segoe UI Light", 12)), sg.Button("Apply", size=(7, 0), font=("Segoe UI Light", 10, "bold"))],
     [sg.Text("\n", font=("Segoe UI Light", 1))],
@@ -64,12 +64,12 @@ while True:
     if event == "Apply":
         status = False
 
-        if values[10]:
+        if values[11]:
             status = settings.change_theme("MagnetLinkCatcherLight")
         
-        elif values[11]:
+        elif values[12]:
             status = settings.change_theme("MagnetLinkCatcherDark")
-
+        
         if status:
             restart_layout = [
                 [sg.Text("\n", font=("Segoe UI Light", 5))],
@@ -87,6 +87,7 @@ while True:
     if event == "About":
         about_layout = [
             [sg.Text("\n", font=("Segoe UI Light", 1))],
+    
             [sg.Text("This project was born with an idea for automatize torrent downloading.\nI don't wanna search for torrent and see boring adverts. This program search on many sources and return all found magnet links and is able to start the default torrent application, copy links and save its to file.", font = ("Segoe UI", 12), size = (56, 0), justification="left")],
             [sg.Text("\n", font=("Segoe UI Light", 1))],
             [sg.Text(" " * 101), sg.Button("Close", size=(12, 0), font = ("Segoe UI Light", 10, "bold"))],
@@ -102,11 +103,11 @@ while True:
                 break
 
     if event == "Search":
-        dict_download_links = process.get_magnet(values[1], google = values[2], tpb = values[3], l337x = values[4], nyaa = values[5], eztv = values[6], yts = values[7], demonoid = values[8], ettv = values[9])
+        process.get_magnet(values[1], google = values[2], tpb = values[3], l337x = values[4], nyaa = values[5], torrentz2 = values[6], yts = values[7], demonoid = values[8], ettv = values[9], eztv = values[10])
 
         download_links = []
 
-        [download_links.append(i) for i in dict_download_links.keys()]
+        [download_links.append(i) for i in process.links.keys()]
 
         results_layout = [
             [sg.Text("\n", font = ("Segoe UI Light", 5))],

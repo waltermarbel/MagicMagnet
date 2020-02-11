@@ -28,9 +28,42 @@
 
 ## Getting started
 
-### From portable version!
+### How to use
 
-Download the program for Windows [here](https://sourceforge.net/projects/magnetlinkcatcher/files/latest/download).
+Type what content you wanna links for, in the search box, select one or more of sources and click in the search button.
+
+By now, supported sources are:
+
+* Google (Slow, but works fine for dubbed content)
+* The Pirate Bay (Fast, and works for every content)
+* 1337x (Fast, and works for every content)
+* Nyaa (Fast, focused in anime RAW's)
+* Torrentz2 (Fast, and works for every content)
+* EZTV (Fast, focused in TV Shows)
+* YTS (Fast, focused in lightweight movies)
+* Demonoid (Fast, focused in TV Shows)
+* ETTV (Slow, focused in TV Shows)
+
+After the search is finished, you can:
+
+* Save all links to a text file
+  > Links are saved to your Downloads folder by default
+* Open the selected magnet link with your default torrent client
+* Copy the magnet link to your clipboard
+
+We plan to add new features, such:
+
+* Save magnet links as a ```.torrent``` file
+* Get info about seeders and leechers and use it to rate torrents
+* Download torrents without a external client
+
+For development, we plan to use the ´´´asyncio´´´ library (for a asynchronous code), since we are dealing with web requests to fetch our magnet links, and try to optimize the speed and stability.
+
+### From a portable version
+
+Download the Windows version
+
+<a href="https://sourceforge.net/projects/magnetlinkcatcher/files/latest/download"><img src="https://a.fsdn.com/con/app/sf-download-button"></a>
 
 ### From source
 
@@ -77,32 +110,3 @@ It will create a folder called ```build``` with the executable inside.
 > Note 1: I don't know why, but cx_Freeze doesn't work in Python 3.8. I'm currently using Python 3.7.6 to build this project.
 
 > Note 2: If your executable fail to start, try rename the folder Tkinter in lib directory to tkinter.
-
-
-### How to use
-
-Type what content you wanna links for, in the search box, select one or more of sources and click in the search button.
-
-By now, supported sources are:
-
-* Google (Slow, but works fine for dubbed content)
-* The Pirate Bay (Fast, and works for every content)
-* 1337x (Fast, and works for every content)
-* Nyaa (Fast, focused in anime RAW's)
-* EZTV (Fast, focused in TV Shows)
-* YTS (Fast, focused in lightweight movies)
-* Demonoid (Very slow, focused in TV Shows)
-* ETTV (Slow, focused in TV Shows)
-
-After the search is finished, you can:
-
-* Save all links to a text file
-  > Links are saved to your Downloads folder by default
-* Open the selected magnet link with your default torrent client
-* Copy the magnet link to your clipboard
-
-We plan to add new features, such:
-
-* Save magnet links as a ```.torrent``` file
-* Get info about seeders and leechers and use it to rate torrents
-* Download torrents without a external client
