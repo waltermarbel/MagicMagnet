@@ -24,7 +24,7 @@
   <img src="https://github.com/pedrolemoz/MagnetLinkCatcher/raw/master/assets/screenshot_main_menu_light.png" alt="Menu light"/>
   <img src="https://github.com/pedrolemoz/MagnetLinkCatcher/raw/master/assets/screenshot_main_menu_dark.png" alt="Menu light"/>
   
-*Main menu in light and dark themes (under development)*
+*Main menu in light and dark themes*
 
 ## Getting started
 
@@ -57,7 +57,7 @@ We plan to add new features, such:
 * Get info about seeders and leechers and use it to rate torrents
 * Download torrents without a external client
 
-For development, we plan to use the ´´´asyncio´´´ library (for a asynchronous code), since we are dealing with web requests to fetch our magnet links, and try to optimize the speed and stability.
+For development, we plan to use the ```asyncio``` library (for a asynchronous code), since we are dealing with web requests to fetch our magnet links, and try to optimize the speed and stability.
 
 ### From a portable version
 
