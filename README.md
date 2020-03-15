@@ -33,7 +33,6 @@ By now, supported sources are:
 * The Pirate Bay (Fast, and works for every content)
 * 1337x (Fast, and works for every content)
 * Nyaa (Fast, focused in anime RAW's)
-* Torrentz2 (Fast, and works for every content)
 * EZTV (Fast, focused in TV Shows)
 * YTS (Fast, focused in lightweight movies)
 * Demonoid (Fast, focused in TV Shows)
