@@ -4,7 +4,7 @@ import pyperclip
 from scripts.get_magnet import GetMagnet
 from scripts.settings import Settings
 
-sg.LOOK_AND_FEEL_TABLE["MagnetLinkCatcherLight"] = {
+sg.LOOK_AND_FEEL_TABLE["MagicMagnetLight"] = {
     'BACKGROUND': "white",
     'TEXT': "#323232",
     'INPUT': "#dfe2e8",
@@ -15,7 +15,7 @@ sg.LOOK_AND_FEEL_TABLE["MagnetLinkCatcherLight"] = {
     'BORDER': 0, 'SLIDER_DEPTH': 0, 'PROGRESS_DEPTH': 0,
 }
 
-sg.LOOK_AND_FEEL_TABLE["MagnetLinkCatcherDark"] = {
+sg.LOOK_AND_FEEL_TABLE["MagicMagnetDark"] = {
     'BACKGROUND': "#292929",
     'TEXT': "#cccccc",
     'INPUT': "#dfe2e8",
@@ -33,7 +33,7 @@ sg.change_look_and_feel(setting["theme"])
 
 main_layout = [
     [sg.Text("\n", font=("Segoe UI Light", 5))],
-    [sg.Text("  Magnet Link Catcher", font=("Segoe UI Light", 24), text_color="#ff0000", justification="left"), sg.Image("icon.png")],
+    [sg.Text("  Magic Magnet", font=("Segoe UI Light", 24), text_color="#ff0000", justification="left"), sg.Image("icon.png")],
     [sg.Text("    Search for something", font=("Segoe UI Light", 14))],
     [sg.Text("\n", font=("Segoe UI Light", 1))],
     [sg.Text("  "), sg.InputText(size=(28, 6), font=("Segoe UI Light", 12)), sg.VerticalSeparator(pad=(4, (3, 4))), sg.Submit("Search", size=(12, 0), font=("Segoe UI Light", 10, "bold"))],
@@ -50,7 +50,7 @@ main_layout = [
     [sg.Text("\nDeveloped by Pedro Lemos (@pedrolemoz)", font=("Segoe UI Light", 12), size=(42, 0), justification="center")]
 ]
 
-window = sg.Window("Magnet Link Catcher", main_layout, size=(430, 510), icon="icon.ico")
+window = sg.Window("Magic Magnet", main_layout, size=(430, 510), icon="icon.ico")
 
 process = GetMagnet()
 
@@ -65,10 +65,10 @@ while True:
         status = False
 
         if values[11]:
-            status = settings.change_theme("MagnetLinkCatcherLight")
+            status = settings.change_theme("MagicMagnetLight")
         
         elif values[12]:
-            status = settings.change_theme("MagnetLinkCatcherDark")
+            status = settings.change_theme("MagicMagnetDark")
         
         if status:
             restart_layout = [
@@ -82,7 +82,7 @@ while True:
             restart_event, restart_result = restart_window.read()
 
     if event == "Support this project":
-        os.startfile("https://github.com/pedrolemoz/MagnetLinkCatcher/")
+        os.startfile("https://github.com/pedrolemoz/MagicMagnet/")
 
     if event == "About":
         about_layout = [

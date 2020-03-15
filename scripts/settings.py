@@ -7,7 +7,7 @@ class Settings():
                 settings = json.loads(file.read())
         except:            
             settings = {
-                "theme": "MagnetLinkCatcherLight"
+                "theme": "MagicMagnetLight"
             }
             
             with open("settings.json", "w") as file:
