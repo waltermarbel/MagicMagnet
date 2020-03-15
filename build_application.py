@@ -9,7 +9,7 @@ target = Executable(
 
 setup(
     name = "Magnet Link Catcher",
-    version = "1.2.1",
+    version = "0.0.1",
     description = "Get magnet links from internet without any effort!",
     author = "Pedro Lemos",
     options = {

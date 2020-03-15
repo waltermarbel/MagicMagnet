@@ -9,173 +9,131 @@ from bs4 import BeautifulSoup, SoupStrainer
 class GetMagnet():
     def __init__(self):
         self.links = {}
-        self.download_pages_torrentz2 = []
 
-    def get_magnet(self, search_content, google = True, tpb = False, l337x = False, nyaa = False, eztv = False, yts = False, demonoid = False, ettv = False, torrentz2 = False):
-        search_content = urllib.parse.quote_plus(f"{search_content}")
+    def search(self, searchContent, google = True, tpb = False, l337x = False, nyaa = False, eztv = False, yts = False, demonoid = False, ettv = False, torrentz2 = False):
+        searchContent = urllib.parse.quote_plus(f"{searchContent}")
 
         if google:
-            search_url = f"https://www.google.com/search?q={search_content}+download+torrent"
-            start = "/url?q="
-            not_in = ["accounts.google.com", ".org", "youtube.com", "facebook.com"]
-            pages = self.get_download_pages(search_url = search_url, start = start, not_in = not_in, slice = [7, -88])
-            link = self.get_download_links(pages)
-            self.links.update(link)
+            params = {
+                'searchURL':
+                f'https://www.google.com/search?q={searchContent}+download+torrent',
+                'start': '/url?q=',
+                'notIn': ['accounts.google.com', '.org', 'youtube.com', 'facebook.com'],
+                'slice': [7, -88]
+                }
+
+            self._getDownloadPages(params['searchURL'], start = params['start'], notIn = params['notIn'], slice = params['slice'])
 
         if tpb:
-            pages = []
-
-            [pages.append(f"https://tpb.party/search/{search_content}/{i + 1}/7/0") for i in range(5)]
-
-            link = self.get_download_links(pages)
-            self.links.update(link)
+            for i in range(5):
+                self._getPageLinks(f'https://tpb.party/search/{searchContent}/{i + 1}/7/0')
 
         if l337x:
-            search_url = f"https://www.1377x.to/search/{search_content}/1/"
-            start = "/torrent"
-            result_url = "https://www.1377x.to"
-            pages = self.get_download_pages(search_url = search_url, result_url = result_url, start = start)
-            link = self.get_download_links(pages)
-            self.links.update(link)
+            params = {
+                'searchURL': f'https://www.1377x.to/search/{searchContent}/1/',
+                'start': '/torrent',
+                'resultURL': 'https://www.1377x.to'
+                }
+            
+            self._getDownloadPages(params['searchURL'], resultURL = params['resultURL'], start = params['start'])
 
         if nyaa:
-            pages = []
-
-            [pages.append(f"https://nyaa.si/?q={search_content}&f=0&c=0_0&s=seeders&o=desc&p={i + 1}") for i in range(5)]
-
-            link = self.get_download_links(pages)
-            self.links.update(link)
-
+            for i in range(5):
+                self._getPageLinks(f'https://nyaa.si/?q={searchContent}&f=0&c=0_0&s=seeders&o=desc&p={i + 1}')
+        
         if eztv:
-            pages = f"https://eztv.io/search/{search_content}"
-
-            link = self.get_download_links(list(pages))
-            self.links.update(link)
+            self._getPageLinks(f'https://eztv.io/search/{searchContent}')
 
         if yts:
-            search_url = f"https://yts.mx/browse-movies/{search_content}/all/all/0/latest"
-            start = "https://yts.mx/movie/"
-            pages = self.get_download_pages(search_url = search_url, start = start)
-            link = self.get_download_links(pages)
-            self.links.update(link)
-
-        if demonoid:
-            search_url = f"https://demonoid.is/files/?category=0&subcategory=0&quality=0&seeded=2&external=2&query={search_content}&sort="
-            start = "/files/details"
-            result_url = "https://demonoid.is"
-            pages = self.get_download_pages(search_url = search_url, start = start, result_url = result_url)
-            link = self.get_download_links(pages[:20])
-            self.links.update(link)
-
-        if ettv:
-            search_url = f"https://www.ettv.to/torrents-search.php?search={search_content}"
-            start = "/torrent/"
-            result_url = "https://www.ettv.to"
-            pages = self.get_download_pages(search_url = search_url, start = start, result_url = result_url)
-            link = self.get_download_links(pages)
-            self.links.update(link)
-
-        if torrentz2:
-            search_url = f"https://torrentz2.eu/search?f={search_content}"
-            start = "/"
-            not_in = ["/lorem2", "/search", "/help", "/my", "/verified", "/feed"]
-            result_url = "https://torrentz2.eu"
-            sg.Print("Searching for the pages. This may take a while.\n\n", font=("Segoe UI", 10), no_button=True)
-            
-            download_pages_torrentz2 = self.get_download_pages(search_url = search_url, start = start, result_url = result_url, not_in = not_in)
-            
-            for i in range(1, 20):
-                pages = self.get_download_pages(search_url = download_pages_torrentz2[i], not_in = not_in + ["https://www.google.com/"], start = "http", torrentz2 = True)
+            params = {
+                'searchURL': f'https://yts.mx/browse-movies/{searchContent}/all/all/0/latest',
+                'start': 'https://yts.mx/movie/'
+                }
                 
-                try:
-                    self.download_pages_torrentz2.append(pages[2])
-                except:
-                    continue
+            self._getDownloadPages(params['searchURL'], start = params['start'])
+        
+        if demonoid:
+            params = {
+                'searchURL': 'https://demonoid.is/files/?category=0&subcategory=0&quality=0&seeded=2&external=2&query=${searchContent}&sort=',
+                'start': '/files/details',
+                'resultURL': 'https://demonoid.is'
+                }
 
-            link = self.get_download_links(self.download_pages_torrentz2)
-            self.links.update(link)
+            self._getDownloadPages(params['searchURL'], start = params['start'], resultURL = params['resultURL'])
+        
+        if ettv:
+            params = {
+            'searchURL': 'https://www.ettv.to/torrents-search.php?search=${searchContent}',
+            'start': '/torrent/',
+            'resultURL': 'https://www.ettv.to'
+            }
 
-    def get_download_pages(self, search_url, result_url = None, start = None, not_in = None, slice = None, torrentz2 = False):
-        request = requests.get(search_url)
+            self._getDownloadPages(params['searchURL'], start = params['start'], resultURL = params['resultURL'])
+
+    def _getDownloadPages(self, searchURL, resultURL = None, start = None, notIn = None, slice = None):
+        request = requests.get(searchURL)
         result = BeautifulSoup(request.content, "lxml", parse_only = SoupStrainer("a"))
 
-        download_pages_links = []
+        linksChecked = []
 
         for i in result.find_all("a", href = True):
-            if i.get("href").startswith(start) and i.get("href") not in download_pages_links and ("#download" not in i.get("href")):
+            if i.get("href").startswith(start) and i.get("href") not in linksChecked and ("#download" not in i.get("href")):
                 
                 valid = True
 
-                if torrentz2:
-                    if i.get("href") in self.download_pages_torrentz2:
-                        continue
-                    elif len(download_pages_links) == 5:
-                        break
-
-                if (start != None) and (not_in != None):
-                    for link in not_in:
+                if (start != None) and (notIn != None):
+                    for link in notIn:
                         if link in i.get("href"):
                             valid = False
 
                 if valid == True:
-                    if result_url != None:
+                    linksChecked.append(i.get("href"))
+                    if resultURL != None:
                         if slice != None:
-                            download_pages_links.append(f'{result_url}{i.get("href")[slice[0]:slice[1]]}')
+                            self._getPageLinks(f'{resultURL}{i.get("href")[slice[0]:slice[1]]}')
                         else:
-                            download_pages_links.append(f'{result_url}{i.get("href")}')
+                            self._getPageLinks(f'{resultURL}{i.get("href")}')
                     else:
                         if slice != None:
-                            download_pages_links.append(i.get("href")[slice[0]:slice[1]])
+                            self._getPageLinks(i.get("href")[slice[0]:slice[1]])
                         else:
-                            download_pages_links.append(i.get("href"))
-
-        return download_pages_links
-
-    def get_download_links(self, download_pages_links):
-        all_magnet_links = []
-        magnet_links = {}
-
-        for link in download_pages_links:
-            sg.Print(f"Searching in: {link}\n", font=("Segoe UI", 10), no_button=True)
-            # print(f"Searching in: {link}\n")
-
-            try:
-                request = requests.get(link)
-            except:
-                print("Something went wrong.")
-                continue
-            
-            result = BeautifulSoup(request.content, "lxml", parse_only = SoupStrainer("a"))
-
-            for i in result.find_all("a", href = True):
-            
-                if i.get("href").startswith("magnet:?xt="):
-                    all_magnet_links.append(i.get("href"))
-
-                for magnet_link in all_magnet_links:
-                    if magnet_link not in magnet_links:
-                        magnet_links[self.get_torrent_name(magnet_link)] = magnet_link
+                            self._getPageLinks(i.get("href"))
         
         sg.PrintClose()
 
-        return magnet_links
+    def _getPageLinks(self, searchURL):
+        sg.Print(f"Searching in: {searchURL}\n", font=("Segoe UI", 10), no_button=True)
+        # print(f"Searching in: {searchURL}\n")
 
-    def get_torrent_name(self, magnet_link):
-        name = magnet_link.split("tr=")[0][64:-1]
+        try:
+            request = requests.get(searchURL)
+        except:
+            print("Something went wrong.")
+            return 0
+        
+        result = BeautifulSoup(request.content, "lxml", parse_only = SoupStrainer("a"))
+
+        for i in result.find_all("a", href = True):
+            if (i.get("href") != None) and (i.get("href").startswith("magnet:?xt=")) and (len(i.get("href")) > 64):
+                if i.get("href") not in self.links:
+                    self.links[self._getTorrentName(i.get("href"))] = i.get("href")
+
+    def _getTorrentName(self, magnetLink):
+        name = magnetLink.split("tr=")[0][64:-1]
 
         if name.startswith(";dn=") and name.endswith("&amp"):
             name = name[4:-4]
 
         return urllib.parse.unquote_plus(name)
 
-    def magnets_to_file(self, magnet_links, filename):
-        if os.path.exists(os.path.join(Path.home(), "Downloads", "MagnetLinkCatcher")) == False:
-            os.mkdir(os.path.join(Path.home(), "Downloads", "MagnetLinkCatcher"))
+    def magnetsToPlainText(self, filename):
+        if os.path.exists(os.path.join(Path.home(), "Downloads", "MagicMagnet")) == False:
+            os.mkdir(os.path.join(Path.home(), "Downloads", "MagicMagnet"))
 
-        path_to_file = os.path.join(Path.home(), "Downloads", "MagnetLinkCatcher")
+        pathToFile = os.path.join(Path.home(), "Downloads", "MagicMagnet")
 
-        with open(os.path.join(path_to_file, f"{filename}.txt"), "w", encoding = "utf-8") as file:
-            for name, magnet_link in magnet_links.items():
-                file.write(f"{name}\n{magnet_link}\n\n")
+        with open(os.path.join(pathToFile, f"{filename}.txt"), "w", encoding = "utf-8") as file:
+            for name, magnetLink in self.links.items():
+                file.write(f"{name}\n{magnetLink}\n\n")
 
-        return path_to_file
+        return pathToFile
