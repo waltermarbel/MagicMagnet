@@ -77,9 +77,9 @@ while True:
                 [sg.Text("\n", font=("Segoe UI Light", 1))]
             ]
 
-            restartwindow = sg.Window("Sucess!", restartLayout, auto_close=True, icon="icon.ico")
+            restartWindow = sg.Window("Sucess!", restartLayout, auto_close=True, icon="icon.ico")
 
-            restartevent, restartresult = restartwindow.read()
+            restartEvent, restartResult = restartWindow.read()
 
     if event == "Support this project":
         os.startfile("https://github.com/pedrolemoz/MagicMagnet/")
@@ -93,46 +93,46 @@ while True:
             [sg.Text("\n", font = ("Segoe UI Light", 1))]
         ]
 
-        aboutwindow = sg.Window("About project", aboutLayout, icon="icon.ico")
+        aboutWindow = sg.Window("About project", aboutLayout, icon="icon.ico")
 
         while True:
-            aboutevent, aboutvalues = aboutwindow.read()
-            if aboutevent in (None, "Close"):
-                aboutwindow.close()
+            aboutEvent, aboutValues = aboutWindow.read()
+            if aboutEvent in (None, "Close"):
+                aboutWindow.close()
                 break
 
     if event == "Search":
         process.search(values[1], google = values[2], tpb = values[3], l337x = values[4], nyaa = values[5], torrentz2 = values[6], yts = values[7], demonoid = values[8], ettv = values[9], eztv = values[10])
 
-        download_links = []
+        downloadLinks = []
 
-        [download_links.append(i) for i in process.links.keys()]
+        [downloadLinks.append(i) for i in process.links.keys()]
 
         results_Layout = [
             [sg.Text("\n", font = ("Segoe UI Light", 5))],
             [sg.Text("Process finished sucessfully!", font = ("Segoe UI Light", 14), size = (30, 0), justification = "left")],
             [sg.Text("\n", font = ("Segoe UI Light", 1))],
-            [sg.Listbox(values = download_links, size = (90, 15), font=("Segoe UI", 10), enable_events=True)],
+            [sg.Listbox(values = downloadLinks, size = (90, 15), font=("Segoe UI", 10), enable_events=True)],
             [sg.Text("\n", font=("Segoe UI Light", 1))],
             [sg.Text(" " * 16), sg.Button("Save all links to file", size=(22, 0), font=("Segoe UI Light", 10, "bold")), sg.Button("Open magnet link", size=(16, 0), font=("Segoe UI Light", 10, "bold")), sg.Button("Copy magnet link", size=(16, 0), font=("Segoe UI Light", 10, "bold")), sg.Button("Close", size=(12, 0), font=("Segoe UI Light", 10, "bold"))],
             [sg.Text("\n", font=("Segoe UI Light", 1))]
         ]
 
-        results_window = sg.Window("Sucess!", results_Layout, icon="icon.ico")
+        resultsWindow = sg.Window("Sucess!", results_Layout, icon="icon.ico")
 
         while True:
-            resultsEvent, results_values = results_window.read()
+            resultsEvent, resultsValues = resultsWindow.read()
 
             if resultsEvent in (None, "Close"):
                 process.links = {}
-                process.links, download_links = {}, []
-                results_window.close()
+                process.links, downloadLinks = {}, []
+                resultsWindow.close()
                 break
 
             if resultsEvent == "Save all links to file":
-                path_to_file = process.magnetsToPlainText(values[1])
+                pathToFile = process.magnetsToPlainText(values[1])
 
-                save_Layout = [
+                saveLayout = [
                     [sg.Text("\n", font=("Segoe UI Light", 5))],
                     [sg.Text(f"Magnet links saved sucessfully!", size=(25, 0), font=("Segoe UI Light", 14), justification="left")],
                     [sg.Text("\n", font=("Segoe UI Light", 1))],
@@ -140,7 +140,7 @@ while True:
                     [sg.Text("\n", font=("Segoe UI Light", 1))]
                 ]
 
-                saveWindow = sg.Window("Sucess!", save_Layout, icon="icon.ico")
+                saveWindow = sg.Window("Sucess!", saveLayout, icon="icon.ico")
 
                 while True:
                     saveEvent, saveResult = saveWindow.read()
@@ -150,13 +150,13 @@ while True:
                         break
 
                     if saveEvent == "Open file":
-                        os.startfile(os.path.join(path_to_file, f"{values[1]}.txt"))
+                        os.startfile(os.path.join(pathToFile, f"{values[1]}.txt"))
 
             if resultsEvent == "Open magnet link":
-                os.startfile(process.links[results_values[0][0]])
+                os.startfile(process.links[resultsValues[0][0]])
 
             if resultsEvent == "Copy magnet link":
-                pyperclip.copy(process.links[results_values[0][0]])
+                pyperclip.copy(process.links[resultsValues[0][0]])
 
                 clipboardLayout = [
                     [sg.Text("\n", font=("Segoe UI Light", 5))],
