@@ -7,7 +7,6 @@
 
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/pedrolemoz/MagicMagnet?color=red)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/pedrolemoz/MagicMagnet)
 [![Project Owner](https://img.shields.io/badge/owner-Pedro%20Lemos-orange)](https://github.com/pedrolemoz/)
 ![GitHub stars](https://img.shields.io/github/stars/pedrolemoz/MagicMagnet?style=social)
 [![GitHub forks](https://img.shields.io/github/forks/pedrolemoz/MagicMagnet?style=social)](https://github.com/pedrolemoz/MagicMagnet/fork)
