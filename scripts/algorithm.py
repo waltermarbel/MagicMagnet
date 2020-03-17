@@ -1,4 +1,5 @@
 import requests
+import re
 import os
 import json
 import PySimpleGUI as sg
@@ -8,16 +9,53 @@ from bs4 import BeautifulSoup, SoupStrainer
 
 
 class GetMagnet():
+    # We store our links in this variable, and count every found one
+    
     def __init__(self):
         self.links = {'foundLinks': 0}
 
+    # In this method, we catch the search content, and check in every provider
+    # selected (which means True to the value)
+    # 
+    # Example:
+    # process.search('Ubuntu 19.04', google = False, tpb = True)
+    # 
+    # It will search for Ubuntu 19.04 only in The Pirate Bay
+    
     def search(self, searchContent, google = True, tpb = False, l337x = False, nyaa = False, eztv = False, yts = False, demonoid = False, ettv = False):
+        # We are converting the string that user inserted into a
+        # proper URL string, to avoid errors
+        
         searchContent = urllib.parse.quote_plus(f'{searchContent}')
 
+        # Params are certain options that _getDownloadPages() method can use
+        # in order to perform a search. I'm using it with a dictionary, but
+        # you can also use as you want.
+        # 
+        # Requerid parameters:
+        # - searchURL:
+        #   A variable that hold a string with the terms the user type.
+        # 
+        # Optional parameters:
+        # - resultURL:
+        #   A variable that hold a string with the domain of a website.
+        #   Usually, found links are in '/link/123456' format, which means
+        #   that website treat them as a route. So, in order to acess that,
+        #   we have to add the domain in the start of link.
+        # 
+        #   Example:
+        #   In ETTV, the first result for 'Mr. Robot' was '/torrent/781815/mr-robot-4x01-13-web-dlmux-xvid-ita-eng-ac3-earine'
+        #   Then, the resultURL should be 'https://www.ettv.to'.
+        # 
+        # - start:
+        #   A variable that hold a string with a certain pattern to the begin of link,
+        #   to differentiate from those that don't are right.
+        # 
+        #   Example:
+        #   All Google links starts with '/url?q=' in the URL
         if google:
             params = {
-                'searchURL':
-                f'https://www.google.com/search?q={searchContent}+download+torrent',
+                'searchURL': f'https://www.google.com/search?q={searchContent}+download+torrent',
                 'start': '/url?q=',
                 'notIn': ['accounts.google.com', '.org', 'youtube.com', 'facebook.com'],
                 'sliceString': [7, -88]
@@ -118,8 +156,8 @@ class GetMagnet():
         for i in result.find_all('a', href = True):
             if (i.get('href') != None) and (i.get('href').startswith('magnet:?xt=')) and (len(i.get('href')) > 64):
                 if i.get('href') not in self.links:
-                    self.links['foundLinks'] += 1
                     self.links[self._getTorrentName(i.get('href'))] = i.get('href')
+                    self.links['foundLinks'] += 1
 
     def _getTorrentName(self, magnetLink):
         name = magnetLink.split('tr=')[0][64:-1]

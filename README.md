@@ -52,7 +52,7 @@ We plan to add new features, such:
 * Get info about seeders and leechers and use it to rate torrents
 * Download torrents without a external client
 
-For development, we plan to use the ```asyncio``` library (for a asynchronous code), since we are dealing with web requests to fetch our magnet links, and try to optimize the speed and stability.
+For development, we plan to use the ```asyncio``` library (for a asynchronous code), since we are dealing with web requests to fetch our magnet links, and try to optimize the speed and stability. Futhermore, we plan to use regular expressions, since our API is a litte bit primitive.
 
 ### From an executable (for Windows)
 
