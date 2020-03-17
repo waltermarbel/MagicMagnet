@@ -13,7 +13,7 @@
 
 ## Get magnet links from internet without any effort! 🧲
 
-## Screenshoots
+## Screenshots
 
 <p align="center">
   <img src="https://github.com/pedrolemoz/MagicMagnet/raw/master/assets/screenshot_main_menu_light.png" alt="Menu light"/>
