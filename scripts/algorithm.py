@@ -99,8 +99,6 @@ class GetMagnet():
                             self._getPageLinks(i.get('href')[sliceString[0]:sliceString[1]])
                         else:
                             self._getPageLinks(i.get('href'))
-        
-        sg.PrintClose()
 
     def _getPageLinks(self, searchURL):
         if searchURL.endswith('/&s'):

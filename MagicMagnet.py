@@ -118,6 +118,8 @@ while True:
             [sg.Text('\n', font=('Segoe UI Light', 1))]
         ]
 
+        sg.PrintClose()
+
         resultsWindow = sg.Window('Sucess!', results_Layout, icon='icon.ico')
 
         while True:
