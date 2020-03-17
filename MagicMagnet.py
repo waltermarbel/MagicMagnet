@@ -64,10 +64,10 @@ while True:
     if event == 'Apply':
         status = False
 
-        if values[11]:
+        if values[10]:
             status = settings.change_theme('MagicMagnetLight')
         
-        elif values[12]:
+        elif values[11]:
             status = settings.change_theme('MagicMagnetDark')
         
         if status:
