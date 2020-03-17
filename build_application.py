@@ -2,7 +2,7 @@ import os
 from cx_Freeze import setup, Executable
 
 target = Executable(
-    script = "Magnet Link Catcher.py",
+    script = "MagicMagnet.py",
     base = "Win32GUI",
     icon = "icon.ico"
 )
