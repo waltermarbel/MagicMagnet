@@ -8,7 +8,7 @@ target = Executable(
 )
 
 setup(
-    name = "Magnet Link Catcher",
+    name = "Magic Magnet",
     version = "0.0.1",
     description = "Get magnet links from internet without any effort!",
     author = "Pedro Lemos",
