@@ -40,10 +40,11 @@ By now, supported sources are:
 
 After the search is finished, you can:
 
-* Save all links to a text file
-  > Links are saved to your Downloads folder by default
+* Save all links to a JSON
 * Open the selected magnet link with your default torrent client
 * Copy the magnet link to your clipboard
+
+> Links are saved to your Downloads folder by default
 
 We plan to add new features, such:
 
