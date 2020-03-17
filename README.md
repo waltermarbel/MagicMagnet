@@ -54,6 +54,10 @@ We plan to add new features, such:
 
 For development, we plan to use the ```asyncio``` library (for a asynchronous code), since we are dealing with web requests to fetch our magnet links, and try to optimize the speed and stability.
 
+### From an executable (for Windows)
+
+Download the latest [build](https://github.com/pedrolemoz/MagicMagnet/tree/master/build) and you're done.
+
 ### From source
 
 In order to run this program from source, you'll need:
