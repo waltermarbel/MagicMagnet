@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 import os
 import pyperclip
-from scripts.algorithm import GetMagnet
+from scripts.algorithm import MagicMagnet
 from scripts.settings import Settings
 
 sg.LOOK_AND_FEEL_TABLE['MagicMagnetLight'] = {
@@ -52,7 +52,7 @@ mainLayout = [
 
 window = sg.Window('Magic Magnet', mainLayout, size=(430, 510), icon='icon.ico')
 
-process = GetMagnet()
+process = MagicMagnet()
 
 while True:
     event, values = window.read()
@@ -132,7 +132,7 @@ while True:
                 break
 
             if resultsEvent == 'Save all links to file':
-                pathToFile = process.magnetsToJSON(values[1])
+                process.magnetsToJSON(values[1])
 
                 saveLayout = [
                     [sg.Text('\n', font=('Segoe UI Light', 5))],
@@ -152,7 +152,7 @@ while True:
                         break
 
                     if saveEvent == 'Open file':
-                        os.startfile(os.path.join(pathToFile, f'{values[1]}.json'))
+                        os.startfile(os.path.join(os.getcwd(), 'json', f'{values[1]}.json'))
 
             if resultsEvent == 'Open magnet link':
                 os.startfile(process.links[resultsValues[0][0]])

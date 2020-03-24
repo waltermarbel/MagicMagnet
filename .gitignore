@@ -13,6 +13,9 @@ settings.json
 .vscode/
 .vs/
 
+# Development
+.json/
+
 # Distribution / packaging
 .Python
 develop-eggs/

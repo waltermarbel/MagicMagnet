@@ -8,51 +8,13 @@ from pathlib import Path
 from bs4 import BeautifulSoup, SoupStrainer
 
 
-class GetMagnet():
-    # We store our links in this variable, and count every found one
-    
+class MagicMagnet():
     def __init__(self):
         self.links = {'foundLinks': 0}
-
-    # In this method, we catch the search content, and check in every provider
-    # selected (which means True to the value)
-    # 
-    # Example:
-    # process.search('Ubuntu 19.04', google = False, tpb = True)
-    # 
-    # It will search for Ubuntu 19.04 only in The Pirate Bay
     
     def search(self, searchContent, google = True, tpb = False, l337x = False, nyaa = False, eztv = False, yts = False, demonoid = False, ettv = False):
-        # We are converting the string that user inserted into a
-        # proper URL string, to avoid errors
-        
         searchContent = urllib.parse.quote_plus(f'{searchContent}')
 
-        # Params are certain options that _getDownloadPages() method can use
-        # in order to perform a search. I'm using it with a dictionary, but
-        # you can also use as you want.
-        # 
-        # Requerid parameters:
-        # - searchURL:
-        #   A variable that hold a string with the terms the user type.
-        # 
-        # Optional parameters:
-        # - resultURL:
-        #   A variable that hold a string with the domain of a website.
-        #   Usually, found links are in '/link/123456' format, which means
-        #   that website treat them as a route. So, in order to acess that,
-        #   we have to add the domain in the start of link.
-        # 
-        #   Example:
-        #   In ETTV, the first result for 'Mr. Robot' was '/torrent/781815/mr-robot-4x01-13-web-dlmux-xvid-ita-eng-ac3-earine'
-        #   Then, the resultURL should be 'https://www.ettv.to'.
-        # 
-        # - start:
-        #   A variable that hold a string with a certain pattern to the begin of link,
-        #   to differentiate from those that don't are right.
-        # 
-        #   Example:
-        #   All Google links starts with '/url?q=' in the URL
         if google:
             params = {
                 'searchURL': f'https://www.google.com/search?q={searchContent}+download+torrent',
@@ -157,7 +119,8 @@ class GetMagnet():
             if (i.get('href') != None) and (i.get('href').startswith('magnet:?xt=')) and (len(i.get('href')) > 64):
                 if i.get('href') not in self.links:
                     self.links[self._getTorrentName(i.get('href'))] = i.get('href')
-                    self.links['foundLinks'] += 1
+        
+        self.links['foundLinks'] = len(self.links)
 
     def _getTorrentName(self, magnetLink):
         name = magnetLink.split('tr=')[0][64:-1]
@@ -167,29 +130,13 @@ class GetMagnet():
 
         return urllib.parse.unquote_plus(name)
 
-
-    # Deprecated method, use magnetsToJSON instead
-
-    def magnetsToPlainText(self, filename):
-        if os.path.exists(os.path.join(Path.home(), 'Downloads', 'MagicMagnet')) == False:
-            os.mkdir(os.path.join(Path.home(), 'Downloads', 'MagicMagnet'))
-
-        pathToFile = os.path.join(Path.home(), 'Downloads', 'MagicMagnet')
-
-        with open(os.path.join(pathToFile, f'{filename}.txt'), 'w', encoding = 'utf-8') as file:
-            for name, magnetLink in self.links.items():
-                file.write(f'{name}\n{magnetLink}\n\n')
-
-        return pathToFile
-
     def magnetsToJSON(self, filename):
-        if os.path.exists(os.path.join(Path.home(), 'Downloads', 'MagicMagnet')) == False:
-            os.mkdir(os.path.join(Path.home(), 'Downloads', 'MagicMagnet'))
+        if os.path.exists(os.path.join(os.getcwd(), 'json')) == False:
+            os.mkdir(os.path.join(os.getcwd(), 'json'))
 
-        pathToFile = os.path.join(Path.home(), 'Downloads', 'MagicMagnet')
+        pathToFile = os.path.join(os.getcwd(), 'json')
+
         data = json.dumps(self.links, indent = 4)
 
         with open(os.path.join(pathToFile, f'{filename}.json'), 'w', encoding = 'utf-8') as file:
             file.write(data)
-
-        return pathToFile
