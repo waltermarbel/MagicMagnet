@@ -44,7 +44,7 @@ After the search is finished, you can:
 * Open the selected magnet link with your default torrent client
 * Copy the magnet link to your clipboard
 
-> Links are saved to your current folder by default in JSON format
+> JSONS are saved to '/MagicMagnet/json/' by default.
 
 We plan to add new features, such:
 

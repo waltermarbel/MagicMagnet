@@ -9,7 +9,7 @@ target = Executable(
 
 setup(
     name = "Magic Magnet",
-    version = "0.0.1",
+    version = "0.0.2",
     description = "Get magnet links from internet without any effort!",
     author = "Pedro Lemos",
     options = {
