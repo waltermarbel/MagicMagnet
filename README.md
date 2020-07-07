@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="https://github.com/pedrolemoz/MagicMagnet/raw/master/assets/logo_256x256.png" alt="Logo"/>
+  <img src="https://github.com/pedrolemoz/MagicMagnet/raw/python/assets/logo_256x256.png" alt="Logo"/>
 
 <p align="center">
   <img src="http://ForTheBadge.com/images/badges/made-with-python.svg" alt="Made with Python"/>
@@ -16,8 +16,8 @@
 ## Screenshots
 
 <p align="center">
-  <img src="https://github.com/pedrolemoz/MagicMagnet/raw/master/assets/screenshot_main_menu_light.png" alt="Menu light"/>
-  <img src="https://github.com/pedrolemoz/MagicMagnet/raw/master/assets/screenshot_main_menu_dark.png" alt="Menu light"/>
+  <img src="https://github.com/pedrolemoz/MagicMagnet/raw/python/assets/screenshot_main_menu_light.png" alt="Menu light"/>
+  <img src="https://github.com/pedrolemoz/MagicMagnet/raw/python/assets/screenshot_main_menu_dark.png" alt="Menu light"/>
   
 *Main menu in light and dark themes*
 
@@ -56,7 +56,7 @@ For development, we plan to use the ```asyncio``` library (for a asynchronous co
 
 ### From an executable (for Windows)
 
-Download the latest [build](https://github.com/pedrolemoz/MagicMagnet/tree/master/build) and you're done.
+Download the latest [build](https://github.com/pedrolemoz/MagicMagnet/tree/python/build) and you're done.
 
 ### From source
 
@@ -71,7 +71,7 @@ To install Python3, please visit [Python official website](https://www.python.or
 To install Git, please visit [Git official website](https://git-scm.com/downloads), download and install the latest package available. Setup Git with your name and email. Clone the repository to your machine using the following command:
 
 ``` 
-git clone https://github.com/pedrolemoz/MagicMagnet.git
+git clone https://github.com/pedrolemoz/MagicMagnet.git && git checkout python
 ```
 
 If you don't wanna install Git, just download the ```.zip``` from this repository (the green button above), and unzip it in your machine.
