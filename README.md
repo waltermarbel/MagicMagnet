@@ -71,7 +71,7 @@ To install Python3, please visit [Python official website](https://www.python.or
 To install Git, please visit [Git official website](https://git-scm.com/downloads), download and install the latest package available. Setup Git with your name and email. Clone the repository to your machine using the following command:
 
 ``` 
-git clone https://github.com/pedrolemoz/MagicMagnet.git && git checkout python
+git clone https://github.com/pedrolemoz/MagicMagnet-Python.git
 ```
 
 If you don't wanna install Git, just download the ```.zip``` from this repository (the green button above), and unzip it in your machine.
