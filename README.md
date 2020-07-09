@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="https://github.com/pedrolemoz/MagicMagnet/raw/python/assets/logo_256x256.png" alt="Logo"/>
+  <img src="https://github.com/pedrolemoz/MagicMagnet-Python/raw/python/assets/logo_256x256.png" alt="Logo"/>
 
 <p align="center">
   <img src="http://ForTheBadge.com/images/badges/made-with-python.svg" alt="Made with Python"/>
@@ -16,8 +16,8 @@
 ## Screenshots
 
 <p align="center">
-  <img src="https://github.com/pedrolemoz/MagicMagnet/raw/python/assets/screenshot_main_menu_light.png" alt="Menu light"/>
-  <img src="https://github.com/pedrolemoz/MagicMagnet/raw/python/assets/screenshot_main_menu_dark.png" alt="Menu light"/>
+  <img src="https://github.com/pedrolemoz/MagicMagnet-Python/raw/python/assets/screenshot_main_menu_light.png" alt="Menu light"/>
+  <img src="https://github.com/pedrolemoz/MagicMagnet-Python/raw/python/assets/screenshot_main_menu_dark.png" alt="Menu light"/>
   
 *Main menu in light and dark themes*
 
