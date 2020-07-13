@@ -6,12 +6,12 @@
   <img src="http://ForTheBadge.com/images/badges/made-with-python.svg" alt="Made with Python"/>
 
 
-![GitHub repo size](https://img.shields.io/github/repo-size/pedrolemoz/MagicMagnet?color=red)
+![GitHub repo size](https://img.shields.io/github/repo-size/pedrolemoz/MagicMagnet-Python?color=red)
 [![Project Owner](https://img.shields.io/badge/owner-Pedro%20Lemos-orange)](https://github.com/pedrolemoz/)
-![GitHub stars](https://img.shields.io/github/stars/pedrolemoz/MagicMagnet?style=social)
-[![GitHub forks](https://img.shields.io/github/forks/pedrolemoz/MagicMagnet?style=social)](https://github.com/pedrolemoz/MagicMagnet/fork)
+![GitHub stars](https://img.shields.io/github/stars/pedrolemoz/MagicMagnet-Python?style=social)
+[![GitHub forks](https://img.shields.io/github/forks/pedrolemoz/MagicMagnet-Python?style=social)](https://github.com/pedrolemoz/MagicMagnet/fork)
 
-## Get magnet links from internet without any effort! 🧲
+## Get magnet links from internet without any effort! :magnet:
 
 ## Screenshots
 
