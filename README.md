@@ -56,7 +56,7 @@ For development, we plan to use the ```asyncio``` library (for a asynchronous co
 
 ### From an executable (for Windows)
 
-Download the latest [build](https://github.com/pedrolemoz/MagicMagnet/tree/python/build) and you're done.
+Download the latest [build](https://github.com/pedrolemoz/MagicMagnet-Python/blob/python/build/MagicMagnet-amd64.rar) and you're done.
 
 ### From source
 
