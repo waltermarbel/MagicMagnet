@@ -79,7 +79,7 @@ If you don't wanna install Git, just download the ```.zip``` from this repositor
 To install dependencies, type the following command in your command prompt or terminal (make sure to be in the project directory):
 
 ```
-pip install -r requeriments.txt
+pip install -r requirements.txt
 ```
 
 ### Building the application
