@@ -11,7 +11,7 @@ class MagicMagnet():
     def __init__(self):
         self.links = {'foundLinks': 0}
     
-    def search(self, searchContent, google = True, tpb = False, l337x = False, nyaa = False, eztv = False, yts = False, demonoid = False, ettv = False):
+    def search(self, searchContent, google = True, tpb = False, l337x = False, nyaa = False, eztv = False, yts = False, demonoid = False, ettv = False, skytorrents = False, limetorrents = False):
         searchContent = urllib.parse.quote_plus(f'{searchContent}')
 
         if google:
@@ -54,21 +54,42 @@ class MagicMagnet():
         
         if demonoid:
             params = {
-                'searchURL': f'https://demonoid.is/files/?category=0&subcategory=0&quality=0&seeded=2&external=2&query={searchContent}&sort=',
-                'start': '/files/details',
-                'resultURL': 'https://demonoid.is'
-                }
+            	'searchURL': f'https://demonoid.is/files/?category=0&subcategory=0&quality=0&seeded=2&external=2&query={searchContent}&sort=',
+            	'start': '/files/details',
+            	'resultURL': 'https://demonoid.is'
+            	}
 
             self._getDownloadPages(params['searchURL'], start = params['start'], resultURL = params['resultURL'])
         
         if ettv:
             params = {
-            'searchURL': f'https://www.ettv.to/torrents-search.php?search={searchContent}',
-            'start': '/torrent/',
-            'resultURL': 'https://www.ettv.to'
-            }
+            	'searchURL': f'https://www.ettv.to/torrents-search.php?search={searchContent}',
+            	'start': '/torrent/',
+            	'resultURL': 'https://www.ettv.to'
+            	}
 
             self._getDownloadPages(params['searchURL'], start = params['start'], resultURL = params['resultURL'])
+        
+        if skytorrents:
+        	for i in range(5):
+        		self._getPageLinks(f'https://www.skytorrents.to/?search={searchContent}&page={i + 1}')
+        
+        if limetorrents:
+        	params = {
+        		'searchURL': f'https://www.limetorrents.info/search/all/{f"{searchContent[0].upper()}{searchContent[1:]}".replace("+", "-")}/',
+        		'start': '/',
+        		'resultURL': 'https://www.limetorrents.info',
+        		'notIn': [
+        			'/home/','/register/','/recover/','/top100',
+        			'/latest100', '/search-cloud/', '/faq/',
+        			'/contact/','/friends/','/messages/','/feedback/',
+        			'/upload/','/bookmarks/','/personal-rss/','/profile/',
+        			'/searchrss/', '/dl.php','/browse-torrents/',
+        			'/cat_top/','/rss/','/search/','/privacy/', '/dmca/',
+        			]
+        		}
+        	
+        	self._getDownloadPages(params['searchURL'], start = params['start'], resultURL = params['resultURL'], notIn = params['notIn'])
 
     def _getDownloadPages(self, searchURL, resultURL = None, start = None, notIn = None, sliceString = None):
         request = requests.get(searchURL)
@@ -78,7 +99,6 @@ class MagicMagnet():
 
         for i in result.find_all('a', href = True):
             if i.get('href').startswith(start) and i.get('href') not in linksChecked and ('#download' not in i.get('href')):
-                
                 valid = True
 
                 if (start != None) and (notIn != None):
