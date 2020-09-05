@@ -92,8 +92,13 @@ class MagicMagnet():
         	self._getDownloadPages(params['searchURL'], start = params['start'], resultURL = params['resultURL'], notIn = params['notIn'])
 
     def _getDownloadPages(self, searchURL, resultURL = None, start = None, notIn = None, sliceString = None):
-        request = requests.get(searchURL)
-        result = BeautifulSoup(request.content, 'lxml', parse_only = SoupStrainer('a'))
+        try:
+            request = requests.get(searchURL)
+        except:
+            print('Something went wrong.')
+            return 0
+
+        result = BeautifulSoup(request.content, 'lxml', parse_only=SoupStrainer('a'))
 
         linksChecked = []
 

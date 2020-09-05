@@ -77,7 +77,7 @@ while True:
                 [sg.Text('\n', font=('Segoe UI Light', 1))]
             ]
 
-            restartWindow = sg.Window('Sucess!', restartLayout, auto_close=True, icon='icon.ico')
+            restartWindow = sg.Window('Success!', restartLayout, auto_close=True, icon='icon.ico')
 
             restartEvent, restartResult = restartWindow.read()
 
@@ -110,7 +110,7 @@ while True:
 
         results_Layout = [
             [sg.Text('\n', font = ('Segoe UI Light', 5))],
-            [sg.Text('Process finished sucessfully!', font = ('Segoe UI Light', 14), size = (30, 0), justification = 'left')],
+            [sg.Text('Process finished successfully!', font = ('Segoe UI Light', 14), size = (30, 0), justification = 'left')],
             [sg.Text('\n', font = ('Segoe UI Light', 1))],
             [sg.Listbox(values = downloadLinks, size = (90, 15), font=('Segoe UI', 10), enable_events=True)],
             [sg.Text('\n', font=('Segoe UI Light', 1))],
@@ -120,7 +120,7 @@ while True:
 
         sg.PrintClose()
 
-        resultsWindow = sg.Window('Sucess!', results_Layout, icon='icon.ico')
+        resultsWindow = sg.Window('Success!', results_Layout, icon='icon.ico')
 
         while True:
             resultsEvent, resultsValues = resultsWindow.read()
@@ -136,13 +136,13 @@ while True:
 
                 saveLayout = [
                     [sg.Text('\n', font=('Segoe UI Light', 5))],
-                    [sg.Text(f'Magnet links saved sucessfully!', size=(25, 0), font=('Segoe UI Light', 14), justification='left')],
+                    [sg.Text(f'Magnet links saved successfully!', size=(25, 0), font=('Segoe UI Light', 14), justification='left')],
                     [sg.Text('\n', font=('Segoe UI Light', 1))],
                     [sg.Text(' ' * 6), sg.Button('Open file', size=(12, 0), font=('Segoe UI Light', 10, 'bold')), sg.Button('Close', size=(12, 0), font=('Segoe UI Light', 10, 'bold'))],
                     [sg.Text('\n', font=('Segoe UI Light', 1))]
                 ]
 
-                saveWindow = sg.Window('Sucess!', saveLayout, icon='icon.ico')
+                saveWindow = sg.Window('Success!', saveLayout, icon='icon.ico')
 
                 while True:
                     saveEvent, saveResult = saveWindow.read()
@@ -166,6 +166,6 @@ while True:
                     [sg.Text('\n', font=('Segoe UI Light', 1))]
                 ]
 
-                clipboardWindow = sg.Window('Sucess!', clipboardLayout, auto_close=True, icon='icon.ico')
+                clipboardWindow = sg.Window('Success!', clipboardLayout, auto_close=True, icon='icon.ico')
 
                 clipboardEvent, clipboard_result = clipboardWindow.read()
