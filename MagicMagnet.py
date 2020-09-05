@@ -3,7 +3,7 @@ import os
 import pyperclip
 from scripts.algorithm import MagicMagnet
 from scripts.settings import Settings
-from scripts.engines import engines as enginesList
+from scripts.engines import enginesList
 
 sg.LOOK_AND_FEEL_TABLE['MagicMagnetLight'] = {
     'BACKGROUND': 'white',

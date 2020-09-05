@@ -1,5 +1,5 @@
 import json
-
+from scripts.engines import enginesList
 
 class Settings:
     settings: {}
@@ -33,20 +33,15 @@ class Settings:
 
     def generate_metadata(self):
         selected = self.settings['selected'] if 'selected' in self.settings else []
+        selected_engines = {}
+        for engine in enginesList:
+            selected_engines[engine] = engine in selected
+
         return {
             'font': 'Segoe UI Light',
             'themeLight': 'Light' in self.settings['theme'],
             'themeDark': 'Dark' in self.settings['theme'],
-            'selected': {
-                'Google': 'Google' in selected,
-                'The Pirate Bay': 'The Pirate Bay' in selected,
-                '1337x': '1337x' in selected,
-                'Nyaa': 'Nyaa' in selected,
-                'Demonoid': 'Demonoid' in selected,
-                'YTS': 'YTS' in selected,
-                'ETTV': 'ETTV' in selected,
-                'EZTV': 'EZTV' in selected,
-            }
+            'selected': selected_engines
         }
 
     def change_selected_engines(self, event, is_selected):
