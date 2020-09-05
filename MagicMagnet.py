@@ -89,7 +89,7 @@ while True:
                 [sg.Text('\n', font=(font, 1))]
             ]
 
-            restartWindow = sg.Window('Sucess!', restartLayout, auto_close=True, icon='icon.ico')
+            restartWindow = sg.Window('Success!', restartLayout, auto_close=True, icon='icon.ico')
 
             restartEvent, restartResult = restartWindow.read()
 
@@ -99,7 +99,7 @@ while True:
     if event == 'About':
         aboutLayout = [
             [sg.Text('\n', font=(font, 1))],
-            [sg.Text('This project was born with an idea for automatize torrent downloading.\nI don\'t wanna search for torrent and see boring adverts. This program search on many sources and return all found magnet links and is able to start the default torrent application, copy links and save its to file.', font = ('Segoe UI', 12), size = (56, 0), justification='left')],
+            [sg.Text('This project was born with an idea for automatize torrent downloading.\nI don\'t wanna search for torrent and see boring adverts. This program search on many sources and return all found magnet links and is able to start the default torrent application, copy links and save its to file.', font=('Segoe UI', 12), size=(56, 0), justification='left')],
             [sg.Text('\n', font=(font, 1))],
             [sg.Text(' ' * 101), sg.Button('Close', size=(12, 0), font=(font, 10, 'bold'))],
             [sg.Text('\n', font=(font, 1))]
@@ -114,17 +114,17 @@ while True:
                 break
 
     if event == 'Search':
-        process.search(values[1], google = values[2], tpb = values[3], l337x = values[4], nyaa = values[5], demonoid = values[6], yts = values[7], ettv = values[8], eztv = values[9])
+        process.search(values[1], google=values[2], tpb=values[3], l337x=values[4], nyaa=values[5], demonoid=values[6], yts=values[7], ettv=values[8], eztv=values[9])
 
         downloadLinks = []
 
         [downloadLinks.append(i) if i != 'foundLinks' else None for i in process.links.keys()]
 
         results_Layout = [
-            [sg.Text('\n', font = (font, 5))],
-            [sg.Text('Process finished sucessfully!', font = (font, 14), size = (30, 0), justification = 'left')],
-            [sg.Text('\n', font = (font, 1))],
-            [sg.Listbox(values = downloadLinks, size = (90, 15), font=('Segoe UI', 10), enable_events=True)],
+            [sg.Text('\n', font=(font, 5))],
+            [sg.Text('Process finished successfully!', font=(font, 14), size=(30, 0), justification='left')],
+            [sg.Text('\n', font=(font, 1))],
+            [sg.Listbox(values=downloadLinks, size=(90, 15), font=('Segoe UI', 10), enable_events=True)],
             [sg.Text('\n', font=(font, 1))],
             [sg.Text(' ' * 16), sg.Button('Save all links to file', size=(22, 0), font=(font, 10, 'bold')), sg.Button('Open magnet link', size=(16, 0), font=(font, 10, 'bold')), sg.Button('Copy magnet link', size=(16, 0), font=(font, 10, 'bold')), sg.Button('Close', size=(12, 0), font=(font, 10, 'bold'))],
             [sg.Text('\n', font=(font, 1))]
@@ -132,7 +132,7 @@ while True:
 
         sg.PrintClose()
 
-        resultsWindow = sg.Window('Sucess!', results_Layout, icon='icon.ico')
+        resultsWindow = sg.Window('Success!', results_Layout, icon='icon.ico')
 
         while True:
             resultsEvent, resultsValues = resultsWindow.read()
@@ -148,13 +148,13 @@ while True:
 
                 saveLayout = [
                     [sg.Text('\n', font=(font, 5))],
-                    [sg.Text(f'Magnet links saved sucessfully!', size=(25, 0), font=(font, 14), justification='left')],
+                    [sg.Text(f'Magnet links saved successfully!', size=(25, 0), font=(font, 14), justification='left')],
                     [sg.Text('\n', font=(font, 1))],
                     [sg.Text(' ' * 6), sg.Button('Open file', size=(12, 0), font=(font, 10, 'bold')), sg.Button('Close', size=(12, 0), font=(font, 10, 'bold'))],
                     [sg.Text('\n', font=(font, 1))]
                 ]
 
-                saveWindow = sg.Window('Sucess!', saveLayout, icon='icon.ico')
+                saveWindow = sg.Window('Success!', saveLayout, icon='icon.ico')
 
                 while True:
                     saveEvent, saveResult = saveWindow.read()
@@ -178,6 +178,6 @@ while True:
                     [sg.Text('\n', font=(font, 1))]
                 ]
 
-                clipboardWindow = sg.Window('Sucess!', clipboardLayout, auto_close=True, icon='icon.ico')
+                clipboardWindow = sg.Window('Success!', clipboardLayout, auto_close=True, icon='icon.ico')
 
                 clipboardEvent, clipboard_result = clipboardWindow.read()
