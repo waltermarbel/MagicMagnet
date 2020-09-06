@@ -114,7 +114,7 @@ while True:
                 break
 
     if event == 'Search':
-        process.search(values[1], google=values[2], tpb=values[3], l337x=values[4], nyaa=values[5], demonoid=values[6], yts=values[7], ettv=values[8], eztv=values[9])
+        process.search(values[1], google=values['Google'], tpb=values['The Pirate Bay'], l337x=values['1337x'], nyaa=values['Nyaa'], demonoid=values['Demonoid'], yts=values['YTS'], ettv=values['ETTV'], eztv=values['EZTV'])
 
         downloadLinks = []
 
