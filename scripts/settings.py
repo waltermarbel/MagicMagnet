@@ -1,6 +1,7 @@
 import json
 from scripts.engines import enginesList
 
+
 class Settings:
     settings: {}
 
@@ -11,7 +12,7 @@ class Settings:
         except:
             self.settings = {
                 "theme": "MagicMagnetLight",
-                "selected": [],
+                "selected": ['Google'],
             }
 
             with open("settings.json", "w") as file:
@@ -32,7 +33,8 @@ class Settings:
                 return True
 
     def generate_metadata(self):
-        selected = self.settings['selected'] if 'selected' in self.settings else []
+        selected = self.settings['selected'] if 'selected' in self.settings else [
+        ]
         selected_engines = {}
         for engine in enginesList:
             selected_engines[engine] = engine in selected
@@ -45,7 +47,8 @@ class Settings:
         }
 
     def change_selected_engines(self, event, is_selected):
-        selected = self.settings['selected'] if 'selected' in self.settings else []
+        selected = self.settings['selected'] if 'selected' in self.settings else [
+        ]
         if is_selected:
             selected.append(event)
         else:

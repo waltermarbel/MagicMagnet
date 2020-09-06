@@ -16,8 +16,8 @@
 ## Screenshots
 
 <p align="center">
-  <img src="https://github.com/pedrolemoz/MagicMagnet-Python/raw/python/assets/screenshot_main_menu_light.png" alt="Menu light"/>
-  <img src="https://github.com/pedrolemoz/MagicMagnet-Python/raw/python/assets/screenshot_main_menu_dark.png" alt="Menu light"/>
+  <img src="https://i.imgur.com/1vxFVwb.png" alt="Menu light" width=350/>
+  <img src="https://i.imgur.com/S9Nl6qA.png" alt="Menu light" width=350/>
   
 *Main menu in light and dark themes*
 
@@ -37,6 +37,8 @@ By now, supported sources are:
 * YTS (Fast, focused in lightweight movies)
 * Demonoid (Fast, focused in TV Shows)
 * ETTV (Slow, focused in TV Shows)
+* SkyTorrents (unstable)
+* LimeTorrents (Slow, unstable, but works for every content)
 
 After the search is finished, you can:
 
@@ -56,7 +58,7 @@ For development, we plan to use the ```asyncio``` library (for a asynchronous co
 
 ### From an executable (for Windows)
 
-Download the latest [build](https://github.com/pedrolemoz/MagicMagnet-Python/blob/python/build/MagicMagnet-amd64.rar) and you're done.
+Download the latest [build](https://github.com/pedrolemoz/MagicMagnet-Python/releases) and you're done.
 
 ### From source
 
@@ -71,7 +73,7 @@ To install Python3, please visit [Python official website](https://www.python.or
 To install Git, please visit [Git official website](https://git-scm.com/downloads), download and install the latest package available. Setup Git with your name and email. Clone the repository to your machine using the following command:
 
 ``` 
-git clone https://github.com/pedrolemoz/MagicMagnet-Python.git
+git clone https://github.com/pedrolemoz/MagicMagnet-Python.git && git checkout python
 ```
 
 If you don't wanna install Git, just download the ```.zip``` from this repository (the green button above), and unzip it in your machine.
@@ -100,6 +102,4 @@ python build_application.py build
 
 It will create a folder called ```build``` with the executable inside.
 
-> Note 1: I don't know why, but cx_Freeze doesn't work for me in Python 3.8. I'm currently using Python 3.7.6 to build this project.
-
-> Note 2: If your executable fail to start, try rename the folder Tkinter in lib directory to tkinter.
+> Note: If your executable fail to start, try rename the folder Tkinter in lib directory to tkinter.

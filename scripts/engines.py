@@ -5,6 +5,8 @@ enginesList = [
     'Nyaa',
     'Demonoid',
     'YTS',
+    'SkyTorrents',
+    'LimeTorrents',
     'ETTV',
     'EZTV',
 ]
