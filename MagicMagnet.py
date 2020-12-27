@@ -1,9 +1,9 @@
 import PySimpleGUI as sg
 import os
 import pyperclip
-from scripts.algorithm import MagicMagnet
-from scripts.settings import Settings
-from scripts.engines import enginesList
+from lib.magic_engine import MagicMagnet
+from lib.settings import Settings
+from lib.engines import enginesList
 
 sg.LOOK_AND_FEEL_TABLE['MagicMagnetLight'] = {
     'BACKGROUND': 'white',

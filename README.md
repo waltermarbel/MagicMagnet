@@ -1,15 +1,15 @@
 
 <p align="center">
-  <img src="https://github.com/pedrolemoz/MagicMagnet-Python/raw/python/assets/logo_256x256.png" alt="Logo"/>
+  <img src="https://github.com/pedrolemoz/MagicMagnet/raw/python/assets/logo_256x256.png" alt="Logo"/>
 
 <p align="center">
   <img src="http://ForTheBadge.com/images/badges/made-with-python.svg" alt="Made with Python"/>
 
 
-![GitHub repo size](https://img.shields.io/github/repo-size/pedrolemoz/MagicMagnet-Python?color=red)
+![GitHub repo size](https://img.shields.io/github/repo-size/pedrolemoz/MagicMagnet?color=red)
 [![Project Owner](https://img.shields.io/badge/owner-Pedro%20Lemos-orange)](https://github.com/pedrolemoz/)
-![GitHub stars](https://img.shields.io/github/stars/pedrolemoz/MagicMagnet-Python?style=social)
-[![GitHub forks](https://img.shields.io/github/forks/pedrolemoz/MagicMagnet-Python?style=social)](https://github.com/pedrolemoz/MagicMagnet-Python/fork)
+![GitHub stars](https://img.shields.io/github/stars/pedrolemoz/MagicMagnet?style=social)
+[![GitHub forks](https://img.shields.io/github/forks/pedrolemoz/MagicMagnet?style=social)](https://github.com/pedrolemoz/MagicMagnet/fork)
 
 ## Get magnet links from internet without any effort! :magnet:
 
@@ -58,7 +58,7 @@ For development, we plan to use the ```asyncio``` library (for a asynchronous co
 
 ### From an executable (for Windows)
 
-Download the latest [build](https://github.com/pedrolemoz/MagicMagnet-Python/releases) and you're done.
+Download the latest [build](https://github.com/pedrolemoz/MagicMagnet/releases) and you're done.
 
 ### From source
 
@@ -73,7 +73,7 @@ To install Python3, please visit [Python official website](https://www.python.or
 To install Git, please visit [Git official website](https://git-scm.com/downloads), download and install the latest package available. Setup Git with your name and email. Clone the repository to your machine using the following command:
 
 ``` 
-git clone https://github.com/pedrolemoz/MagicMagnet-Python.git && git checkout python
+git clone https://github.com/pedrolemoz/MagicMagnet.git && git checkout python
 ```
 
 If you don't wanna install Git, just download the ```.zip``` from this repository (the green button above), and unzip it in your machine.
