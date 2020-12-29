@@ -1,5 +1,0 @@
-bs4==0.0.1
-requests==2.22.0
-lxml==4.4.2
-pyperclip==1.7.0  
-PySimpleGUI==4.12.0

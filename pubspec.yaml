@@ -1,0 +1,56 @@
+name: magicmagnet
+description: Get magnet links from internet without any effort!
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Engine (it's a private repository)
+  magic_magnet_engine:
+    git:
+      url: https://github.com/pedrolemoz/MagicMagnetEngine
+
+  # Dependency Injection and Routing
+  flutter_modular: ^2.0.1
+  
+  # Comparator
+  equatable: any
+
+  # Functional programming features
+  dartz: any
+  
+  # UI
+  unicons: any
+  responsive_grid: any
+
+  # State management
+  mobx: any
+  flutter_mobx: any
+
+dev_dependencies:
+  # Code generation for MobX
+  build_runner:
+  mobx_codegen:
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+  - family: SourceSansPro
+    fonts:
+    - asset: assets/fonts/SourceSansPro-Regular.ttf
+      weight: 400
+    - asset: assets/fonts/SourceSansPro-SemiBold.ttf
+      weight: 600
+    - asset: assets/fonts/SourceSansPro-Bold.ttf
+      weight: 700
+      
+  assets:
+    - assets/images/
