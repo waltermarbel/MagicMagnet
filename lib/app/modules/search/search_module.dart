@@ -36,7 +36,7 @@ class SearchModule extends ChildModule {
         Bind((i) => YTSDataSourceImplementation(i())),
         Bind((i) => YTSRepositoryImplementation(i())),
         Bind((i) => GetMagnetLinksFromYTS(i())),
-        Bind((i) => EnabledUsecasesDataSourceImplementation(i())),
+        Bind((i) => UsecasesDataSourceImplementation(i())),
         Bind((i) => EnabledUsecasesRepositoryImplementation(i())),
         Bind((i) => GetEnabledUsecases(i())),
       ];

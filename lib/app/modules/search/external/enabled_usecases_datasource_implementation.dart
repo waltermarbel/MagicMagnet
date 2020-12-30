@@ -5,20 +5,28 @@ import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:shared_preferences_windows/shared_preferences_windows.dart';
 
 import '../../../core/error/exceptions.dart';
-import '../infrastructure/datasources/enabled_usecases_datasource.dart';
+import '../domain/entities/usecase_entity.dart';
+import '../infrastructure/datasources/usecases_datasource.dart';
 
-class EnabledUsecasesDataSourceImplementation
-    implements EnabledUsecasesDataSource {
+class UsecasesDataSourceImplementation implements UsecasesDataSource {
   final SharedPreferencesWindows sharedPreferencesWindows;
 
-  EnabledUsecasesDataSourceImplementation(this.sharedPreferencesWindows);
+  UsecasesDataSourceImplementation(this.sharedPreferencesWindows);
 
   @override
-  Future<List<Object>> getEnabledUsecases() async {
+  Future<List<Usecase<Stream<MagnetLink>, SearchParameters>>>
+      getEnabledUsecases() async {
     if (Platform.isWindows) {
       var enabledUsecases = [];
 
-      final dataSources = ['google', 'tpb', '1337x', 'nyaa', 'eztv', 'yts'];
+      final dataSources = [
+        'Google',
+        'The Pirate Bay',
+        '1337x',
+        'Nyaa',
+        'EZTV',
+        'YTS'
+      ];
 
       final prefs = await sharedPreferencesWindows.getAll();
 
@@ -28,11 +36,11 @@ class EnabledUsecasesDataSourceImplementation
         }
       }
 
-      if (prefs['google']) {
+      if (prefs['Google']) {
         enabledUsecases.add(Modular.get<GetMagnetLinksFromGoogle>());
       }
 
-      if (prefs['tpb']) {
+      if (prefs['The Pirate Bay']) {
         enabledUsecases.add(Modular.get<GetMagnetLinksFromTPB>());
       }
 
@@ -40,15 +48,15 @@ class EnabledUsecasesDataSourceImplementation
         enabledUsecases.add(Modular.get<GetMagnetLinksFrom1337X>());
       }
 
-      if (prefs['nyaa']) {
+      if (prefs['Nyaa']) {
         enabledUsecases.add(Modular.get<GetMagnetLinksFromNyaa>());
       }
 
-      if (prefs['eztv']) {
+      if (prefs['EZTV']) {
         enabledUsecases.add(Modular.get<GetMagnetLinksFromEZTV>());
       }
 
-      if (prefs['yts']) {
+      if (prefs['YTS']) {
         enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
       }
 
@@ -56,5 +64,82 @@ class EnabledUsecasesDataSourceImplementation
     } else {
       throw UnsupportedPlatformException();
     }
+  }
+
+  @override
+  Future<Usecase<Stream<MagnetLink>, SearchParameters>> enableUsecase(
+      UsecaseEntity usecaseEntity) async {
+    if (Platform.isWindows) {
+      if (usecaseEntity.key == 'Google') {
+        await sharedPreferencesWindows.setValue(
+          'Bool',
+          usecaseEntity.key,
+          true,
+        );
+
+        return Modular.get<GetMagnetLinksFromGoogle>();
+      }
+
+      if (usecaseEntity.key == 'The Pirate Bay') {
+        await sharedPreferencesWindows.setValue(
+          'Bool',
+          usecaseEntity.key,
+          true,
+        );
+
+        return Modular.get<GetMagnetLinksFromTPB>();
+      }
+
+      if (usecaseEntity.key == '1337x') {
+        await sharedPreferencesWindows.setValue(
+          'Bool',
+          usecaseEntity.key,
+          true,
+        );
+
+        return Modular.get<GetMagnetLinksFrom1337X>();
+      }
+
+      if (usecaseEntity.key == 'Nyaa') {
+        await sharedPreferencesWindows.setValue(
+          'Bool',
+          usecaseEntity.key,
+          true,
+        );
+
+        return Modular.get<GetMagnetLinksFromNyaa>();
+      }
+
+      if (usecaseEntity.key == 'EZTV') {
+        await sharedPreferencesWindows.setValue(
+          'Bool',
+          usecaseEntity.key,
+          true,
+        );
+
+        return Modular.get<GetMagnetLinksFromEZTV>();
+      }
+
+      if (usecaseEntity.key == 'Nyaa') {
+        await sharedPreferencesWindows.setValue(
+          'Bool',
+          usecaseEntity.key,
+          true,
+        );
+
+        return Modular.get<GetMagnetLinksFromYTS>();
+      }
+    } else {
+      throw UnsupportedPlatformException();
+    }
+  }
+
+  @override
+  Future<void> disableUsecase(UsecaseEntity usecaseEntity) async {
+    await sharedPreferencesWindows.setValue(
+      'Bool',
+      usecaseEntity.key,
+      false,
+    );
   }
 }
