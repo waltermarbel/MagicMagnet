@@ -24,24 +24,22 @@ class SearchPage extends StatelessWidget {
         },
         child: Scaffold(
           backgroundColor: Colors.white,
-          body: SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(16),
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Hero(tag: 'Logo', child: MagicMagnetLogo(isSearchPage: true)),
-                  SizedBox(height: 32),
-                  Hero(
-                    tag: 'SearchField',
-                    child: SearchField(controller: controller),
-                  )
-                ],
-              ),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  constraints: BoxConstraints(maxWidth: 584),
+                  child: MagicMagnetLogo(
+                    isSearchPage: true,
+                    isHero: true,
+                    showTitle: true,
+                  ),
+                ),
+                SizedBox(height: 32),
+                SearchField(controller: controller, isHero: true)
+              ],
             ),
           ),
         ),

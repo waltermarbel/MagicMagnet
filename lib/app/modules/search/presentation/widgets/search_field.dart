@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../pages/search_page.dart';
 import 'package:unicons/unicons.dart';
 
 import '../controllers/search_page_controller.dart';
+import '../pages/search_page.dart';
 
 class SearchField extends StatelessWidget {
   final SearchPageController controller;
+  final bool isHero;
 
-  const SearchField({this.controller});
+  const SearchField({this.controller, this.isHero});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class SearchField extends StatelessWidget {
       }
     }
 
-    return Container(
+    final widget = Container(
       constraints: BoxConstraints(maxWidth: 584),
       child: Material(
         borderRadius: BorderRadius.all(Radius.circular(6.0)),
@@ -36,7 +37,10 @@ class SearchField extends StatelessWidget {
           maxLines: 1,
           autocorrect: true,
           cursorColor: Color(0xFF5F6368),
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context)
+              .textTheme
+              .headline6
+              .copyWith(fontWeight: FontWeight.w600),
           onSubmitted: (_) => search(),
           decoration: InputDecoration(
             suffixIcon: GestureDetector(
@@ -55,7 +59,10 @@ class SearchField extends StatelessWidget {
             hoverColor: Color(0xFFF7F7F7),
             hintMaxLines: 1,
             hintText: 'Search for something',
-            hintStyle: Theme.of(context).textTheme.headline6,
+            hintStyle: Theme.of(context)
+                .textTheme
+                .headline6
+                .copyWith(fontWeight: FontWeight.w600),
             border: OutlineInputBorder(
               borderSide: BorderSide.none,
               borderRadius: BorderRadius.all(Radius.circular(6.0)),
@@ -64,5 +71,7 @@ class SearchField extends StatelessWidget {
         ),
       ),
     );
+
+    return isHero ? Hero(tag: 'SearchField', child: widget) : widget;
   }
 }

@@ -9,23 +9,29 @@ class SettingsButton extends StatelessWidget {
     return RoundedElement(
       hasSplash: true,
       onTap: () {},
-      child: Row(
-        children: [
-          Text(
-            'Settings',
-            style: Theme.of(context)
-                .textTheme
-                .headline6
-                .copyWith(fontWeight: FontWeight.w600),
-          ),
-          SizedBox(width: 12),
-          Icon(
-            UniconsLine.setting,
-            color: Color(0xFF5F6368),
-            size: 30,
-          ),
-        ],
-      ),
+      child: MediaQuery.of(context).size.width > 480
+          ? Row(
+              children: [
+                Text(
+                  'Settings',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6
+                      .copyWith(fontWeight: FontWeight.w600),
+                ),
+                SizedBox(width: 12),
+                Icon(
+                  UniconsLine.setting,
+                  color: Color(0xFF5F6368),
+                  size: 30,
+                ),
+              ],
+            )
+          : Icon(
+              UniconsLine.setting,
+              color: Color(0xFF5F6368),
+              size: 30,
+            ),
     );
   }
 }

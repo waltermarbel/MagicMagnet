@@ -34,7 +34,7 @@ class _MagnetLinkCardState extends State<MagnetLinkCard> {
         borderRadius: BorderRadius.all(Radius.circular(6.0)),
         child: InkWell(
           child: Container(
-            width: 300,
+            width: 250,
             height: 160,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -55,63 +55,55 @@ class _MagnetLinkCardState extends State<MagnetLinkCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Expanded(
-                      child: Material(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                        child: InkWell(
-                          borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                          splashColor:
-                              Theme.of(context).primaryColor.withOpacity(0.8),
-                          onTap: () {},
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                              horizontal: 12.0,
-                            ),
-                            child: Center(
-                                child: Text(
-                              'Copy',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1
-                                  .copyWith(color: Colors.white),
-                            )),
-                          ),
-                        ),
-                      ),
+                    _CardButton(
+                      color: Theme.of(context).primaryColor,
+                      text: 'Copy',
                     ),
                     VerticalDivider(color: Colors.transparent),
-                    Expanded(
-                      child: Material(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                        child: InkWell(
-                          borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                          splashColor:
-                              Theme.of(context).accentColor.withOpacity(0.8),
-                          onTap: () {},
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                              horizontal: 12.0,
-                            ),
-                            child: Center(
-                                child: Text(
-                              'Open',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1
-                                  .copyWith(color: Colors.white),
-                            )),
-                          ),
-                        ),
-                      ),
+                    _CardButton(
+                      color: Theme.of(context).accentColor,
+                      text: 'Open',
                     ),
                   ],
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CardButton extends StatelessWidget {
+  final Color color;
+  final String text;
+
+  const _CardButton({this.color, this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Material(
+        color: color,
+        borderRadius: BorderRadius.all(Radius.circular(6.0)),
+        child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(6.0)),
+          splashColor: color.withOpacity(0.8),
+          onTap: () {},
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8.0,
+              horizontal: 12.0,
+            ),
+            child: Center(
+                child: Text(
+              text,
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle1
+                  .copyWith(color: Colors.white),
+            )),
           ),
         ),
       ),

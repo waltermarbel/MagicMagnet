@@ -25,10 +25,14 @@ dependencies:
 
   # Functional programming features
   dartz: any
+
+  # Local cache
+  shared_preferences: any
+  shared_preferences_windows: any
   
   # UI
   unicons: any
-  responsive_grid: any
+  sleek_circular_slider: any
 
   # State management
   mobx: any
