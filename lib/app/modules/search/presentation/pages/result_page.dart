@@ -28,7 +28,6 @@ class ResultPage extends StatelessWidget {
             currentFocus.focusedChild.unfocus();
         },
         child: Scaffold(
-          backgroundColor: Colors.white,
           body: ListView(
             children: [
               SizedBox(height: 16),

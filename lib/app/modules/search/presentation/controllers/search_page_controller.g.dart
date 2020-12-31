@@ -41,22 +41,6 @@ mixin _$SearchPageController on _SearchPageControllerBase, Store {
     });
   }
 
-  final _$enabledUsecasesAtom =
-      Atom(name: '_SearchPageControllerBase.enabledUsecases');
-
-  @override
-  List<dynamic> get enabledUsecases {
-    _$enabledUsecasesAtom.reportRead();
-    return super.enabledUsecases;
-  }
-
-  @override
-  set enabledUsecases(List<dynamic> value) {
-    _$enabledUsecasesAtom.reportWrite(value, super.enabledUsecases, () {
-      super.enabledUsecases = value;
-    });
-  }
-
   final _$errorMessageAtom =
       Atom(name: '_SearchPageControllerBase.errorMessage');
 
@@ -73,14 +57,6 @@ mixin _$SearchPageController on _SearchPageControllerBase, Store {
     });
   }
 
-  final _$_getUsecasesAsyncAction =
-      AsyncAction('_SearchPageControllerBase._getUsecases');
-
-  @override
-  Future<void> _getUsecases() {
-    return _$_getUsecasesAsyncAction.run(() => super._getUsecases());
-  }
-
   final _$performSearchAsyncAction =
       AsyncAction('_SearchPageControllerBase.performSearch');
 
@@ -94,7 +70,6 @@ mixin _$SearchPageController on _SearchPageControllerBase, Store {
     return '''
 searchTextFieldController: ${searchTextFieldController},
 magnetLinks: ${magnetLinks},
-enabledUsecases: ${enabledUsecases},
 errorMessage: ${errorMessage}
     ''';
   }

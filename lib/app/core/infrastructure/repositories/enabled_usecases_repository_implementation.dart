@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
-import '../datasources/usecases_datasource.dart';
 
-import '../../../../core/error/exceptions.dart';
-import '../../../../core/error/failures.dart';
 import '../../domain/repositories/enabled_usecases_repository.dart';
+import '../../error/exceptions.dart';
+import '../../error/failures.dart';
+import '../datasources/usecases_datasource.dart';
 
 class EnabledUsecasesRepositoryImplementation
     implements EnabledUsecasesRepository {

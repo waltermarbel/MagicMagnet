@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../domain/usecases/get_enabled_usecases.dart';
+import '../../../../core/presentation/controllers/app_controller.dart';
 
 part 'search_page_controller.g.dart';
 
@@ -10,11 +10,9 @@ class SearchPageController = _SearchPageControllerBase
     with _$SearchPageController;
 
 abstract class _SearchPageControllerBase with Store {
-  final GetEnabledUsecases _getEnabledUsecases;
+  final AppController _appController;
 
-  _SearchPageControllerBase(this._getEnabledUsecases) {
-    _getUsecases();
-  }
+  _SearchPageControllerBase(this._appController);
 
   @observable
   var searchTextFieldController = TextEditingController();
@@ -23,30 +21,14 @@ abstract class _SearchPageControllerBase with Store {
   var magnetLinks = <MagnetLink>[].asObservable();
 
   @observable
-  var enabledUsecases = [];
-
-  @observable
   String errorMessage;
-
-  @action
-  Future<void> _getUsecases() async {
-    final result = await _getEnabledUsecases(NoParams());
-
-    result.fold(
-      (left) => print(left),
-      (right) {
-        print(right);
-        enabledUsecases = right;
-      },
-    );
-  }
 
   @action
   Future<void> performSearch(String content) async {
     errorMessage = null;
     magnetLinks.clear();
 
-    for (var usecase in enabledUsecases) {
+    for (var usecase in _appController.enabledUsecases) {
       final result = usecase(SearchParameters(content));
 
       result.fold(
@@ -58,9 +40,11 @@ abstract class _SearchPageControllerBase with Store {
           }
         },
         (right) {
-          right.listen((MagnetLink magnetLink) {
-            magnetLinks.add(magnetLink);
-          });
+          right.listen(
+            (MagnetLink magnetLink) {
+              magnetLinks.add(magnetLink);
+            },
+          );
         },
       );
     }

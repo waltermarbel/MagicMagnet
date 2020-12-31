@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:unicons/unicons.dart';
 
 import 'rounded_element.dart';
@@ -8,7 +9,9 @@ class SettingsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return RoundedElement(
       hasSplash: true,
-      onTap: () {},
+      onTap: () {
+        Modular.navigator.pushNamed('/settings/');
+      },
       child: MediaQuery.of(context).size.width > 480
           ? Row(
               children: [

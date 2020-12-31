@@ -23,7 +23,6 @@ class SearchPage extends StatelessWidget {
             currentFocus.focusedChild.unfocus();
         },
         child: Scaffold(
-          backgroundColor: Colors.white,
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

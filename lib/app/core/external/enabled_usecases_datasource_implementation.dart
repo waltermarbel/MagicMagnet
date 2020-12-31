@@ -4,8 +4,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:shared_preferences_windows/shared_preferences_windows.dart';
 
-import '../../../core/error/exceptions.dart';
 import '../domain/entities/usecase_entity.dart';
+import '../error/exceptions.dart';
 import '../infrastructure/datasources/usecases_datasource.dart';
 
 class UsecasesDataSourceImplementation implements UsecasesDataSource {
@@ -17,7 +17,7 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
   Future<List<Usecase<Stream<MagnetLink>, SearchParameters>>>
       getEnabledUsecases() async {
     if (Platform.isWindows) {
-      var enabledUsecases = [];
+      var enabledUsecases = <Usecase<Stream<MagnetLink>, SearchParameters>>[];
 
       final dataSources = [
         'Google',
