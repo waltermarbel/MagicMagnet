@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:mobx/mobx.dart';
 
@@ -15,6 +16,12 @@ abstract class _AppControllerBase with Store {
   }
 
   @observable
+  var magnetLinks = <MagnetLink>[].asObservable();
+
+  @observable
+  var searchTextFieldController = TextEditingController();
+
+  @observable
   var enabledUsecases = [];
 
   @action
@@ -28,5 +35,35 @@ abstract class _AppControllerBase with Store {
         enabledUsecases = right;
       },
     );
+  }
+
+  @observable
+  String errorMessage;
+
+  @action
+  Future<void> performSearch() async {
+    errorMessage = null;
+    magnetLinks.clear();
+
+    for (var usecase in enabledUsecases) {
+      final result = usecase(SearchParameters(searchTextFieldController.text));
+
+      result.fold(
+        (left) {
+          if (left.runtimeType == InvalidSearchParametersFailure) {
+            errorMessage = 'Invalid search term';
+          } else {
+            errorMessage = 'An error occurred';
+          }
+        },
+        (right) {
+          right.listen(
+            (MagnetLink magnetLink) {
+              magnetLinks.add(magnetLink);
+            },
+          );
+        },
+      );
+    }
   }
 }
