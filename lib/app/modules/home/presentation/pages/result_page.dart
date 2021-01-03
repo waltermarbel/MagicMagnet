@@ -5,10 +5,11 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/presentation/controllers/app_controller.dart';
+import '../../../../core/utils/user_interface/no_splash.dart';
 import '../widgets/circular_button.dart';
+import '../widgets/detail_modal.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/rounded_button.dart';
-import 'detail_page.dart';
 
 class ResultPage extends StatelessWidget {
   @override
@@ -27,13 +28,11 @@ class ResultPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             elevation: 0,
-            iconTheme: IconThemeData(
-              color: Color(0xFF5F6368),
-            ),
+            iconTheme: IconThemeData(color: Color(0xFF272D2F)),
             centerTitle: true,
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             leading: CircularButton(
-              color: Colors.white,
+              color: Theme.of(context).scaffoldBackgroundColor,
               onTap: () {
                 Modular.navigator.maybePop();
               },
@@ -57,122 +56,141 @@ class ResultPage extends StatelessWidget {
                     child: LoadingIndicator(),
                   ),
                 )
-              : ListView(
-                  children: [
-                    SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${appController.magnetLinks.length} links has been found',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                .copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'Click in each tile for more info',
-                            style: Theme.of(context).textTheme.subtitle2,
-                          ),
-                        ],
+              : NoSplash(
+                  child: ListView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    children: [
+                      SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 32),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${appController.magnetLinks.length} links has been found',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'Click in each tile for more info',
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16),
-                    ListView.separated(
-                      physics: NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
-                      separatorBuilder: (_, __) => Divider(
-                        height: 25,
-                        thickness: 0.5,
-                        color: Color(0xFF5F6368),
-                      ),
-                      shrinkWrap: true,
-                      itemCount: appController.magnetLinks.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            showMaterialModalBottomSheet(
-                              context: context,
-                              // expand: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (context) => DetailModal(index: index),
-                            );
-                          },
-                          child: Column(
-                            children: [
-                              ListTile(
-                                title: Text(
-                                  appController.magnetLinks
-                                      .elementAt(index)
-                                      .torrentName,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle1
-                                      .copyWith(fontWeight: FontWeight.w600),
-                                ),
-                                leading: Image.asset(
-                                  'assets/launcher/foreground.png',
-                                  scale: 3,
-                                ),
+                      SizedBox(height: 16),
+                      ListView.separated(
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 4),
+                        separatorBuilder: (_, __) => SizedBox(height: 16),
+                        shrinkWrap: true,
+                        itemCount: appController.magnetLinks.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              showMaterialModalBottomSheet(
+                                context: context,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) => DetailModal(index: index),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade200,
+                                    spreadRadius: 3,
+                                    blurRadius: 10,
+                                    offset: Offset(0, 0),
+                                  ),
+                                ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: RoundedButton(
-                                        color: Theme.of(context).accentColor,
-                                        padding: EdgeInsets.all(16),
-                                        onTap: () {},
-                                        child: Center(
-                                          child: Text(
-                                            'Copy link',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2
-                                                .copyWith(
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.white,
-                                                ),
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      appController.magnetLinks
+                                          .elementAt(index)
+                                          .torrentName,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1
+                                          .copyWith(
+                                              fontWeight: FontWeight.w600),
+                                    ),
+                                    leading: Image.asset(
+                                      'assets/launcher/foreground.png',
+                                      scale: 3,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: RoundedButton(
+                                            color:
+                                                Theme.of(context).accentColor,
+                                            padding: EdgeInsets.all(16),
+                                            onTap: () {},
+                                            child: Center(
+                                              child: Text(
+                                                'Copy link',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle2
+                                                    .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.white,
+                                                    ),
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                    VerticalDivider(width: 6),
-                                    Expanded(
-                                      child: RoundedButton(
-                                        color: Theme.of(context).primaryColor,
-                                        padding: EdgeInsets.all(16),
-                                        onTap: () {},
-                                        child: Center(
-                                          child: Text(
-                                            'Open link',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2
-                                                .copyWith(
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.white,
-                                                ),
+                                        VerticalDivider(width: 6),
+                                        Expanded(
+                                          child: RoundedButton(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            padding: EdgeInsets.all(16),
+                                            onTap: () {},
+                                            child: Center(
+                                              child: Text(
+                                                'Open link',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle2
+                                                    .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.white,
+                                                    ),
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
         ),
       );
