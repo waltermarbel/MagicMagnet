@@ -1,8 +1,12 @@
+import 'package:asuka/asuka.dart' as asuka;
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/presentation/controllers/app_controller.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
+import 'floating_snack_bar.dart';
 import 'rounded_button.dart';
 
 class DetailModal extends StatelessWidget {
@@ -122,7 +126,23 @@ class DetailModal extends StatelessWidget {
                     RoundedButton(
                       color: Theme.of(context).accentColor,
                       padding: EdgeInsets.all(16),
-                      onTap: () {},
+                      onTap: () async {
+                        await FlutterClipboard.copy(
+                          appController.magnetLinks.elementAt(index).magnetLink,
+                        ).then(
+                          (_) => asuka.showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.transparent,
+                              padding: EdgeInsets.zero,
+                              elevation: 0,
+                              content: FloatingSnackBar(
+                                text:
+                                    'Magnet link sucessfully copied to clipboard',
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                       child: Center(
                         child: Text(
                           'Copy link',
@@ -137,7 +157,29 @@ class DetailModal extends StatelessWidget {
                     RoundedButton(
                       color: Theme.of(context).primaryColor,
                       padding: EdgeInsets.all(16),
-                      onTap: () {},
+                      onTap: () async {
+                        if (await canLaunch(appController.magnetLinks
+                            .elementAt(index)
+                            .magnetLink)) {
+                          await launch(
+                            appController.magnetLinks
+                                .elementAt(index)
+                                .magnetLink,
+                          );
+                        } else {
+                          asuka.showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.transparent,
+                              padding: EdgeInsets.zero,
+                              elevation: 0,
+                              content: FloatingSnackBar(
+                                text:
+                                    "You don't have any compatible app to open this link",
+                              ),
+                            ),
+                          );
+                        }
+                      },
                       child: Center(
                         child: Text(
                           'Open link',

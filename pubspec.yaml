@@ -29,11 +29,16 @@ dependencies:
   # Local cache
   shared_preferences: any
   shared_preferences_windows: any
+
+  # Utilities
+  url_launcher: any
+  clipboard: any
   
   # UI
   unicons: any
   sleek_circular_slider: any
   modal_bottom_sheet: any
+  asuka: any
 
   # State management
   mobx: any
