@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
-  final Color color;
   final Function onTap;
-  final Widget child;
+  final Color color;
 
-  const RoundedButton({
-    this.color,
-    this.onTap,
-    this.child,
-  });
+  final Widget child;
+  final EdgeInsets padding;
+
+  RoundedButton({
+    @required this.child,
+    @required this.onTap,
+    this.color = Colors.white,
+    this.padding = const EdgeInsets.all(8),
+  })  : assert(child != null),
+        assert(onTap != null);
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +22,12 @@ class RoundedButton extends StatelessWidget {
       borderRadius: BorderRadius.all(Radius.circular(6.0)),
       child: InkWell(
         borderRadius: BorderRadius.all(Radius.circular(6.0)),
-        splashColor: color.withOpacity(0.8),
+        focusColor: color,
+        highlightColor: color,
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 8.0,
-            horizontal: 12.0,
-          ),
-          child: Center(child: child),
+          padding: padding,
+          child: child,
         ),
       ),
     );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../widgets/rounded_button.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/presentation/controllers/app_controller.dart';
-import '../../../../core/presentation/widgets/rounded_button.dart';
 
 class HomePage extends StatelessWidget {
   final appController = Modular.get<AppController>();
@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
                     alignment: Alignment.topRight,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 24.0,
+                        vertical: 12.0,
                         horizontal: 14.0,
                       ),
                       child: Container(
@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
                               Icon(
                                 UniconsLine.setting,
                                 color: Color(0xFF5F6368),
-                                size: 30,
+                                size: 25,
                               ),
                             ],
                           ),

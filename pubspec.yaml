@@ -33,6 +33,7 @@ dependencies:
   # UI
   unicons: any
   sleek_circular_slider: any
+  modal_bottom_sheet: any
 
   # State management
   mobx: any
@@ -67,3 +68,4 @@ flutter:
       
   assets:
     - assets/images/
+    - assets/launcher/

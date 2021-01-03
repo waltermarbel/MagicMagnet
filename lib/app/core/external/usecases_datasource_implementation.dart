@@ -77,24 +77,24 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
         }
 
         if (sharedPreferences.getBool(dataSource)) {
-          if (dataSource == 'Google') {
-            enabledUsecases.add(Modular.get<GetMagnetLinksFromGoogle>());
-          }
+          // if (dataSource == 'Google') {
+          //   enabledUsecases.add(Modular.get<GetMagnetLinksFromGoogle>());
+          // }
           if (dataSource == 'The Pirate Bay') {
             enabledUsecases.add(Modular.get<GetMagnetLinksFromTPB>());
           }
-          if (dataSource == '1337x') {
-            enabledUsecases.add(Modular.get<GetMagnetLinksFrom1337X>());
-          }
-          if (dataSource == 'Nyaa') {
-            enabledUsecases.add(Modular.get<GetMagnetLinksFromNyaa>());
-          }
-          if (dataSource == 'EZTV') {
-            enabledUsecases.add(Modular.get<GetMagnetLinksFromEZTV>());
-          }
-          if (dataSource == 'YTS') {
-            enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
-          }
+          // if (dataSource == '1337x') {
+          //   enabledUsecases.add(Modular.get<GetMagnetLinksFrom1337X>());
+          // }
+          // if (dataSource == 'Nyaa') {
+          //   enabledUsecases.add(Modular.get<GetMagnetLinksFromNyaa>());
+          // }
+          // if (dataSource == 'EZTV') {
+          //   enabledUsecases.add(Modular.get<GetMagnetLinksFromEZTV>());
+          // }
+          // if (dataSource == 'YTS') {
+          //   enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
+          // }
         }
       }
 
