@@ -44,9 +44,9 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
         }
       }
 
-      if (prefs['Google']) {
-        enabledUsecases.add(Modular.get<GetMagnetLinksFromGoogle>());
-      }
+      // if (prefs['Google']) {
+      //   enabledUsecases.add(Modular.get<GetMagnetLinksFromGoogle>());
+      // }
 
       if (prefs['The Pirate Bay']) {
         enabledUsecases.add(Modular.get<GetMagnetLinksFromTPB>());
@@ -64,9 +64,9 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
         enabledUsecases.add(Modular.get<GetMagnetLinksFromEZTV>());
       }
 
-      if (prefs['YTS']) {
-        enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
-      }
+      // if (prefs['YTS']) {
+      //   enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
+      // }
 
       return enabledUsecases;
     } else if (Platform.isAndroid || Platform.isIOS) {
@@ -83,15 +83,15 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
           if (dataSource == 'The Pirate Bay') {
             enabledUsecases.add(Modular.get<GetMagnetLinksFromTPB>());
           }
-          // if (dataSource == '1337x') {
-          //   enabledUsecases.add(Modular.get<GetMagnetLinksFrom1337X>());
-          // }
-          // if (dataSource == 'Nyaa') {
-          //   enabledUsecases.add(Modular.get<GetMagnetLinksFromNyaa>());
-          // }
-          // if (dataSource == 'EZTV') {
-          //   enabledUsecases.add(Modular.get<GetMagnetLinksFromEZTV>());
-          // }
+          if (dataSource == '1337x') {
+            enabledUsecases.add(Modular.get<GetMagnetLinksFrom1337X>());
+          }
+          if (dataSource == 'Nyaa') {
+            enabledUsecases.add(Modular.get<GetMagnetLinksFromNyaa>());
+          }
+          if (dataSource == 'EZTV') {
+            enabledUsecases.add(Modular.get<GetMagnetLinksFromEZTV>());
+          }
           // if (dataSource == 'YTS') {
           //   enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
           // }
@@ -107,7 +107,43 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
   @override
   Future<Usecase<Stream<MagnetLink>, SearchParameters>> enableUsecase(
       UsecaseEntity usecaseEntity) async {
-    if (Platform.isWindows) {
+    if (Platform.isAndroid || Platform.isIOS) {
+      if (usecaseEntity.key == 'Google') {
+        await sharedPreferences.setBool(usecaseEntity.key, true);
+
+        return Modular.get<GetMagnetLinksFromGoogle>();
+      }
+
+      if (usecaseEntity.key == 'The Pirate Bay') {
+        await sharedPreferences.setBool(usecaseEntity.key, true);
+
+        return Modular.get<GetMagnetLinksFromTPB>();
+      }
+
+      if (usecaseEntity.key == '1337x') {
+        await sharedPreferences.setBool(usecaseEntity.key, true);
+
+        return Modular.get<GetMagnetLinksFrom1337X>();
+      }
+
+      if (usecaseEntity.key == 'Nyaa') {
+        await sharedPreferences.setBool(usecaseEntity.key, true);
+
+        return Modular.get<GetMagnetLinksFromNyaa>();
+      }
+
+      if (usecaseEntity.key == 'EZTV') {
+        await sharedPreferences.setBool(usecaseEntity.key, true);
+
+        return Modular.get<GetMagnetLinksFromEZTV>();
+      }
+
+      if (usecaseEntity.key == 'YTS') {
+        await sharedPreferences.setBool(usecaseEntity.key, true);
+
+        return Modular.get<GetMagnetLinksFromYTS>();
+      }
+    } else if (Platform.isWindows) {
       if (usecaseEntity.key == 'Google') {
         await sharedPreferencesWindows.setValue(
           'Bool',
@@ -158,7 +194,7 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
         return Modular.get<GetMagnetLinksFromEZTV>();
       }
 
-      if (usecaseEntity.key == 'Nyaa') {
+      if (usecaseEntity.key == 'YTS') {
         await sharedPreferencesWindows.setValue(
           'Bool',
           usecaseEntity.key,
@@ -174,10 +210,16 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
 
   @override
   Future<void> disableUsecase(UsecaseEntity usecaseEntity) async {
-    await sharedPreferencesWindows.setValue(
-      'Bool',
-      usecaseEntity.key,
-      false,
-    );
+    if (Platform.isAndroid || Platform.isIOS) {
+      await sharedPreferences.setBool(usecaseEntity.key, false);
+    } else if (Platform.isWindows) {
+      await sharedPreferencesWindows.setValue(
+        'Bool',
+        usecaseEntity.key,
+        false,
+      );
+    } else {
+      throw UnsupportedPlatformException();
+    }
   }
 }

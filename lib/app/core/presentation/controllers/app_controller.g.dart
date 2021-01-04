@@ -45,15 +45,75 @@ mixin _$AppController on _AppControllerBase, Store {
       Atom(name: '_AppControllerBase.enabledUsecases');
 
   @override
-  List<dynamic> get enabledUsecases {
+  ObservableList<dynamic> get enabledUsecases {
     _$enabledUsecasesAtom.reportRead();
     return super.enabledUsecases;
   }
 
   @override
-  set enabledUsecases(List<dynamic> value) {
+  set enabledUsecases(ObservableList<dynamic> value) {
     _$enabledUsecasesAtom.reportWrite(value, super.enabledUsecases, () {
       super.enabledUsecases = value;
+    });
+  }
+
+  final _$isTPBEnabledAtom = Atom(name: '_AppControllerBase.isTPBEnabled');
+
+  @override
+  dynamic get isTPBEnabled {
+    _$isTPBEnabledAtom.reportRead();
+    return super.isTPBEnabled;
+  }
+
+  @override
+  set isTPBEnabled(dynamic value) {
+    _$isTPBEnabledAtom.reportWrite(value, super.isTPBEnabled, () {
+      super.isTPBEnabled = value;
+    });
+  }
+
+  final _$is1337XEnabledAtom = Atom(name: '_AppControllerBase.is1337XEnabled');
+
+  @override
+  dynamic get is1337XEnabled {
+    _$is1337XEnabledAtom.reportRead();
+    return super.is1337XEnabled;
+  }
+
+  @override
+  set is1337XEnabled(dynamic value) {
+    _$is1337XEnabledAtom.reportWrite(value, super.is1337XEnabled, () {
+      super.is1337XEnabled = value;
+    });
+  }
+
+  final _$isNyaaEnabledAtom = Atom(name: '_AppControllerBase.isNyaaEnabled');
+
+  @override
+  dynamic get isNyaaEnabled {
+    _$isNyaaEnabledAtom.reportRead();
+    return super.isNyaaEnabled;
+  }
+
+  @override
+  set isNyaaEnabled(dynamic value) {
+    _$isNyaaEnabledAtom.reportWrite(value, super.isNyaaEnabled, () {
+      super.isNyaaEnabled = value;
+    });
+  }
+
+  final _$isEZTVEnabledAtom = Atom(name: '_AppControllerBase.isEZTVEnabled');
+
+  @override
+  dynamic get isEZTVEnabled {
+    _$isEZTVEnabledAtom.reportRead();
+    return super.isEZTVEnabled;
+  }
+
+  @override
+  set isEZTVEnabled(dynamic value) {
+    _$isEZTVEnabledAtom.reportWrite(value, super.isEZTVEnabled, () {
+      super.isEZTVEnabled = value;
     });
   }
 
@@ -72,6 +132,23 @@ mixin _$AppController on _AppControllerBase, Store {
     });
   }
 
+  final _$enableUsecaseAsyncAction =
+      AsyncAction('_AppControllerBase.enableUsecase');
+
+  @override
+  Future<void> enableUsecase(UsecaseEntity usecase) {
+    return _$enableUsecaseAsyncAction.run(() => super.enableUsecase(usecase));
+  }
+
+  final _$disableUsecaseAsyncAction =
+      AsyncAction('_AppControllerBase.disableUsecase');
+
+  @override
+  Future<void> disableUsecase<T>(UsecaseEntity usecase) {
+    return _$disableUsecaseAsyncAction
+        .run(() => super.disableUsecase<T>(usecase));
+  }
+
   final _$_getUsecasesAsyncAction =
       AsyncAction('_AppControllerBase._getUsecases');
 
@@ -88,12 +165,41 @@ mixin _$AppController on _AppControllerBase, Store {
     return _$performSearchAsyncAction.run(() => super.performSearch());
   }
 
+  final _$_AppControllerBaseActionController =
+      ActionController(name: '_AppControllerBase');
+
+  @override
+  bool _hasUsecaseOfType<T>() {
+    final _$actionInfo = _$_AppControllerBaseActionController.startAction(
+        name: '_AppControllerBase._hasUsecaseOfType<T>');
+    try {
+      return super._hasUsecaseOfType<T>();
+    } finally {
+      _$_AppControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void _changeUsecaseValue({UsecaseEntity usecase, bool value}) {
+    final _$actionInfo = _$_AppControllerBaseActionController.startAction(
+        name: '_AppControllerBase._changeUsecaseValue');
+    try {
+      return super._changeUsecaseValue(usecase: usecase, value: value);
+    } finally {
+      _$_AppControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 magnetLinks: ${magnetLinks},
 searchTextFieldController: ${searchTextFieldController},
 enabledUsecases: ${enabledUsecases},
+isTPBEnabled: ${isTPBEnabled},
+is1337XEnabled: ${is1337XEnabled},
+isNyaaEnabled: ${isNyaaEnabled},
+isEZTVEnabled: ${isEZTVEnabled},
 errorMessage: ${errorMessage}
     ''';
   }

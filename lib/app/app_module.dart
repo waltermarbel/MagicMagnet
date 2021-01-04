@@ -4,8 +4,12 @@ import 'package:http/http.dart' as http;
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 
 import 'app_widget.dart';
+import 'core/domain/usecases/disable_usecase.dart';
+import 'core/domain/usecases/enable_usecase.dart';
 import 'core/domain/usecases/get_enabled_usecases.dart';
 import 'core/external/usecases_datasource_implementation.dart';
+import 'core/infrastructure/repositories/disable_usecase_repository_implementation.dart';
+import 'core/infrastructure/repositories/enable_usecase_repository_implementation.dart';
 import 'core/infrastructure/repositories/enabled_usecases_repository_implementation.dart';
 import 'core/presentation/controllers/app_controller.dart';
 import 'modules/home/search_module.dart';
@@ -13,7 +17,7 @@ import 'modules/home/search_module.dart';
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => AppController(i())),
+        Bind((i) => AppController(i(), i(), i())),
         Bind((i) => http.Client()),
         Bind((i) => HttpClientImplementation(i())),
         Bind((i) => GoogleDataSourceImplementation(i())),
@@ -37,6 +41,10 @@ class AppModule extends MainModule {
         Bind((i) => UsecasesDataSourceImplementation()),
         Bind((i) => EnabledUsecasesRepositoryImplementation(i())),
         Bind((i) => GetEnabledUsecases(i())),
+        Bind((i) => EnableUsecaseRepositoryImplementation(i())),
+        Bind((i) => EnableUsecase(i())),
+        Bind((i) => DisableUsecaseRepositoryImplementation(i())),
+        Bind((i) => DisableUsecase(i())),
       ];
 
   @override
