@@ -195,7 +195,7 @@ class ResultCard extends StatelessWidget {
                     },
                     child: Center(
                       child: Text(
-                        'Copy link',
+                        'Copy magnet link',
                         style: Theme.of(context).textTheme.subtitle2.copyWith(
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
@@ -230,7 +230,7 @@ class ResultCard extends StatelessWidget {
                     },
                     child: Center(
                       child: Text(
-                        'Open link',
+                        'Open magnet link',
                         style: Theme.of(context).textTheme.subtitle2.copyWith(
                               fontWeight: FontWeight.w600,
                               color: Colors.white,

@@ -145,7 +145,7 @@ class DetailModal extends StatelessWidget {
                       },
                       child: Center(
                         child: Text(
-                          'Copy link',
+                          'Copy magnet link',
                           style: Theme.of(context).textTheme.subtitle2.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
@@ -158,15 +158,13 @@ class DetailModal extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                       padding: EdgeInsets.all(16),
                       onTap: () async {
-                        if (await canLaunch(appController.magnetLinks
-                            .elementAt(index)
-                            .magnetLink)) {
+                        try {
                           await launch(
                             appController.magnetLinks
                                 .elementAt(index)
                                 .magnetLink,
                           );
-                        } else {
+                        } catch (e) {
                           asuka.showSnackBar(
                             SnackBar(
                               backgroundColor: Colors.transparent,
@@ -182,7 +180,42 @@ class DetailModal extends StatelessWidget {
                       },
                       child: Center(
                         child: Text(
-                          'Open link',
+                          'Open magnet link',
+                          style: Theme.of(context).textTheme.subtitle2.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    RoundedButton(
+                      color: Colors.amber[600],
+                      padding: EdgeInsets.all(16),
+                      onTap: () async {
+                        try {
+                          await launch(
+                            appController.magnetLinks
+                                .elementAt(index)
+                                .originalSource,
+                          );
+                        } catch (e) {
+                          asuka.showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.transparent,
+                              padding: EdgeInsets.zero,
+                              elevation: 0,
+                              content: FloatingSnackBar(
+                                text:
+                                    "You don't have any compatible app to open this link",
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      child: Center(
+                        child: Text(
+                          'Open original source',
                           style: Theme.of(context).textTheme.subtitle2.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,

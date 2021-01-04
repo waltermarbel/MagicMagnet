@@ -127,6 +127,7 @@ class HomePage extends StatelessWidget {
                                         onTap: search,
                                         child: Icon(
                                           UniconsLine.search,
+                                          size: 20,
                                           color: Color(0xFF272D2F),
                                         ),
                                       ),
