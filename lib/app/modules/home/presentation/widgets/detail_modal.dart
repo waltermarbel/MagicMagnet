@@ -76,7 +76,7 @@ class DetailModal extends StatelessWidget {
                 ),
                 SizedBox(height: 2),
                 Text(
-                  '97% healty (ratio between seeders and leechers)',
+                  '${appController.magnetLinks.elementAt(index).health}% healty (ratio between seeders and leechers)',
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
@@ -98,7 +98,7 @@ class DetailModal extends StatelessWidget {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  'https://source.com/link',
+                  appController.magnetLinks.elementAt(index).originalSource,
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
