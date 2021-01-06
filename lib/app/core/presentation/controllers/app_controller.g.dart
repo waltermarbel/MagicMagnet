@@ -57,6 +57,22 @@ mixin _$AppController on _AppControllerBase, Store {
     });
   }
 
+  final _$isGoogleEnabledAtom =
+      Atom(name: '_AppControllerBase.isGoogleEnabled');
+
+  @override
+  dynamic get isGoogleEnabled {
+    _$isGoogleEnabledAtom.reportRead();
+    return super.isGoogleEnabled;
+  }
+
+  @override
+  set isGoogleEnabled(dynamic value) {
+    _$isGoogleEnabledAtom.reportWrite(value, super.isGoogleEnabled, () {
+      super.isGoogleEnabled = value;
+    });
+  }
+
   final _$isTPBEnabledAtom = Atom(name: '_AppControllerBase.isTPBEnabled');
 
   @override
@@ -114,6 +130,21 @@ mixin _$AppController on _AppControllerBase, Store {
   set isEZTVEnabled(dynamic value) {
     _$isEZTVEnabledAtom.reportWrite(value, super.isEZTVEnabled, () {
       super.isEZTVEnabled = value;
+    });
+  }
+
+  final _$isYTSEnabledAtom = Atom(name: '_AppControllerBase.isYTSEnabled');
+
+  @override
+  dynamic get isYTSEnabled {
+    _$isYTSEnabledAtom.reportRead();
+    return super.isYTSEnabled;
+  }
+
+  @override
+  set isYTSEnabled(dynamic value) {
+    _$isYTSEnabledAtom.reportWrite(value, super.isYTSEnabled, () {
+      super.isYTSEnabled = value;
     });
   }
 
@@ -196,10 +227,12 @@ mixin _$AppController on _AppControllerBase, Store {
 magnetLinks: ${magnetLinks},
 searchTextFieldController: ${searchTextFieldController},
 enabledUsecases: ${enabledUsecases},
+isGoogleEnabled: ${isGoogleEnabled},
 isTPBEnabled: ${isTPBEnabled},
 is1337XEnabled: ${is1337XEnabled},
 isNyaaEnabled: ${isNyaaEnabled},
 isEZTVEnabled: ${isEZTVEnabled},
+isYTSEnabled: ${isYTSEnabled},
 errorMessage: ${errorMessage}
     ''';
   }

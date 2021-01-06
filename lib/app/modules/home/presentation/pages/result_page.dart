@@ -3,6 +3,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,17 +21,16 @@ class ResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final appController = Modular.get<AppController>();
 
-    return Observer(
-      builder: (_) {
-        return Listener(
-          onPointerDown: (_) {
-            final currentFocus = FocusScope.of(context);
+    return Listener(
+      onPointerDown: (_) {
+        final currentFocus = FocusScope.of(context);
 
-            if (!currentFocus.hasPrimaryFocus &&
-                currentFocus.focusedChild != null)
-              currentFocus.focusedChild.unfocus();
-          },
-          child: Scaffold(
+        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null)
+          currentFocus.focusedChild.unfocus();
+      },
+      child: Observer(
+        builder: (_) {
+          return Scaffold(
             appBar: AppBar(
               elevation: 0,
               iconTheme: IconThemeData(color: Color(0xFF272D2F)),
@@ -93,16 +93,17 @@ class ResultPage extends StatelessWidget {
                             horizontal: 16,
                             vertical: 4,
                           ),
-                          cacheExtent: 10000,
                           shrinkWrap: true,
+                          addRepaintBoundaries: true,
+                          cacheExtent: MediaQuery.of(context).size.height * 5,
                           itemCount: appController.magnetLinks.length,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 8.0),
                               child: ResultCard(
-                                index: index,
-                                appController: appController,
+                                magnetLink:
+                                    appController.magnetLinks.elementAt(index),
                               ),
                             );
                           },
@@ -111,22 +112,17 @@ class ResultPage extends StatelessWidget {
                       ],
                     ),
                   ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
 
 class ResultCard extends StatelessWidget {
-  const ResultCard({
-    @required this.appController,
-    @required this.index,
-  })  : assert(appController != null),
-        assert(index != null);
+  const ResultCard({@required this.magnetLink});
 
-  final AppController appController;
-  final int index;
+  final MagnetLink magnetLink;
 
   @override
   Widget build(BuildContext context) {
@@ -146,26 +142,34 @@ class ResultCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          ListTile(
+          GestureDetector(
             onTap: () {
               showMaterialModalBottomSheet(
                 context: context,
                 backgroundColor: Colors.transparent,
-                builder: (context) => DetailModal(index: index),
+                builder: (context) => DetailModal(magnetLink: magnetLink),
               );
             },
-            title: Text(
-              appController.magnetLinks.elementAt(index).torrentName,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle1
-                  .copyWith(fontWeight: FontWeight.w600),
-            ),
-            leading: Image.asset(
-              'assets/launcher/foreground.png',
-              scale: 3,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/launcher/foreground.png',
+                  scale: 7,
+                ),
+                Flexible(
+                  child: Text(
+                    magnetLink.torrentName,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        .copyWith(fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(
@@ -178,7 +182,7 @@ class ResultCard extends StatelessWidget {
                     padding: EdgeInsets.all(16),
                     onTap: () async {
                       await FlutterClipboard.copy(
-                        appController.magnetLinks.elementAt(index).magnetLink,
+                        magnetLink.magnetLink,
                       ).then(
                         (_) => asuka.showSnackBar(
                           SnackBar(
@@ -212,7 +216,7 @@ class ResultCard extends StatelessWidget {
                     onTap: () async {
                       try {
                         await launch(
-                          appController.magnetLinks.elementAt(index).magnetLink,
+                          magnetLink.magnetLink,
                         );
                       } catch (e) {
                         asuka.showSnackBar(

@@ -2,6 +2,7 @@ import 'package:asuka/asuka.dart' as asuka;
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/presentation/controllers/app_controller.dart';
@@ -10,14 +11,12 @@ import 'floating_snack_bar.dart';
 import 'rounded_button.dart';
 
 class DetailModal extends StatelessWidget {
-  final int index;
+  final MagnetLink magnetLink;
 
-  const DetailModal({this.index});
+  const DetailModal({this.magnetLink});
 
   @override
   Widget build(BuildContext context) {
-    final appController = Modular.get<AppController>();
-
     return Container(
       height: MediaQuery.of(context).size.height * 0.75,
       decoration: BoxDecoration(
@@ -29,6 +28,7 @@ class DetailModal extends StatelessWidget {
       ),
       child: NoSplash(
         child: ListView(
+          cacheExtent: MediaQuery.of(context).size.height,
           padding: const EdgeInsets.all(24),
           children: [
             Text(
@@ -40,7 +40,7 @@ class DetailModal extends StatelessWidget {
             ),
             SizedBox(height: 6),
             Text(
-              appController.magnetLinks.elementAt(index).torrentName,
+              magnetLink.torrentName,
               style: Theme.of(context)
                   .textTheme
                   .subtitle1
@@ -60,7 +60,7 @@ class DetailModal extends StatelessWidget {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  '${appController.magnetLinks.elementAt(index).seeders} seeders',
+                  '${magnetLink.seeders} seeders',
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
@@ -68,7 +68,7 @@ class DetailModal extends StatelessWidget {
                 ),
                 SizedBox(height: 2),
                 Text(
-                  '${appController.magnetLinks.elementAt(index).leechers} leechers',
+                  '${magnetLink.leechers} leechers',
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
@@ -76,7 +76,7 @@ class DetailModal extends StatelessWidget {
                 ),
                 SizedBox(height: 2),
                 Text(
-                  '${appController.magnetLinks.elementAt(index).health}% healty (ratio between seeders and leechers)',
+                  '${magnetLink.health}% healty (ratio between seeders and leechers)',
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
@@ -98,7 +98,7 @@ class DetailModal extends StatelessWidget {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  appController.magnetLinks.elementAt(index).originalSource,
+                  magnetLink.originalSource,
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
@@ -128,7 +128,7 @@ class DetailModal extends StatelessWidget {
                       padding: EdgeInsets.all(16),
                       onTap: () async {
                         await FlutterClipboard.copy(
-                          appController.magnetLinks.elementAt(index).magnetLink,
+                          magnetLink.magnetLink,
                         ).then(
                           (_) => asuka.showSnackBar(
                             SnackBar(
@@ -160,9 +160,7 @@ class DetailModal extends StatelessWidget {
                       onTap: () async {
                         try {
                           await launch(
-                            appController.magnetLinks
-                                .elementAt(index)
-                                .magnetLink,
+                            magnetLink.magnetLink,
                           );
                         } catch (e) {
                           asuka.showSnackBar(
@@ -195,9 +193,7 @@ class DetailModal extends StatelessWidget {
                       onTap: () async {
                         try {
                           await launch(
-                            appController.magnetLinks
-                                .elementAt(index)
-                                .originalSource,
+                            magnetLink.originalSource,
                           );
                         } catch (e) {
                           asuka.showSnackBar(

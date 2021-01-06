@@ -40,6 +40,29 @@ class SettingsModal extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
+                    'Google',
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        .copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  Checkbox(
+                    activeColor: Theme.of(context).primaryColor,
+                    value: appController.isGoogleEnabled,
+                    onChanged: (value) {
+                      value
+                          ? appController.enableUsecase(UsecaseEntity('Google'))
+                          : appController
+                              .disableUsecase<GetMagnetLinksFromGoogle>(
+                                  UsecaseEntity('Google'));
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
                     'The Pirate Bay',
                     style: Theme.of(context)
                         .textTheme
@@ -121,6 +144,28 @@ class SettingsModal extends StatelessWidget {
                           ? appController.enableUsecase(UsecaseEntity('EZTV'))
                           : appController.disableUsecase<
                               GetMagnetLinksFromEZTV>(UsecaseEntity('EZTV'));
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'YTS',
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        .copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  Checkbox(
+                    activeColor: Theme.of(context).primaryColor,
+                    value: appController.isYTSEnabled,
+                    onChanged: (value) {
+                      value
+                          ? appController.enableUsecase(UsecaseEntity('YTS'))
+                          : appController.disableUsecase<GetMagnetLinksFromYTS>(
+                              UsecaseEntity('YTS'));
                     },
                   ),
                 ],

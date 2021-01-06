@@ -34,6 +34,9 @@ abstract class _AppControllerBase with Store {
   var enabledUsecases = [].asObservable();
 
   @observable
+  var isGoogleEnabled;
+
+  @observable
   var isTPBEnabled;
 
   @observable
@@ -44,6 +47,9 @@ abstract class _AppControllerBase with Store {
 
   @observable
   var isEZTVEnabled;
+
+  @observable
+  var isYTSEnabled;
 
   @action
   bool _hasUsecaseOfType<T>() {
@@ -70,6 +76,10 @@ abstract class _AppControllerBase with Store {
 
   @action
   void _changeUsecaseValue({UsecaseEntity usecase, bool value}) {
+    if (usecase.key == 'Google') {
+      isGoogleEnabled = value;
+    }
+
     if (usecase.key == 'The Pirate Bay') {
       isTPBEnabled = value;
     }
@@ -84,6 +94,10 @@ abstract class _AppControllerBase with Store {
 
     if (usecase.key == 'EZTV') {
       isEZTVEnabled = value;
+    }
+
+    if (usecase.key == 'YTS') {
+      isYTSEnabled = value;
     }
   }
 
@@ -104,10 +118,12 @@ abstract class _AppControllerBase with Store {
       (right) {
         print(right);
         enabledUsecases = right.asObservable();
+        isGoogleEnabled = _hasUsecaseOfType<GetMagnetLinksFromGoogle>();
         isTPBEnabled = _hasUsecaseOfType<GetMagnetLinksFromTPB>();
         is1337XEnabled = _hasUsecaseOfType<GetMagnetLinksFrom1337X>();
         isNyaaEnabled = _hasUsecaseOfType<GetMagnetLinksFromNyaa>();
         isEZTVEnabled = _hasUsecaseOfType<GetMagnetLinksFromEZTV>();
+        isYTSEnabled = _hasUsecaseOfType<GetMagnetLinksFromYTS>();
       },
     );
   }

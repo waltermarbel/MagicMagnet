@@ -44,9 +44,9 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
         }
       }
 
-      // if (prefs['Google']) {
-      //   enabledUsecases.add(Modular.get<GetMagnetLinksFromGoogle>());
-      // }
+      if (prefs['Google']) {
+        enabledUsecases.add(Modular.get<GetMagnetLinksFromGoogle>());
+      }
 
       if (prefs['The Pirate Bay']) {
         enabledUsecases.add(Modular.get<GetMagnetLinksFromTPB>());
@@ -64,9 +64,9 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
         enabledUsecases.add(Modular.get<GetMagnetLinksFromEZTV>());
       }
 
-      // if (prefs['YTS']) {
-      //   enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
-      // }
+      if (prefs['YTS']) {
+        enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
+      }
 
       return enabledUsecases;
     } else if (Platform.isAndroid || Platform.isIOS) {
@@ -77,9 +77,9 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
         }
 
         if (sharedPreferences.getBool(dataSource)) {
-          // if (dataSource == 'Google') {
-          //   enabledUsecases.add(Modular.get<GetMagnetLinksFromGoogle>());
-          // }
+          if (dataSource == 'Google') {
+            enabledUsecases.add(Modular.get<GetMagnetLinksFromGoogle>());
+          }
           if (dataSource == 'The Pirate Bay') {
             enabledUsecases.add(Modular.get<GetMagnetLinksFromTPB>());
           }
@@ -92,9 +92,9 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
           if (dataSource == 'EZTV') {
             enabledUsecases.add(Modular.get<GetMagnetLinksFromEZTV>());
           }
-          // if (dataSource == 'YTS') {
-          //   enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
-          // }
+          if (dataSource == 'YTS') {
+            enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
+          }
         }
       }
 
