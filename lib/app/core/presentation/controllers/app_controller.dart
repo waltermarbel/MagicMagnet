@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:mobx/mobx.dart';
@@ -131,9 +133,18 @@ abstract class _AppControllerBase with Store {
   @observable
   String errorMessage;
 
+  @observable
+  var hasCancelRequest = false;
+
+  @action
+  void cancelSearch() {
+    hasCancelRequest = true;
+  }
+
   @action
   Future<void> performSearch() async {
     errorMessage = null;
+    hasCancelRequest = false;
     magnetLinks.clear();
 
     for (var usecase in enabledUsecases) {
@@ -147,10 +158,17 @@ abstract class _AppControllerBase with Store {
             errorMessage = 'An error occurred';
           }
         },
-        (right) {
-          right.listen(
-            (MagnetLink magnetLink) {
-              magnetLinks.add(magnetLink);
+        (Stream<MagnetLink> right) async {
+          StreamSubscription<MagnetLink> stream;
+
+          stream = right.listen(
+            (magnetLink) {
+              if (hasCancelRequest) {
+                stream.cancel();
+                cancelSearch();
+              } else {
+                magnetLinks.add(magnetLink);
+              }
             },
           );
         },

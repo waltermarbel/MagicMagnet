@@ -163,6 +163,22 @@ mixin _$AppController on _AppControllerBase, Store {
     });
   }
 
+  final _$hasCancelRequestAtom =
+      Atom(name: '_AppControllerBase.hasCancelRequest');
+
+  @override
+  bool get hasCancelRequest {
+    _$hasCancelRequestAtom.reportRead();
+    return super.hasCancelRequest;
+  }
+
+  @override
+  set hasCancelRequest(bool value) {
+    _$hasCancelRequestAtom.reportWrite(value, super.hasCancelRequest, () {
+      super.hasCancelRequest = value;
+    });
+  }
+
   final _$enableUsecaseAsyncAction =
       AsyncAction('_AppControllerBase.enableUsecase');
 
@@ -222,6 +238,17 @@ mixin _$AppController on _AppControllerBase, Store {
   }
 
   @override
+  void cancelSearch() {
+    final _$actionInfo = _$_AppControllerBaseActionController.startAction(
+        name: '_AppControllerBase.cancelSearch');
+    try {
+      return super.cancelSearch();
+    } finally {
+      _$_AppControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 magnetLinks: ${magnetLinks},
@@ -233,7 +260,8 @@ is1337XEnabled: ${is1337XEnabled},
 isNyaaEnabled: ${isNyaaEnabled},
 isEZTVEnabled: ${isEZTVEnabled},
 isYTSEnabled: ${isYTSEnabled},
-errorMessage: ${errorMessage}
+errorMessage: ${errorMessage},
+hasCancelRequest: ${hasCancelRequest}
     ''';
   }
 }

@@ -18,6 +18,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (appController.magnetLinks.isNotEmpty) {
+      appController.magnetLinks.clear();
+    }
+
     return Listener(
       onPointerDown: (_) {
         final currentFocus = FocusScope.of(context);

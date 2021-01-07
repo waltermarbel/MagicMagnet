@@ -31,6 +31,28 @@ class ResultPage extends StatelessWidget {
       child: Observer(
         builder: (_) {
           return Scaffold(
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: appController.hasCancelRequest
+                ? null
+                : Container(
+                    height: 55,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: RoundedButton(
+                      color: Colors.redAccent[700],
+                      padding: EdgeInsets.all(16),
+                      onTap: () => appController.cancelSearch(),
+                      child: Center(
+                        child: Text(
+                          'Cancel search',
+                          style: Theme.of(context).textTheme.subtitle2.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                        ),
+                      ),
+                    ),
+                  ),
             appBar: AppBar(
               elevation: 0,
               iconTheme: IconThemeData(color: Color(0xFF272D2F)),
@@ -38,8 +60,8 @@ class ResultPage extends StatelessWidget {
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               leading: CircularButton(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onTap: () {
-                  Modular.navigator.maybePop();
+                onTap: () async {
+                  await Modular.navigator.maybePop();
                 },
                 child: Icon(
                   UniconsLine.arrow_left,
@@ -54,7 +76,8 @@ class ResultPage extends StatelessWidget {
                     .copyWith(fontWeight: FontWeight.w600),
               ),
             ),
-            body: appController.magnetLinks.isEmpty
+            body: appController.magnetLinks.isEmpty &&
+                    !appController.hasCancelRequest
                 ? Container(
                     height: MediaQuery.of(context).size.height - 200,
                     child: Center(
