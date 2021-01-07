@@ -8,10 +8,12 @@ import 'core/utils/user_interface/app_theme.dart';
 class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Color(0xFFFFFEFE),
-      statusBarIconBrightness: Brightness.dark,
-    ));
+    Future.delayed(Duration(milliseconds: 700), () {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Color(0xFFFFFEFE),
+        statusBarIconBrightness: Brightness.dark,
+      ));
+    });
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
