@@ -111,14 +111,6 @@ class HomePage extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.all(Radius.circular(12)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Theme.of(context).canvasColor,
-                              spreadRadius: 3,
-                              blurRadius: 10,
-                              offset: Offset(0, 0),
-                            ),
-                          ],
                         ),
                         child: TextField(
                           controller: appController.searchTextFieldController,

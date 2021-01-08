@@ -38,7 +38,7 @@ class _AppWidgetState extends State<AppWidget> with WidgetsBindingObserver {
     if (brightness == Brightness.dark) {
       currentTheme = darkTheme;
       SystemChrome.setSystemUIOverlayStyle(
-          SystemUiOverlayStyle(statusBarColor: Color(0xFF272D2F)));
+          SystemUiOverlayStyle(statusBarColor: Colors.black));
     } else {
       currentTheme = lightTheme;
       SystemChrome.setSystemUIOverlayStyle(
