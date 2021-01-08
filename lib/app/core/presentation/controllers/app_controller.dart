@@ -53,6 +53,20 @@ abstract class _AppControllerBase with Store {
   @observable
   var isYTSEnabled;
 
+  @observable
+  String errorMessage = '';
+
+  @observable
+  var hasCancelRequest = false;
+
+  @observable
+  var hasFinishedSearch = false;
+
+  @action
+  void cancelSearch() {
+    hasCancelRequest = true;
+  }
+
   @action
   bool _hasUsecaseOfType<T>() {
     for (var usecase in enabledUsecases) {
@@ -75,6 +89,12 @@ abstract class _AppControllerBase with Store {
       print(enabledUsecases);
     });
   }
+
+  @action
+  void clearErrorMessage() => errorMessage = '';
+
+  @action
+  void markAsFinished() => hasFinishedSearch = true;
 
   @action
   void _changeUsecaseValue({UsecaseEntity usecase, bool value}) {
@@ -130,20 +150,10 @@ abstract class _AppControllerBase with Store {
     );
   }
 
-  @observable
-  String errorMessage;
-
-  @observable
-  var hasCancelRequest = false;
-
-  @action
-  void cancelSearch() {
-    hasCancelRequest = true;
-  }
-
   @action
   Future<void> performSearch() async {
-    errorMessage = null;
+    hasFinishedSearch = false;
+    clearErrorMessage();
     hasCancelRequest = false;
     magnetLinks.clear();
 
@@ -157,20 +167,23 @@ abstract class _AppControllerBase with Store {
           } else {
             errorMessage = 'An error occurred';
           }
+
+          cancelSearch();
         },
         (Stream<MagnetLink> right) async {
           StreamSubscription<MagnetLink> stream;
 
-          stream = right.listen(
-            (magnetLink) {
-              if (hasCancelRequest) {
-                stream.cancel();
-                cancelSearch();
-              } else {
-                magnetLinks.add(magnetLink);
-              }
-            },
-          );
+          stream = right.listen((magnetLink) {
+            if (hasCancelRequest) {
+              stream.cancel();
+              cancelSearch();
+            } else {
+              magnetLinks.add(magnetLink);
+            }
+          }, onDone: () {
+            markAsFinished();
+            print(hasFinishedSearch);
+          });
         },
       );
     }

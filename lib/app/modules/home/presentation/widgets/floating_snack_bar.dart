@@ -12,13 +12,13 @@ class FloatingSnackBar extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: Colors.grey[800],
+          color: Color(0xFF31383B),
           borderRadius: BorderRadius.all(Radius.circular(12)),
           boxShadow: [
             BoxShadow(
               color: Colors.black26,
               spreadRadius: 2,
-              blurRadius: 5,
+              blurRadius: 10,
               offset: Offset(0, 0),
             ),
           ],

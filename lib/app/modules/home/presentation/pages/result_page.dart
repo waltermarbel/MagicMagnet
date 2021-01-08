@@ -6,9 +6,11 @@ import 'package:unicons/unicons.dart';
 import '../../../../core/presentation/controllers/app_controller.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import '../widgets/circular_button.dart';
+import '../widgets/floating_snack_bar.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/result_card.dart';
 import '../widgets/rounded_button.dart';
+import 'package:asuka/asuka.dart' as asuka;
 
 class ResultPage extends StatelessWidget {
   @override
@@ -27,7 +29,8 @@ class ResultPage extends StatelessWidget {
           return Scaffold(
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: appController.hasCancelRequest
+            floatingActionButton: appController.hasFinishedSearch ||
+                    appController.hasCancelRequest
                 ? null
                 : Container(
                     height: 55,

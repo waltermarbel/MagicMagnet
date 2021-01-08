@@ -1,19 +1,39 @@
+import 'package:asuka/asuka.dart' as asuka;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/presentation/controllers/app_controller.dart';
 import '../widgets/circular_button.dart';
+import '../widgets/floating_snack_bar.dart';
 import '../widgets/settings_modal.dart';
 
 class HomePage extends StatelessWidget {
   final appController = Modular.get<AppController>();
 
-  void search() {
-    Modular.navigator.pushNamed('/result');
+  Future<void> search() async {
     appController.performSearch();
+    print(appController.errorMessage);
+    if (appController.errorMessage.isNotEmpty) {
+      final isClosed = await asuka
+          .showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.transparent,
+              padding: EdgeInsets.zero,
+              elevation: 0,
+              content: FloatingSnackBar(
+                text: appController.errorMessage,
+              ),
+            ),
+          )
+          .closed;
+      if (isClosed.index != null) {
+        appController.clearErrorMessage();
+      }
+    } else {
+      Modular.navigator.pushNamed('/result');
+    }
   }
 
   @override

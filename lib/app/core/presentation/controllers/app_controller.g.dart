@@ -179,6 +179,22 @@ mixin _$AppController on _AppControllerBase, Store {
     });
   }
 
+  final _$hasFinishedSearchAtom =
+      Atom(name: '_AppControllerBase.hasFinishedSearch');
+
+  @override
+  bool get hasFinishedSearch {
+    _$hasFinishedSearchAtom.reportRead();
+    return super.hasFinishedSearch;
+  }
+
+  @override
+  set hasFinishedSearch(bool value) {
+    _$hasFinishedSearchAtom.reportWrite(value, super.hasFinishedSearch, () {
+      super.hasFinishedSearch = value;
+    });
+  }
+
   final _$enableUsecaseAsyncAction =
       AsyncAction('_AppControllerBase.enableUsecase');
 
@@ -216,6 +232,17 @@ mixin _$AppController on _AppControllerBase, Store {
       ActionController(name: '_AppControllerBase');
 
   @override
+  void cancelSearch() {
+    final _$actionInfo = _$_AppControllerBaseActionController.startAction(
+        name: '_AppControllerBase.cancelSearch');
+    try {
+      return super.cancelSearch();
+    } finally {
+      _$_AppControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   bool _hasUsecaseOfType<T>() {
     final _$actionInfo = _$_AppControllerBaseActionController.startAction(
         name: '_AppControllerBase._hasUsecaseOfType<T>');
@@ -227,22 +254,33 @@ mixin _$AppController on _AppControllerBase, Store {
   }
 
   @override
-  void _changeUsecaseValue({UsecaseEntity usecase, bool value}) {
+  void clearErrorMessage() {
     final _$actionInfo = _$_AppControllerBaseActionController.startAction(
-        name: '_AppControllerBase._changeUsecaseValue');
+        name: '_AppControllerBase.clearErrorMessage');
     try {
-      return super._changeUsecaseValue(usecase: usecase, value: value);
+      return super.clearErrorMessage();
     } finally {
       _$_AppControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void cancelSearch() {
+  void markAsFinished() {
     final _$actionInfo = _$_AppControllerBaseActionController.startAction(
-        name: '_AppControllerBase.cancelSearch');
+        name: '_AppControllerBase.markAsFinished');
     try {
-      return super.cancelSearch();
+      return super.markAsFinished();
+    } finally {
+      _$_AppControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void _changeUsecaseValue({UsecaseEntity usecase, bool value}) {
+    final _$actionInfo = _$_AppControllerBaseActionController.startAction(
+        name: '_AppControllerBase._changeUsecaseValue');
+    try {
+      return super._changeUsecaseValue(usecase: usecase, value: value);
     } finally {
       _$_AppControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -261,7 +299,8 @@ isNyaaEnabled: ${isNyaaEnabled},
 isEZTVEnabled: ${isEZTVEnabled},
 isYTSEnabled: ${isYTSEnabled},
 errorMessage: ${errorMessage},
-hasCancelRequest: ${hasCancelRequest}
+hasCancelRequest: ${hasCancelRequest},
+hasFinishedSearch: ${hasFinishedSearch}
     ''';
   }
 }
