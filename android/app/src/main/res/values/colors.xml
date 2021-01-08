@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name = "dark_gray_background">#272D2F</color>
+    <color name = "light_gray_background">#FFFEFE</color>
 </resources>
