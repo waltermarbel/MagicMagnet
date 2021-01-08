@@ -1,11 +1,9 @@
 import 'package:asuka/asuka.dart' as asuka;
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../core/presentation/controllers/app_controller.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import 'floating_snack_bar.dart';
 import 'rounded_button.dart';
@@ -20,7 +18,7 @@ class DetailModal extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.height * 0.75,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(12),
           topRight: Radius.circular(12),

@@ -1,19 +1,13 @@
-import 'package:asuka/asuka.dart' as asuka;
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:magic_magnet_engine/magic_magnet_engine.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:unicons/unicons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/presentation/controllers/app_controller.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import '../widgets/circular_button.dart';
-import '../widgets/detail_modal.dart';
-import '../widgets/floating_snack_bar.dart';
 import '../widgets/loading_indicator.dart';
+import '../widgets/result_card.dart';
 import '../widgets/rounded_button.dart';
 
 class ResultPage extends StatelessWidget {
@@ -54,9 +48,9 @@ class ResultPage extends StatelessWidget {
                     ),
                   ),
             appBar: AppBar(
-              elevation: 0,
-              iconTheme: IconThemeData(color: Color(0xFF272D2F)),
               centerTitle: true,
+              elevation: 0,
+              brightness: Theme.of(context).brightness,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               leading: CircularButton(
                 color: Theme.of(context).scaffoldBackgroundColor,
@@ -66,6 +60,7 @@ class ResultPage extends StatelessWidget {
                 child: Icon(
                   UniconsLine.arrow_left,
                   size: 30,
+                  color: Theme.of(context).textTheme.headline6.color,
                 ),
               ),
               title: Text(
@@ -137,139 +132,6 @@ class ResultPage extends StatelessWidget {
                   ),
           );
         },
-      ),
-    );
-  }
-}
-
-class ResultCard extends StatelessWidget {
-  const ResultCard({@required this.magnetLink});
-
-  final MagnetLink magnetLink;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade200,
-            spreadRadius: 3,
-            blurRadius: 10,
-            offset: Offset(0, 0),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              showMaterialModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                builder: (context) => DetailModal(magnetLink: magnetLink),
-              );
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/launcher/foreground.png',
-                  scale: 7,
-                ),
-                Flexible(
-                  child: Text(
-                    magnetLink.torrentName,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1
-                        .copyWith(fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: RoundedButton(
-                    color: Theme.of(context).accentColor,
-                    padding: EdgeInsets.all(16),
-                    onTap: () async {
-                      await FlutterClipboard.copy(
-                        magnetLink.magnetLink,
-                      ).then(
-                        (_) => asuka.showSnackBar(
-                          SnackBar(
-                            backgroundColor: Colors.transparent,
-                            padding: EdgeInsets.zero,
-                            elevation: 0,
-                            content: FloatingSnackBar(
-                              text:
-                                  'Magnet link sucessfully copied to clipboard',
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    child: Center(
-                      child: Text(
-                        'Copy magnet link',
-                        style: Theme.of(context).textTheme.subtitle2.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                      ),
-                    ),
-                  ),
-                ),
-                VerticalDivider(width: 6),
-                Expanded(
-                  child: RoundedButton(
-                    color: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.all(16),
-                    onTap: () async {
-                      try {
-                        await launch(
-                          magnetLink.magnetLink,
-                        );
-                      } catch (e) {
-                        asuka.showSnackBar(
-                          SnackBar(
-                            backgroundColor: Colors.transparent,
-                            padding: EdgeInsets.zero,
-                            elevation: 0,
-                            content: FloatingSnackBar(
-                              text:
-                                  "You don't have any compatible app to open this link",
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                    child: Center(
-                      child: Text(
-                        'Open magnet link',
-                        style: Theme.of(context).textTheme.subtitle2.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
