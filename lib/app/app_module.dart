@@ -17,7 +17,7 @@ import 'modules/home/search_module.dart';
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => AppController(i(), i(), i())),
+        Bind((i) => AppController(i(), i(), i(), i())),
         Bind((i) => http.Client()),
         Bind((i) => HttpClientImplementation(i())),
         Bind((i) => GoogleDataSourceImplementation(i())),
@@ -45,6 +45,9 @@ class AppModule extends MainModule {
         Bind((i) => EnableUsecase(i())),
         Bind((i) => DisableUsecaseRepositoryImplementation(i())),
         Bind((i) => DisableUsecase(i())),
+        Bind((i) => MagnetLinkInfoDataSourceImplementation(i())),
+        Bind((i) => MagnetLinkInfoRepositoryImplementation(i())),
+        Bind((i) => GetInfoForMagnetLink(i())),
       ];
 
   @override

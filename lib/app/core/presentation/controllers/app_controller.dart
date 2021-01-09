@@ -17,11 +17,13 @@ abstract class _AppControllerBase with Store {
   final GetEnabledUsecases _getEnabledUsecases;
   final EnableUsecase _enableUsecase;
   final DisableUsecase _disableUsecase;
+  final GetInfoForMagnetLink _getInfoForMagnetLink;
 
   _AppControllerBase(
     this._getEnabledUsecases,
     this._enableUsecase,
     this._disableUsecase,
+    this._getInfoForMagnetLink,
   ) {
     _getUsecases();
   }
@@ -61,6 +63,12 @@ abstract class _AppControllerBase with Store {
 
   @observable
   var hasFinishedSearch = false;
+
+  @action
+  int addMagnetLink(MagnetLink magnetLink) {
+    magnetLinks.add(magnetLink);
+    return magnetLinks.indexOf(magnetLink);
+  }
 
   @action
   void cancelSearch() {
@@ -173,12 +181,18 @@ abstract class _AppControllerBase with Store {
         (Stream<MagnetLink> right) async {
           StreamSubscription<MagnetLink> stream;
 
-          stream = right.listen((magnetLink) {
+          stream = right.listen((magnetLink) async {
             if (hasCancelRequest) {
               stream.cancel();
               cancelSearch();
             } else {
-              magnetLinks.add(magnetLink);
+              final index = addMagnetLink(magnetLink);
+
+              final result = await _getInfoForMagnetLink(magnetLink);
+
+              result.fold((l) => print(l), (right) {
+                magnetLinks.elementAt(index).magnetLinkInfo = right;
+              });
             }
           }, onDone: () {
             markAsFinished();

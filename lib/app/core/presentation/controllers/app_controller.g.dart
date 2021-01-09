@@ -232,6 +232,17 @@ mixin _$AppController on _AppControllerBase, Store {
       ActionController(name: '_AppControllerBase');
 
   @override
+  int addMagnetLink(MagnetLink magnetLink) {
+    final _$actionInfo = _$_AppControllerBaseActionController.startAction(
+        name: '_AppControllerBase.addMagnetLink');
+    try {
+      return super.addMagnetLink(magnetLink);
+    } finally {
+      _$_AppControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void cancelSearch() {
     final _$actionInfo = _$_AppControllerBaseActionController.startAction(
         name: '_AppControllerBase.cancelSearch');

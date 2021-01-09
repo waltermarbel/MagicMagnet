@@ -58,7 +58,9 @@ class DetailModal extends StatelessWidget {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  '${magnetLink.seeders} seeders',
+                  magnetLink?.magnetLinkInfo?.seeders != null
+                      ? '${magnetLink.magnetLinkInfo.seeders} seeders'
+                      : 'Fetching seeders data...',
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
@@ -66,7 +68,9 @@ class DetailModal extends StatelessWidget {
                 ),
                 SizedBox(height: 2),
                 Text(
-                  '${magnetLink.leechers} leechers',
+                  magnetLink?.magnetLinkInfo?.leechers != null
+                      ? '${magnetLink.magnetLinkInfo.leechers} leechers'
+                      : 'Fetching leechers data...',
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
@@ -74,7 +78,9 @@ class DetailModal extends StatelessWidget {
                 ),
                 SizedBox(height: 2),
                 Text(
-                  '${magnetLink.health}% healty (ratio between seeders and leechers)',
+                  magnetLink?.magnetLinkInfo?.health != null
+                      ? '${magnetLink.magnetLinkInfo.health}% healthy (ratio between seeders and leechers)'
+                      : 'Calculating torrent health...',
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
