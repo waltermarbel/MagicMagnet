@@ -9,6 +9,14 @@ part of 'app_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$AppController on _AppControllerBase, Store {
+  Computed<Themes> _$currentThemeComputed;
+
+  @override
+  Themes get currentTheme =>
+      (_$currentThemeComputed ??= Computed<Themes>(() => super.currentTheme,
+              name: '_AppControllerBase.currentTheme'))
+          .value;
+
   final _$magnetLinksAtom = Atom(name: '_AppControllerBase.magnetLinks');
 
   @override
@@ -195,6 +203,39 @@ mixin _$AppController on _AppControllerBase, Store {
     });
   }
 
+  final _$appThemeAtom = Atom(name: '_AppControllerBase.appTheme');
+
+  @override
+  ThemeData get appTheme {
+    _$appThemeAtom.reportRead();
+    return super.appTheme;
+  }
+
+  @override
+  set appTheme(ThemeData value) {
+    _$appThemeAtom.reportWrite(value, super.appTheme, () {
+      super.appTheme = value;
+    });
+  }
+
+  final _$fetchPreferredThemeAsyncAction =
+      AsyncAction('_AppControllerBase.fetchPreferredTheme');
+
+  @override
+  Future fetchPreferredTheme() {
+    return _$fetchPreferredThemeAsyncAction
+        .run(() => super.fetchPreferredTheme());
+  }
+
+  final _$changeAppThemeAsyncAction =
+      AsyncAction('_AppControllerBase.changeAppTheme');
+
+  @override
+  Future<void> changeAppTheme({Themes theme}) {
+    return _$changeAppThemeAsyncAction
+        .run(() => super.changeAppTheme(theme: theme));
+  }
+
   final _$enableUsecaseAsyncAction =
       AsyncAction('_AppControllerBase.enableUsecase');
 
@@ -311,7 +352,9 @@ isEZTVEnabled: ${isEZTVEnabled},
 isYTSEnabled: ${isYTSEnabled},
 errorMessage: ${errorMessage},
 hasCancelRequest: ${hasCancelRequest},
-hasFinishedSearch: ${hasFinishedSearch}
+hasFinishedSearch: ${hasFinishedSearch},
+appTheme: ${appTheme},
+currentTheme: ${currentTheme}
     ''';
   }
 }

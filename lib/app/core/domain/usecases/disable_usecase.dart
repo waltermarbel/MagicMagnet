@@ -2,10 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 
 import '../entities/usecase_entity.dart';
-import '../repositories/disable_usecase_repository.dart';
+import '../repositories/usecases_repository.dart';
 
 class DisableUsecase implements AsyncUsecase<void, UsecaseEntity> {
-  final DisableUsecaseRepository repository;
+  final UsecasesRepository repository;
 
   DisableUsecase(this.repository);
 

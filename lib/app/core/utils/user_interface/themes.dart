@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+enum Themes { light, dark }
+
 final lightTheme = ThemeData(
   primaryColor: Color(0xFFFF4B00),
   accentColor: Color(0xFF0981D1),

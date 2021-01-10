@@ -70,7 +70,7 @@ class ResultPage extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .headline6
-                    .copyWith(fontWeight: FontWeight.w600),
+                    .copyWith(fontWeight: FontWeight.bold),
               ),
             ),
             body: appController.magnetLinks.isEmpty &&

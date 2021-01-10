@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:mobx/mobx.dart';
 
@@ -8,6 +9,9 @@ import '../../domain/entities/usecase_entity.dart';
 import '../../domain/usecases/disable_usecase.dart';
 import '../../domain/usecases/enable_usecase.dart';
 import '../../domain/usecases/get_enabled_usecases.dart';
+import '../../domain/usecases/get_preferred_theme.dart';
+import '../../domain/usecases/set_preferred_theme.dart';
+import '../../utils/user_interface/themes.dart';
 
 part 'app_controller.g.dart';
 
@@ -18,12 +22,16 @@ abstract class _AppControllerBase with Store {
   final EnableUsecase _enableUsecase;
   final DisableUsecase _disableUsecase;
   final GetInfoForMagnetLink _getInfoForMagnetLink;
+  final GetPreferredTheme _getPreferredTheme;
+  final SetPreferredTheme _setPreferredTheme;
 
   _AppControllerBase(
     this._getEnabledUsecases,
     this._enableUsecase,
     this._disableUsecase,
     this._getInfoForMagnetLink,
+    this._getPreferredTheme,
+    this._setPreferredTheme,
   ) {
     _getUsecases();
   }
@@ -63,6 +71,59 @@ abstract class _AppControllerBase with Store {
 
   @observable
   var hasFinishedSearch = false;
+
+  @observable
+  var appTheme = lightTheme;
+
+  @computed
+  Themes get currentTheme =>
+      appTheme == lightTheme ? Themes.light : Themes.dark;
+
+  @action
+  fetchPreferredTheme() async {
+    final result = await _getPreferredTheme(NoParams());
+    result.fold(
+      (left) => print(left),
+      (right) async {
+        if (right == Themes.light) {
+          await changeAppTheme(theme: Themes.light);
+        } else {
+          await changeAppTheme(theme: Themes.dark);
+        }
+      },
+    );
+  }
+
+  @action
+  Future<void> changeAppTheme({Themes theme}) async {
+    if (theme != null) {
+      if (theme == Themes.dark) {
+        appTheme = darkTheme;
+        SystemChrome.setSystemUIOverlayStyle(
+            SystemUiOverlayStyle(statusBarColor: Colors.black));
+      } else {
+        appTheme = lightTheme;
+        SystemChrome.setSystemUIOverlayStyle(
+            SystemUiOverlayStyle(statusBarColor: Color(0xFFFFFEFE)));
+      }
+
+      await _setPreferredTheme(theme);
+    } else {
+      var brightness = WidgetsBinding.instance.window.platformBrightness;
+
+      if (brightness == Brightness.dark) {
+        appTheme = darkTheme;
+        await _setPreferredTheme(Themes.dark);
+        SystemChrome.setSystemUIOverlayStyle(
+            SystemUiOverlayStyle(statusBarColor: Colors.black));
+      } else {
+        appTheme = lightTheme;
+        await _setPreferredTheme(Themes.light);
+        SystemChrome.setSystemUIOverlayStyle(
+            SystemUiOverlayStyle(statusBarColor: Color(0xFFFFFEFE)));
+      }
+    }
+  }
 
   @action
   int addMagnetLink(MagnetLink magnetLink) {
