@@ -15,7 +15,20 @@ class HomePage extends StatelessWidget {
   Future<void> search() async {
     appController.performSearch();
     print(appController.errorMessage);
-    if (appController.errorMessage.isNotEmpty) {
+    if (appController.enabledUsecases.isEmpty) {
+      await asuka
+          .showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.transparent,
+              padding: EdgeInsets.zero,
+              elevation: 0,
+              content: FloatingSnackBar(
+                text: 'You should enable at least 1 source in settings',
+              ),
+            ),
+          )
+          .closed;
+    } else if (appController.errorMessage.isNotEmpty) {
       final isClosed = await asuka
           .showSnackBar(
             SnackBar(
