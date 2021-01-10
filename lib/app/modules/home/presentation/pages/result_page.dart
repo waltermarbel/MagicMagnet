@@ -6,11 +6,9 @@ import 'package:unicons/unicons.dart';
 import '../../../../core/presentation/controllers/app_controller.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import '../widgets/circular_button.dart';
-import '../widgets/floating_snack_bar.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/result_card.dart';
 import '../widgets/rounded_button.dart';
-import 'package:asuka/asuka.dart' as asuka;
 
 class ResultPage extends StatelessWidget {
   @override
@@ -27,6 +25,7 @@ class ResultPage extends StatelessWidget {
       child: Observer(
         builder: (_) {
           return Scaffold(
+            floatingActionButtonAnimator: _NoScalingAnimation(),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: appController.hasFinishedSearch ||
@@ -137,5 +136,26 @@ class ResultPage extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class _NoScalingAnimation extends FloatingActionButtonAnimator {
+  double _x;
+  double _y;
+  @override
+  Offset getOffset({Offset begin, Offset end, double progress}) {
+    _x = begin.dx + (end.dx - begin.dx) * progress;
+    _y = begin.dy + (end.dy - begin.dy) * progress;
+    return Offset(_x, _y);
+  }
+
+  @override
+  Animation<double> getRotationAnimation({Animation<double> parent}) {
+    return Tween<double>(begin: 1.0, end: 1.0).animate(parent);
+  }
+
+  @override
+  Animation<double> getScaleAnimation({Animation<double> parent}) {
+    return Tween<double>(begin: 1.0, end: 1.0).animate(parent);
   }
 }

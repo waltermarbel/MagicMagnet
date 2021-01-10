@@ -160,9 +160,11 @@ abstract class _AppControllerBase with Store {
 
   @action
   Future<void> performSearch() async {
+    var finishCounter = 0;
     hasFinishedSearch = false;
-    clearErrorMessage();
     hasCancelRequest = false;
+
+    clearErrorMessage();
     magnetLinks.clear();
 
     for (var usecase in enabledUsecases) {
@@ -181,23 +183,30 @@ abstract class _AppControllerBase with Store {
         (Stream<MagnetLink> right) async {
           StreamSubscription<MagnetLink> stream;
 
-          stream = right.listen((magnetLink) async {
-            if (hasCancelRequest) {
-              stream.cancel();
-              cancelSearch();
-            } else {
-              final index = addMagnetLink(magnetLink);
+          stream = right.listen(
+            (magnetLink) async {
+              if (hasCancelRequest) {
+                stream.cancel();
+                cancelSearch();
+              } else {
+                final index = addMagnetLink(magnetLink);
 
-              final result = await _getInfoForMagnetLink(magnetLink);
+                final result = await _getInfoForMagnetLink(magnetLink);
 
-              result.fold((l) => print(l), (right) {
-                magnetLinks.elementAt(index).magnetLinkInfo = right;
-              });
-            }
-          }, onDone: () {
-            markAsFinished();
-            print(hasFinishedSearch);
-          });
+                result.fold((l) => print(l), (right) {
+                  magnetLinks.elementAt(index).magnetLinkInfo = right;
+                });
+              }
+            },
+            onDone: () {
+              finishCounter++;
+
+              if (finishCounter == enabledUsecases.length) {
+                markAsFinished();
+                print('Searched has finished successfully');
+              }
+            },
+          );
         },
       );
     }
