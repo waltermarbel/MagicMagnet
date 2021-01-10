@@ -191,11 +191,16 @@ abstract class _AppControllerBase with Store {
               } else {
                 final index = addMagnetLink(magnetLink);
 
-                final result = await _getInfoForMagnetLink(magnetLink);
-
-                result.fold((l) => print(l), (right) {
-                  magnetLinks.elementAt(index).magnetLinkInfo = right;
-                });
+                if (usecase.runtimeType == GetMagnetLinksFromGoogle ||
+                    usecase.runtimeType == GetMagnetLinksFromYTS) {
+                  final result = await _getInfoForMagnetLink(magnetLink);
+                  result.fold(
+                    (l) => print(l),
+                    (right) {
+                      magnetLinks.elementAt(index).magnetLinkInfo = right;
+                    },
+                  );
+                }
               }
             },
             onDone: () {
