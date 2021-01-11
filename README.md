@@ -1,5 +1,5 @@
 <p align="center">
-    <img src='https://i.imgur.com/w0nzQ5K.png' alt='Magic Magnet Banner'/>
+    <img src='https://i.imgur.com/nGgPVSK.png' alt='Magic Magnet Banner'/>
 <p align="center">
   <img src="https://i.imgur.com/jZWZ1hQ.png" width=200px/>
   <img src="https://i.imgur.com/ZpHxVAv.png" width=200px/>
