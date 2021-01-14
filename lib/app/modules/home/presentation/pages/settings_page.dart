@@ -1,3 +1,4 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -6,15 +7,46 @@ import 'package:unicons/unicons.dart';
 
 import '../../../../core/domain/entities/usecase_entity.dart';
 import '../../../../core/presentation/controllers/app_controller.dart';
+import '../../../../core/utils/user_interface/admob.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import '../../../../core/utils/user_interface/themes.dart';
 import '../widgets/circular_button.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  final appController = Modular.get<AppController>();
+
+  BannerAd settingsBanner;
+
+  @override
+  void initState() {
+    super.initState();
+    settingsBanner = BannerAd(
+      adUnitId: AdmobCodes.settingsBannerID,
+      size: AdSize.smartBanner,
+      targetingInfo: MobileAdTargetingInfo(),
+      listener: (MobileAdEvent event) {
+        print("BannerAd event is $event");
+      },
+    );
+
+    settingsBanner
+      ..load()
+      ..show(anchorType: AnchorType.bottom);
+  }
+
+  @override
+  void dispose() {
+    settingsBanner..dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final appController = Modular.get<AppController>();
-
     return Observer(builder: (_) {
       return Scaffold(
         appBar: AppBar(
@@ -26,6 +58,17 @@ class SettingsPage extends StatelessWidget {
             color: Theme.of(context).scaffoldBackgroundColor,
             onTap: () async {
               await Modular.navigator.maybePop();
+              InterstitialAd settingsInteresticial = InterstitialAd(
+                adUnitId: AdmobCodes.settingsInteresticialID,
+                targetingInfo: MobileAdTargetingInfo(),
+                listener: (MobileAdEvent event) {
+                  print("InterstitialAd event is $event");
+                },
+              );
+
+              settingsInteresticial
+                ..load()
+                ..show();
             },
             child: Icon(
               UniconsLine.arrow_left,

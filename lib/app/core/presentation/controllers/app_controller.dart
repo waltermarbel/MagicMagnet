@@ -226,7 +226,6 @@ abstract class _AppControllerBase with Store {
     hasCancelRequest = false;
 
     clearErrorMessage();
-    magnetLinks.clear();
 
     for (var usecase in enabledUsecases) {
       final result = usecase(SearchParameters(searchTextFieldController.text));

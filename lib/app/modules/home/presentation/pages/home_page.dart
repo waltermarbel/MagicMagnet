@@ -1,14 +1,46 @@
 import 'package:asuka/asuka.dart' as asuka;
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/presentation/controllers/app_controller.dart';
+import '../../../../core/utils/user_interface/admob.dart';
 import '../widgets/circular_button.dart';
 import '../widgets/floating_snack_bar.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final appController = Modular.get<AppController>();
+
+  BannerAd homeBanner;
+
+  @override
+  void initState() {
+    super.initState();
+    homeBanner = BannerAd(
+      adUnitId: AdmobCodes.homeBannerID,
+      size: AdSize.smartBanner,
+      targetingInfo: MobileAdTargetingInfo(),
+      listener: (MobileAdEvent event) {
+        print("BannerAd event is $event");
+      },
+    );
+
+    homeBanner
+      ..load()
+      ..show(anchorType: AnchorType.top);
+  }
+
+  @override
+  void dispose() {
+    homeBanner..dispose();
+    super.dispose();
+  }
 
   Future<void> search() async {
     if (appController.enabledUsecases.isEmpty) {
@@ -25,6 +57,10 @@ class HomePage extends StatelessWidget {
           )
           .closed;
     } else {
+      if (appController.magnetLinks.isNotEmpty) {
+        appController.magnetLinks.clear();
+      }
+
       appController.performSearch();
 
       if (appController.errorMessage.isNotEmpty) {
@@ -51,10 +87,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (appController.magnetLinks.isNotEmpty) {
-      appController.magnetLinks.clear();
-    }
-
     return Listener(
       onPointerDown: (_) {
         final currentFocus = FocusScope.of(context);

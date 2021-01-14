@@ -44,6 +44,9 @@ dependencies:
   mobx: any
   flutter_mobx: any
 
+  # Admob
+  firebase_admob: ^0.11.0+1
+
 dev_dependencies:
   # Code generation for MobX
   build_runner:

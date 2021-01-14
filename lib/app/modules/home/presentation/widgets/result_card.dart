@@ -1,10 +1,12 @@
 import 'package:asuka/asuka.dart' as asuka;
 import 'package:clipboard/clipboard.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/utils/user_interface/admob.dart';
 import 'detail_modal.dart';
 import 'floating_snack_bar.dart';
 import 'rounded_button.dart';
@@ -30,7 +32,19 @@ class ResultCard extends StatelessWidget {
                 context: context,
                 backgroundColor: Colors.transparent,
                 builder: (context) => DetailModal(magnetLink: magnetLink),
-              );
+              ).whenComplete(() {
+                InterstitialAd detailInteresticial = InterstitialAd(
+                  adUnitId: AdmobCodes.detailInteresticialID,
+                  targetingInfo: MobileAdTargetingInfo(),
+                  listener: (MobileAdEvent event) {
+                    print("InterstitialAd event is $event");
+                  },
+                );
+
+                detailInteresticial
+                  ..load()
+                  ..show();
+              });
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,

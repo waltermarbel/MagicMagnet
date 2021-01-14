@@ -1,20 +1,48 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/presentation/controllers/app_controller.dart';
+import '../../../../core/utils/user_interface/admob.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import '../widgets/circular_button.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/result_card.dart';
 import '../widgets/rounded_button.dart';
 
-class ResultPage extends StatelessWidget {
+class ResultPage extends StatefulWidget {
+  @override
+  _ResultPageState createState() => _ResultPageState();
+}
+
+class _ResultPageState extends State<ResultPage> {
+  final appController = Modular.get<AppController>();
+
+  BannerAd resultsBanner;
+
+  @override
+  void initState() {
+    super.initState();
+    resultsBanner = BannerAd(
+      adUnitId: AdmobCodes.resultsBannerID,
+      size: AdSize.smartBanner,
+      targetingInfo: MobileAdTargetingInfo(),
+      listener: (MobileAdEvent event) {
+        print("BannerAd event is $event");
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    resultsBanner..dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final appController = Modular.get<AppController>();
-
     return Listener(
       onPointerDown: (_) {
         final currentFocus = FocusScope.of(context);
@@ -24,6 +52,13 @@ class ResultPage extends StatelessWidget {
       },
       child: Observer(
         builder: (_) {
+          if (appController.hasFinishedSearch ||
+              appController.hasCancelRequest) {
+            resultsBanner
+              ..load()
+              ..show(anchorType: AnchorType.bottom);
+          }
+
           return Scaffold(
             floatingActionButtonAnimator: _NoScalingAnimation(),
             floatingActionButtonLocation:
@@ -58,6 +93,17 @@ class ResultPage extends StatelessWidget {
                 color: Theme.of(context).scaffoldBackgroundColor,
                 onTap: () async {
                   await Modular.navigator.maybePop();
+                  InterstitialAd resultsInteresticial = InterstitialAd(
+                    adUnitId: AdmobCodes.resultsInteresticialID,
+                    targetingInfo: MobileAdTargetingInfo(),
+                    listener: (MobileAdEvent event) {
+                      print("InterstitialAd event is $event");
+                    },
+                  );
+
+                  resultsInteresticial
+                    ..load()
+                    ..show();
                 },
                 child: Icon(
                   UniconsLine.arrow_left,
@@ -74,7 +120,8 @@ class ResultPage extends StatelessWidget {
               ),
             ),
             body: appController.magnetLinks.isEmpty &&
-                    !appController.hasCancelRequest
+                    !appController.hasCancelRequest &&
+                    !appController.hasFinishedSearch
                 ? Container(
                     height: MediaQuery.of(context).size.height - 200,
                     child: Center(
