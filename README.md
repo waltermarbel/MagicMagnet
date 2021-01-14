@@ -11,6 +11,24 @@
 ![GitHub stars](https://img.shields.io/github/stars/pedrolemoz/MagicMagnet?style=social)
 [![GitHub forks](https://img.shields.io/github/forks/pedrolemoz/MagicMagnet?style=social)](https://github.com/pedrolemoz/MagicMagnet/fork)
 
+## Screenshots
+
+<span>
+  <img src="https://i.imgur.com/KDeT4Pj.png" width=170px/>
+  <img src="https://i.imgur.com/heC7ALP.png" width=170px/>
+  <img src="https://i.imgur.com/LguLCQc.png" width=170px/>
+  <img src="https://i.imgur.com/NUV1pct.png" width=170px/>
+  <img src="https://i.imgur.com/d4nEnNb.png" width=170px/>
+</span>
+
+<span>
+  <img src="https://i.imgur.com/jn7854O.png" width=170px/>
+  <img src="https://i.imgur.com/SrZmyq9.png" width=170px/>
+  <img src="https://i.imgur.com/qXLaQGY.png" width=170px/>
+  <img src="https://i.imgur.com/T5Ah8T8.png" width=170px/>
+  <img src="https://i.imgur.com/iZi7DRi.png" width=170px/>
+</span>
+
 ## What is Magic Magnet?
 
 Magic Magnet is an app that acts like a crawler, and let you search for magnet links in a lot of places without any effort. You can open the magnet link in another app (you may have a torrent client installed in your system), copy the link to the clipboard and even see the original source of the link.
