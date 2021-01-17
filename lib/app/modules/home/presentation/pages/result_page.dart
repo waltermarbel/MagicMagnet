@@ -5,6 +5,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/presentation/controllers/app_controller.dart';
+import '../../../../core/utils/flavors/build_flavor.dart';
 import '../../../../core/utils/user_interface/admob.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import '../widgets/circular_button.dart';
@@ -25,19 +26,25 @@ class _ResultPageState extends State<ResultPage> {
   @override
   void initState() {
     super.initState();
-    resultsBanner = BannerAd(
-      adUnitId: AdmobCodes.resultsBannerID,
-      size: AdSize.smartBanner,
-      targetingInfo: MobileAdTargetingInfo(),
-      listener: (MobileAdEvent event) {
-        print("BannerAd event is $event");
-      },
-    );
+
+    if (BuildFlavor.isFree) {
+      resultsBanner = BannerAd(
+        adUnitId: AdmobCodes.resultsBannerID,
+        size: AdSize.smartBanner,
+        targetingInfo: MobileAdTargetingInfo(),
+        listener: (MobileAdEvent event) {
+          print("BannerAd event is $event");
+        },
+      );
+    }
   }
 
   @override
   void dispose() {
-    resultsBanner..dispose();
+    if (BuildFlavor.isFree) {
+      resultsBanner..dispose();
+    }
+
     super.dispose();
   }
 
@@ -56,7 +63,10 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Future<bool> _willPop() async {
-    _showInteresticialAd();
+    if (BuildFlavor.isFree) {
+      _showInteresticialAd();
+    }
+
     return true;
   }
 
@@ -71,7 +81,7 @@ class _ResultPageState extends State<ResultPage> {
       },
       child: Observer(
         builder: (_) {
-          if (appController.hasFinishedSearch ||
+          if (BuildFlavor.isFree && appController.hasFinishedSearch ||
               appController.hasCancelRequest) {
             resultsBanner
               ..load()
@@ -112,7 +122,9 @@ class _ResultPageState extends State<ResultPage> {
                 color: Theme.of(context).scaffoldBackgroundColor,
                 onTap: () async {
                   await Modular.navigator.maybePop();
-                  _showInteresticialAd();
+                  if (BuildFlavor.isFree) {
+                    _showInteresticialAd();
+                  }
                 },
                 child: Icon(
                   UniconsLine.arrow_left,

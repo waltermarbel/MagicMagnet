@@ -5,6 +5,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/presentation/controllers/app_controller.dart';
+import '../../../../core/utils/flavors/build_flavor.dart';
 import '../../../../core/utils/user_interface/admob.dart';
 import '../widgets/circular_button.dart';
 import '../widgets/floating_snack_bar.dart';
@@ -24,26 +25,32 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    homeBanner = BannerAd(
-      adUnitId: AdmobCodes.homeBannerID,
-      size: AdSize.banner,
-      targetingInfo: MobileAdTargetingInfo(),
-      listener: (MobileAdEvent event) {
-        print("BannerAd event is $event");
-      },
-    );
 
-    homeBanner
-      ..load()
-      ..show(anchorType: AnchorType.bottom);
+    if (BuildFlavor.isFree) {
+      homeBanner = BannerAd(
+        adUnitId: AdmobCodes.homeBannerID,
+        size: AdSize.banner,
+        targetingInfo: MobileAdTargetingInfo(),
+        listener: (MobileAdEvent event) {
+          print("BannerAd event is $event");
+        },
+      );
 
-    isAdLoaded = true;
+      homeBanner
+        ..load()
+        ..show(anchorType: AnchorType.bottom);
+
+      isAdLoaded = true;
+    }
   }
 
   @override
   void dispose() {
-    homeBanner..dispose();
-    isAdLoaded = false;
+    if (isAdLoaded) {
+      homeBanner..dispose();
+      isAdLoaded = false;
+    }
+
     super.dispose();
   }
 

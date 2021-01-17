@@ -7,6 +7,7 @@ import 'package:unicons/unicons.dart';
 
 import '../../../../core/domain/entities/usecase_entity.dart';
 import '../../../../core/presentation/controllers/app_controller.dart';
+import '../../../../core/utils/flavors/build_flavor.dart';
 import '../../../../core/utils/user_interface/admob.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import '../../../../core/utils/user_interface/themes.dart';
@@ -25,23 +26,29 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    settingsBanner = BannerAd(
-      adUnitId: AdmobCodes.settingsBannerID,
-      size: AdSize.smartBanner,
-      targetingInfo: MobileAdTargetingInfo(),
-      listener: (MobileAdEvent event) {
-        print("BannerAd event is $event");
-      },
-    );
 
-    settingsBanner
-      ..load()
-      ..show(anchorType: AnchorType.bottom);
+    if (BuildFlavor.isFree) {
+      settingsBanner = BannerAd(
+        adUnitId: AdmobCodes.settingsBannerID,
+        size: AdSize.smartBanner,
+        targetingInfo: MobileAdTargetingInfo(),
+        listener: (MobileAdEvent event) {
+          print("BannerAd event is $event");
+        },
+      );
+
+      settingsBanner
+        ..load()
+        ..show(anchorType: AnchorType.bottom);
+    }
   }
 
   @override
   void dispose() {
-    settingsBanner..dispose();
+    if (BuildFlavor.isFree) {
+      settingsBanner..dispose();
+    }
+
     super.dispose();
   }
 
@@ -60,7 +67,10 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<bool> _willPop() async {
-    _showInteresticialAd();
+    if (BuildFlavor.isFree) {
+      _showInteresticialAd();
+    }
+
     return true;
   }
 
@@ -79,7 +89,10 @@ class _SettingsPageState extends State<SettingsPage> {
               color: Theme.of(context).scaffoldBackgroundColor,
               onTap: () async {
                 await Modular.navigator.maybePop();
-                _showInteresticialAd();
+
+                if (BuildFlavor.isFree) {
+                  _showInteresticialAd();
+                }
               },
               child: Icon(
                 UniconsLine.arrow_left,
