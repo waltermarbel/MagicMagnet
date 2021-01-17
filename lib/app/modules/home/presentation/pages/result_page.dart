@@ -41,6 +41,25 @@ class _ResultPageState extends State<ResultPage> {
     super.dispose();
   }
 
+  void _showInteresticialAd() {
+    InterstitialAd resultsInteresticial = InterstitialAd(
+      adUnitId: AdmobCodes.resultsInteresticialID,
+      targetingInfo: MobileAdTargetingInfo(),
+      listener: (MobileAdEvent event) {
+        print("InterstitialAd event is $event");
+      },
+    );
+
+    resultsInteresticial
+      ..load()
+      ..show();
+  }
+
+  Future<bool> _willPop() async {
+    _showInteresticialAd();
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Listener(
@@ -56,7 +75,7 @@ class _ResultPageState extends State<ResultPage> {
               appController.hasCancelRequest) {
             resultsBanner
               ..load()
-              ..show(anchorType: AnchorType.bottom);
+              ..show(anchorType: AnchorType.top);
           }
 
           return Scaffold(
@@ -93,17 +112,7 @@ class _ResultPageState extends State<ResultPage> {
                 color: Theme.of(context).scaffoldBackgroundColor,
                 onTap: () async {
                   await Modular.navigator.maybePop();
-                  InterstitialAd resultsInteresticial = InterstitialAd(
-                    adUnitId: AdmobCodes.resultsInteresticialID,
-                    targetingInfo: MobileAdTargetingInfo(),
-                    listener: (MobileAdEvent event) {
-                      print("InterstitialAd event is $event");
-                    },
-                  );
-
-                  resultsInteresticial
-                    ..load()
-                    ..show();
+                  _showInteresticialAd();
                 },
                 child: Icon(
                   UniconsLine.arrow_left,

@@ -14,6 +14,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+bool isAdLoaded = false;
+
 class _HomePageState extends State<HomePage> {
   final appController = Modular.get<AppController>();
 
@@ -24,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     homeBanner = BannerAd(
       adUnitId: AdmobCodes.homeBannerID,
-      size: AdSize.smartBanner,
+      size: AdSize.banner,
       targetingInfo: MobileAdTargetingInfo(),
       listener: (MobileAdEvent event) {
         print("BannerAd event is $event");
@@ -33,12 +35,15 @@ class _HomePageState extends State<HomePage> {
 
     homeBanner
       ..load()
-      ..show(anchorType: AnchorType.top);
+      ..show(anchorType: AnchorType.bottom);
+
+    isAdLoaded = true;
   }
 
   @override
   void dispose() {
     homeBanner..dispose();
+    isAdLoaded = false;
     super.dispose();
   }
 
@@ -80,6 +85,11 @@ class _HomePageState extends State<HomePage> {
           appController.clearErrorMessage();
         }
       } else {
+        if (isAdLoaded) {
+          homeBanner..dispose();
+          isAdLoaded = false;
+        }
+
         Modular.navigator.pushNamed('/result');
       }
     }

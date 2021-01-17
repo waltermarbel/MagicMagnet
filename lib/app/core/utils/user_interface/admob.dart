@@ -7,4 +7,6 @@ class AdmobCodes {
   static get resultsInteresticialID => 'ca-app-pub-2583563021690795/3450503692';
   static get settingsInteresticialID =>
       'ca-app-pub-2583563021690795/8511258684';
+  static get copyInteresticialID => 'ca-app-pub-2583563021690795/5373264925';
+  static get openInteresticialID => 'ca-app-pub-2583563021690795/2194962466';
 }

@@ -18,6 +18,47 @@ class ResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _showDetailInteresticialAd() {
+      InterstitialAd detailInteresticial = InterstitialAd(
+        adUnitId: AdmobCodes.detailInteresticialID,
+        targetingInfo: MobileAdTargetingInfo(),
+        listener: (MobileAdEvent event) {
+          print("InterstitialAd event is $event");
+        },
+      );
+
+      detailInteresticial
+        ..load()
+        ..show();
+    }
+
+    void _showCopyInteresticialAd() {
+      InterstitialAd copyInteresticial = InterstitialAd(
+        adUnitId: AdmobCodes.copyInteresticialID,
+        targetingInfo: MobileAdTargetingInfo(),
+        listener: (MobileAdEvent event) {
+          print("InterstitialAd event is $event");
+        },
+      );
+
+      copyInteresticial
+        ..load()
+        ..show();
+    }
+
+    Future<void> _showOpenInteresticialAd() async {
+      InterstitialAd openInteresticial = InterstitialAd(
+        adUnitId: AdmobCodes.openInteresticialID,
+        targetingInfo: MobileAdTargetingInfo(),
+        listener: (MobileAdEvent event) {
+          print("InterstitialAd event is $event");
+        },
+      );
+
+      await openInteresticial.load();
+      await openInteresticial.show();
+    }
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -33,17 +74,7 @@ class ResultCard extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 builder: (context) => DetailModal(magnetLink: magnetLink),
               ).whenComplete(() {
-                InterstitialAd detailInteresticial = InterstitialAd(
-                  adUnitId: AdmobCodes.detailInteresticialID,
-                  targetingInfo: MobileAdTargetingInfo(),
-                  listener: (MobileAdEvent event) {
-                    print("InterstitialAd event is $event");
-                  },
-                );
-
-                detailInteresticial
-                  ..load()
-                  ..show();
+                _showDetailInteresticialAd();
               });
             },
             child: Row(
@@ -77,6 +108,7 @@ class ResultCard extends StatelessWidget {
                     color: Theme.of(context).accentColor,
                     padding: EdgeInsets.all(16),
                     onTap: () async {
+                      _showCopyInteresticialAd();
                       await FlutterClipboard.copy(
                         magnetLink.magnetLink,
                       ).then(
@@ -110,10 +142,9 @@ class ResultCard extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                     padding: EdgeInsets.all(16),
                     onTap: () async {
+                      await _showOpenInteresticialAd();
                       try {
-                        await launch(
-                          magnetLink.magnetLink,
-                        );
+                        await launch(magnetLink.magnetLink);
                       } catch (e) {
                         asuka.showSnackBar(
                           SnackBar(
