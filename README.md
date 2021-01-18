@@ -14,19 +14,17 @@
 ## Screenshots
 
 <span>
-  <img src="https://i.imgur.com/KDeT4Pj.png" width=170px/>
-  <img src="https://i.imgur.com/heC7ALP.png" width=170px/>
-  <img src="https://i.imgur.com/LguLCQc.png" width=170px/>
-  <img src="https://i.imgur.com/NUV1pct.png" width=170px/>
-  <img src="https://i.imgur.com/d4nEnNb.png" width=170px/>
+  <img src="https://i.imgur.com/c6rHO1J.png" width=200px/>
+  <img src="https://i.imgur.com/G2qLmC7.png" width=200px/>
+  <img src="https://i.imgur.com/XpEW2cd.png" width=200px/>
+  <img src="https://i.imgur.com/T7MtWRP.png" width=200px/>
 </span>
 
 <span>
-  <img src="https://i.imgur.com/jn7854O.png" width=170px/>
-  <img src="https://i.imgur.com/SrZmyq9.png" width=170px/>
-  <img src="https://i.imgur.com/qXLaQGY.png" width=170px/>
-  <img src="https://i.imgur.com/T5Ah8T8.png" width=170px/>
-  <img src="https://i.imgur.com/iZi7DRi.png" width=170px/>
+  <img src="https://i.imgur.com/Lgz1uAX.png" width=200px/>
+  <img src="https://i.imgur.com/2PREZ1J.png" width=200px/>
+  <img src="https://i.imgur.com/rADSvsY.png" width=200px/>
+  <img src="https://i.imgur.com/Hsm0R68.png" width=200px/>
 </span>
 
 ## What is Magic Magnet?
