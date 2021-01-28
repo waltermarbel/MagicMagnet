@@ -2,10 +2,11 @@ import 'package:asuka/asuka.dart' as asuka;
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../../../../core/utils/flavors/app_config.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/presentation/controllers/app_controller.dart';
-import '../../../../core/utils/flavors/build_flavor.dart';
+
 import '../../../../core/utils/user_interface/admob.dart';
 import '../widgets/circular_button.dart';
 import '../widgets/floating_snack_bar.dart';
@@ -23,10 +24,9 @@ class _HomePageState extends State<HomePage> {
   BannerAd homeBanner;
 
   @override
-  void initState() {
-    super.initState();
-
-    if (BuildFlavor.isFree) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (AppConfig.of(context).isFree) {
       homeBanner = BannerAd(
         adUnitId: AdmobCodes.homeBannerID,
         size: AdSize.banner,

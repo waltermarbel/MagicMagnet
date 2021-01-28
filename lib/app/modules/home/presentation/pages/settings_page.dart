@@ -7,7 +7,7 @@ import 'package:unicons/unicons.dart';
 
 import '../../../../core/domain/entities/usecase_entity.dart';
 import '../../../../core/presentation/controllers/app_controller.dart';
-import '../../../../core/utils/flavors/build_flavor.dart';
+import '../../../../core/utils/flavors/app_config.dart';
 import '../../../../core/utils/user_interface/admob.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import '../../../../core/utils/user_interface/themes.dart';
@@ -24,10 +24,10 @@ class _SettingsPageState extends State<SettingsPage> {
   BannerAd settingsBanner;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    if (BuildFlavor.isFree) {
+    if (AppConfig.of(context).isFree) {
       settingsBanner = BannerAd(
         adUnitId: AdmobCodes.settingsBannerID,
         size: AdSize.smartBanner,
@@ -45,7 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   void dispose() {
-    if (BuildFlavor.isFree) {
+    if (AppConfig.of(context).isFree) {
       settingsBanner..dispose();
     }
 
@@ -67,7 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<bool> _willPop() async {
-    if (BuildFlavor.isFree) {
+    if (AppConfig.of(context).isFree) {
       _showInteresticialAd();
     }
 
@@ -90,7 +90,7 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () async {
                 await Modular.navigator.maybePop();
 
-                if (BuildFlavor.isFree) {
+                if (AppConfig.of(context).isFree) {
                   _showInteresticialAd();
                 }
               },

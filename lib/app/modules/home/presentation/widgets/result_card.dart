@@ -6,7 +6,7 @@ import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../core/utils/flavors/build_flavor.dart';
+import '../../../../core/utils/flavors/app_config.dart';
 import '../../../../core/utils/user_interface/admob.dart';
 import 'detail_modal.dart';
 import 'floating_snack_bar.dart';
@@ -75,7 +75,7 @@ class ResultCard extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 builder: (context) => DetailModal(magnetLink: magnetLink),
               ).whenComplete(() {
-                if (BuildFlavor.isFree) {
+                if (AppConfig.of(context).isFree) {
                   _showDetailInteresticialAd();
                 }
               });
@@ -111,7 +111,7 @@ class ResultCard extends StatelessWidget {
                     color: Theme.of(context).accentColor,
                     padding: EdgeInsets.all(16),
                     onTap: () async {
-                      if (BuildFlavor.isFree) {
+                      if (AppConfig.of(context).isFree) {
                         _showCopyInteresticialAd();
                       }
 
@@ -148,7 +148,7 @@ class ResultCard extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                     padding: EdgeInsets.all(16),
                     onTap: () async {
-                      if (BuildFlavor.isFree) {
+                      if (AppConfig.of(context).isFree) {
                         await _showOpenInteresticialAd();
                       }
 

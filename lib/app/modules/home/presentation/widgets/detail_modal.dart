@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../core/utils/flavors/build_flavor.dart';
+import '../../../../core/utils/flavors/app_config.dart';
 import '../../../../core/utils/user_interface/admob.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import 'floating_snack_bar.dart';
@@ -161,7 +161,7 @@ class DetailModal extends StatelessWidget {
                       color: Theme.of(context).accentColor,
                       padding: EdgeInsets.all(16),
                       onTap: () async {
-                        if (BuildFlavor.isFree) {
+                        if (AppConfig.of(context).isFree) {
                           _showCopyInteresticialAd();
                         }
 
@@ -197,7 +197,7 @@ class DetailModal extends StatelessWidget {
                       padding: EdgeInsets.all(16),
                       onTap: () async {
                         try {
-                          if (BuildFlavor.isFree) {
+                          if (AppConfig.of(context).isFree) {
                             _showOpenInteresticialAd();
                           }
 
