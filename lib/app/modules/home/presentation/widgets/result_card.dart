@@ -6,7 +6,7 @@ import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../core/utils/flavors/app_config.dart';
+import '../../../../core/utils/app_config/app_config.dart';
 import '../../../../core/utils/user_interface/admob.dart';
 import 'detail_modal.dart';
 import 'floating_snack_bar.dart';

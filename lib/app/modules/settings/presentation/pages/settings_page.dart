@@ -6,21 +6,20 @@ import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/domain/entities/usecase_entity.dart';
-import '../../../../core/presentation/controllers/app_controller.dart';
-import '../../../../core/utils/flavors/app_config.dart';
+import '../../../../core/utils/app_config/app_config.dart';
 import '../../../../core/utils/user_interface/admob.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import '../../../../core/utils/user_interface/themes.dart';
-import '../widgets/circular_button.dart';
+import '../../../home/presentation/widgets/circular_button.dart';
+import '../controllers/settings_controller.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
-  final appController = Modular.get<AppController>();
-
+class _SettingsPageState
+    extends ModularState<SettingsPage, SettingsController> {
   BannerAd settingsBanner;
 
   @override
@@ -45,11 +44,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   void dispose() {
+    super.dispose();
+
     if (AppConfig.of(context).isFree) {
       settingsBanner..dispose();
     }
-
-    super.dispose();
   }
 
   void _showInteresticialAd() {
@@ -76,6 +75,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final settingsController = Modular.get<SettingsController>();
+    print(settingsController.enabledUsecases);
+
     return WillPopScope(
       onWillPop: _willPop,
       child: Observer(builder: (_) {
@@ -123,7 +125,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 SizedBox(height: 6),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: appController.isGoogleEnabled,
+                  value: settingsController.isGoogleEnabled,
                   title: Text(
                     'Google',
                     style: Theme.of(context)
@@ -137,14 +139,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   onChanged: (value) {
                     value
-                        ? appController.enableUsecase(UsecaseEntity('Google'))
-                        : appController.disableUsecase<
+                        ? settingsController
+                            .enableUsecase(UsecaseEntity('Google'))
+                        : settingsController.disableUsecase<
                             GetMagnetLinksFromGoogle>(UsecaseEntity('Google'));
                   },
                 ),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: appController.isTPBEnabled,
+                  value: settingsController.isTPBEnabled,
                   title: Text(
                     'The Pirate Bay',
                     style: Theme.of(context)
@@ -158,15 +161,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   onChanged: (value) {
                     value
-                        ? appController
+                        ? settingsController
                             .enableUsecase(UsecaseEntity('The Pirate Bay'))
-                        : appController.disableUsecase<GetMagnetLinksFromTPB>(
-                            UsecaseEntity('The Pirate Bay'));
+                        : settingsController
+                            .disableUsecase<GetMagnetLinksFromTPB>(
+                                UsecaseEntity('The Pirate Bay'));
                   },
                 ),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: appController.is1337XEnabled,
+                  value: settingsController.is1337XEnabled,
                   title: Text(
                     '1337x',
                     style: Theme.of(context)
@@ -180,14 +184,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   onChanged: (value) {
                     value
-                        ? appController.enableUsecase(UsecaseEntity('1337x'))
-                        : appController.disableUsecase<GetMagnetLinksFrom1337X>(
-                            UsecaseEntity('1337x'));
+                        ? settingsController
+                            .enableUsecase(UsecaseEntity('1337x'))
+                        : settingsController.disableUsecase<
+                            GetMagnetLinksFrom1337X>(UsecaseEntity('1337x'));
                   },
                 ),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: appController.isNyaaEnabled,
+                  value: settingsController.isNyaaEnabled,
                   title: Text(
                     'Nyaa',
                     style: Theme.of(context)
@@ -201,14 +206,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   onChanged: (value) {
                     value
-                        ? appController.enableUsecase(UsecaseEntity('Nyaa'))
-                        : appController.disableUsecase<GetMagnetLinksFromNyaa>(
-                            UsecaseEntity('Nyaa'));
+                        ? settingsController
+                            .enableUsecase(UsecaseEntity('Nyaa'))
+                        : settingsController.disableUsecase<
+                            GetMagnetLinksFromNyaa>(UsecaseEntity('Nyaa'));
                   },
                 ),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: appController.isEZTVEnabled,
+                  value: settingsController.isEZTVEnabled,
                   title: Text(
                     'EZTV',
                     style: Theme.of(context)
@@ -222,14 +228,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   onChanged: (value) {
                     value
-                        ? appController.enableUsecase(UsecaseEntity('EZTV'))
-                        : appController.disableUsecase<GetMagnetLinksFromEZTV>(
-                            UsecaseEntity('EZTV'));
+                        ? settingsController
+                            .enableUsecase(UsecaseEntity('EZTV'))
+                        : settingsController.disableUsecase<
+                            GetMagnetLinksFromEZTV>(UsecaseEntity('EZTV'));
                   },
                 ),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: appController.isYTSEnabled,
+                  value: settingsController.isYTSEnabled,
                   title: Text(
                     'YTS',
                     style: Theme.of(context)
@@ -243,9 +250,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   onChanged: (value) {
                     value
-                        ? appController.enableUsecase(UsecaseEntity('YTS'))
-                        : appController.disableUsecase<GetMagnetLinksFromYTS>(
-                            UsecaseEntity('YTS'));
+                        ? settingsController.enableUsecase(UsecaseEntity('YTS'))
+                        : settingsController.disableUsecase<
+                            GetMagnetLinksFromYTS>(UsecaseEntity('YTS'));
                   },
                 ),
                 SizedBox(height: 12),
@@ -259,7 +266,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 SwitchListTile(
                   activeColor: Theme.of(context).primaryColor,
                   title: Text(
-                    "Current theme: ${appController.currentTheme == Themes.light ? 'Light' : 'Dark'}",
+                    "Current theme: ${settingsController.currentTheme == Themes.light ? 'Light' : 'Dark'}",
                     style: Theme.of(context)
                         .textTheme
                         .subtitle1
@@ -269,11 +276,12 @@ class _SettingsPageState extends State<SettingsPage> {
                     'Click to toogle the theme',
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
-                  value: appController.currentTheme == Themes.dark,
+                  value: settingsController.currentTheme == Themes.dark,
                   onChanged: (value) async {
                     value
-                        ? await appController.changeAppTheme(theme: Themes.dark)
-                        : await appController.changeAppTheme(
+                        ? await settingsController.changeAppTheme(
+                            theme: Themes.dark)
+                        : await settingsController.changeAppTheme(
                             theme: Themes.light);
                   },
                 ),

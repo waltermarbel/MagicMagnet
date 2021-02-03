@@ -13,15 +13,26 @@ import 'core/external/themes_datasource_implementation.dart';
 import 'core/external/usecases_datasource_implementation.dart';
 import 'core/infrastructure/repositories/themes_repository_implementation.dart';
 import 'core/infrastructure/repositories/usecases_repository_implementation.dart';
-import 'core/presentation/controllers/app_controller.dart';
-import 'modules/home/search_module.dart';
+import 'modules/home/home_module.dart';
+import 'modules/search/search_module.dart';
+import 'modules/settings/presentation/controllers/settings_controller.dart';
+import 'modules/settings/settings_module.dart';
 
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => AppController(i(), i(), i(), i(), i(), i())),
         Bind((i) => http.Client()),
         Bind((i) => HttpClientImplementation(i())),
+        Bind((i) => SettingsController(i(), i(), i(), i(), i())),
+        Bind((i) => ThemesDataSourceImplementation()),
+        Bind((i) => ThemesRepositoryImplementation(i())),
+        Bind((i) => GetPreferredTheme(i())),
+        Bind((i) => SetPreferredTheme(i())),
+        Bind((i) => UsecasesDataSourceImplementation()),
+        Bind((i) => UsecasesRepositoryImplementation(i())),
+        Bind((i) => GetEnabledUsecases(i())),
+        Bind((i) => EnableUsecase(i())),
+        Bind((i) => DisableUsecase(i())),
         Bind((i) => GoogleDataSourceImplementation(i())),
         Bind((i) => GoogleRepositoryImplementation(i())),
         Bind((i) => GetMagnetLinksFromGoogle(i())),
@@ -40,23 +51,16 @@ class AppModule extends MainModule {
         Bind((i) => YTSDataSourceImplementation(i())),
         Bind((i) => YTSRepositoryImplementation(i())),
         Bind((i) => GetMagnetLinksFromYTS(i())),
-        Bind((i) => UsecasesDataSourceImplementation()),
-        Bind((i) => UsecasesRepositoryImplementation(i())),
-        Bind((i) => GetEnabledUsecases(i())),
-        Bind((i) => EnableUsecase(i())),
-        Bind((i) => DisableUsecase(i())),
         Bind((i) => MagnetLinkInfoDataSourceImplementation(i())),
         Bind((i) => MagnetLinkInfoRepositoryImplementation(i())),
         Bind((i) => GetInfoForMagnetLink(i())),
-        Bind((i) => ThemesDataSourceImplementation()),
-        Bind((i) => ThemesRepositoryImplementation(i())),
-        Bind((i) => GetPreferredTheme(i())),
-        Bind((i) => SetPreferredTheme(i())),
       ];
 
   @override
   List<ModularRouter> get routers => [
         ModularRouter('/', module: HomeModule()),
+        ModularRouter('/settings', module: SettingsModule()),
+        ModularRouter('/search', module: SearchModule()),
       ];
 
   @override
