@@ -32,7 +32,8 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
       '1337x',
       'Nyaa',
       'EZTV',
-      'YTS'
+      'YTS',
+      'LimeTorrents'
     ];
 
     if (Platform.isWindows) {
@@ -68,6 +69,10 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
         enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
       }
 
+      if (prefs['LimeTorrents']) {
+        enabledUsecases.add(Modular.get<GetMagnetLinksFromLimeTorrents>());
+      }
+
       return enabledUsecases;
     } else if (Platform.isAndroid || Platform.isIOS) {
       sharedPreferences = await SharedPreferences.getInstance();
@@ -94,6 +99,9 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
           }
           if (dataSource == 'YTS') {
             enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
+          }
+          if (dataSource == 'LimeTorrents') {
+            enabledUsecases.add(Modular.get<GetMagnetLinksFromLimeTorrents>());
           }
         }
       }
@@ -142,6 +150,12 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
         await sharedPreferences.setBool(usecaseEntity.key, true);
 
         return Modular.get<GetMagnetLinksFromYTS>();
+      }
+
+      if (usecaseEntity.key == 'LimeTorrents') {
+        await sharedPreferences.setBool(usecaseEntity.key, true);
+
+        return Modular.get<GetMagnetLinksFromLimeTorrents>();
       }
     } else if (Platform.isWindows) {
       if (usecaseEntity.key == 'Google') {
@@ -202,6 +216,16 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
         );
 
         return Modular.get<GetMagnetLinksFromYTS>();
+      }
+
+      if (usecaseEntity.key == 'LimeTorrents') {
+        await sharedPreferencesWindows.setValue(
+          'Bool',
+          usecaseEntity.key,
+          true,
+        );
+
+        return Modular.get<GetMagnetLinksFromLimeTorrents>();
       }
     } else {
       throw UnsupportedPlatformException();

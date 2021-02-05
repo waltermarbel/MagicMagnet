@@ -49,6 +49,9 @@ abstract class _SettingsControllerBase with Store {
   var isYTSEnabled = false;
 
   @observable
+  var isLimeTorrentsEnabled = false;
+
+  @observable
   var appTheme = lightTheme;
 
   @computed
@@ -149,6 +152,10 @@ abstract class _SettingsControllerBase with Store {
     if (usecase.key == 'YTS') {
       isYTSEnabled = value;
     }
+
+    if (usecase.key == 'LimeTorrents') {
+      isLimeTorrentsEnabled = value;
+    }
   }
 
   @action
@@ -174,6 +181,8 @@ abstract class _SettingsControllerBase with Store {
         isNyaaEnabled = _hasUsecaseOfType<GetMagnetLinksFromNyaa>();
         isEZTVEnabled = _hasUsecaseOfType<GetMagnetLinksFromEZTV>();
         isYTSEnabled = _hasUsecaseOfType<GetMagnetLinksFromYTS>();
+        isLimeTorrentsEnabled =
+            _hasUsecaseOfType<GetMagnetLinksFromLimeTorrents>();
       },
     );
   }

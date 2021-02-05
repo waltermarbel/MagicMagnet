@@ -127,6 +127,23 @@ mixin _$SettingsController on _SettingsControllerBase, Store {
     });
   }
 
+  final _$isLimeTorrentsEnabledAtom =
+      Atom(name: '_SettingsControllerBase.isLimeTorrentsEnabled');
+
+  @override
+  bool get isLimeTorrentsEnabled {
+    _$isLimeTorrentsEnabledAtom.reportRead();
+    return super.isLimeTorrentsEnabled;
+  }
+
+  @override
+  set isLimeTorrentsEnabled(bool value) {
+    _$isLimeTorrentsEnabledAtom.reportWrite(value, super.isLimeTorrentsEnabled,
+        () {
+      super.isLimeTorrentsEnabled = value;
+    });
+  }
+
   final _$appThemeAtom = Atom(name: '_SettingsControllerBase.appTheme');
 
   @override
@@ -220,6 +237,7 @@ is1337XEnabled: ${is1337XEnabled},
 isNyaaEnabled: ${isNyaaEnabled},
 isEZTVEnabled: ${isEZTVEnabled},
 isYTSEnabled: ${isYTSEnabled},
+isLimeTorrentsEnabled: ${isLimeTorrentsEnabled},
 appTheme: ${appTheme},
 currentTheme: ${currentTheme}
     ''';

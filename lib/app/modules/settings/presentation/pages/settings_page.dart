@@ -192,6 +192,29 @@ class _SettingsPageState
                 ),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
+                  value: settingsController.isLimeTorrentsEnabled,
+                  title: Text(
+                    'LimeTorrents',
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        .copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  subtitle: Text(
+                    'Can be slow, but works fine for the most of content',
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                  onChanged: (value) {
+                    value
+                        ? settingsController
+                            .enableUsecase(UsecaseEntity('LimeTorrents'))
+                        : settingsController
+                            .disableUsecase<GetMagnetLinksFromLimeTorrents>(
+                                UsecaseEntity('LimeTorrents'));
+                  },
+                ),
+                CheckboxListTile(
+                  activeColor: Theme.of(context).primaryColor,
                   value: settingsController.isNyaaEnabled,
                   title: Text(
                     'Nyaa',
