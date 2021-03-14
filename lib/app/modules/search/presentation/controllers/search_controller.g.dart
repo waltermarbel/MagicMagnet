@@ -9,6 +9,21 @@ part of 'search_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$SearchController on _SearchControllerBase, Store {
+  final _$stateAtom = Atom(name: '_SearchControllerBase.state');
+
+  @override
+  SearchState get state {
+    _$stateAtom.reportRead();
+    return super.state;
+  }
+
+  @override
+  set state(SearchState value) {
+    _$stateAtom.reportWrite(value, super.state, () {
+      super.state = value;
+    });
+  }
+
   final _$magnetLinksAtom = Atom(name: '_SearchControllerBase.magnetLinks');
 
   @override
@@ -24,51 +39,12 @@ mixin _$SearchController on _SearchControllerBase, Store {
     });
   }
 
-  final _$errorMessageAtom = Atom(name: '_SearchControllerBase.errorMessage');
+  final _$_getUsecasesAsyncAction =
+      AsyncAction('_SearchControllerBase._getUsecases');
 
   @override
-  String get errorMessage {
-    _$errorMessageAtom.reportRead();
-    return super.errorMessage;
-  }
-
-  @override
-  set errorMessage(String value) {
-    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
-      super.errorMessage = value;
-    });
-  }
-
-  final _$hasCancelRequestAtom =
-      Atom(name: '_SearchControllerBase.hasCancelRequest');
-
-  @override
-  bool get hasCancelRequest {
-    _$hasCancelRequestAtom.reportRead();
-    return super.hasCancelRequest;
-  }
-
-  @override
-  set hasCancelRequest(bool value) {
-    _$hasCancelRequestAtom.reportWrite(value, super.hasCancelRequest, () {
-      super.hasCancelRequest = value;
-    });
-  }
-
-  final _$hasFinishedSearchAtom =
-      Atom(name: '_SearchControllerBase.hasFinishedSearch');
-
-  @override
-  bool get hasFinishedSearch {
-    _$hasFinishedSearchAtom.reportRead();
-    return super.hasFinishedSearch;
-  }
-
-  @override
-  set hasFinishedSearch(bool value) {
-    _$hasFinishedSearchAtom.reportWrite(value, super.hasFinishedSearch, () {
-      super.hasFinishedSearch = value;
-    });
+  Future<void> _getUsecases() {
+    return _$_getUsecasesAsyncAction.run(() => super._getUsecases());
   }
 
   final _$performSearchAsyncAction =
@@ -83,44 +59,22 @@ mixin _$SearchController on _SearchControllerBase, Store {
       ActionController(name: '_SearchControllerBase');
 
   @override
-  void cancelSearch() {
+  int _addMagnetLink(MagnetLink magnetLink) {
+    final _$actionInfo = _$_SearchControllerBaseActionController.startAction(
+        name: '_SearchControllerBase._addMagnetLink');
+    try {
+      return super._addMagnetLink(magnetLink);
+    } finally {
+      _$_SearchControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void cancelSearch(String content) {
     final _$actionInfo = _$_SearchControllerBaseActionController.startAction(
         name: '_SearchControllerBase.cancelSearch');
     try {
-      return super.cancelSearch();
-    } finally {
-      _$_SearchControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void clearErrorMessage() {
-    final _$actionInfo = _$_SearchControllerBaseActionController.startAction(
-        name: '_SearchControllerBase.clearErrorMessage');
-    try {
-      return super.clearErrorMessage();
-    } finally {
-      _$_SearchControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void markAsFinished() {
-    final _$actionInfo = _$_SearchControllerBaseActionController.startAction(
-        name: '_SearchControllerBase.markAsFinished');
-    try {
-      return super.markAsFinished();
-    } finally {
-      _$_SearchControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  int addMagnetLink(MagnetLink magnetLink) {
-    final _$actionInfo = _$_SearchControllerBaseActionController.startAction(
-        name: '_SearchControllerBase.addMagnetLink');
-    try {
-      return super.addMagnetLink(magnetLink);
+      return super.cancelSearch(content);
     } finally {
       _$_SearchControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -129,10 +83,8 @@ mixin _$SearchController on _SearchControllerBase, Store {
   @override
   String toString() {
     return '''
-magnetLinks: ${magnetLinks},
-errorMessage: ${errorMessage},
-hasCancelRequest: ${hasCancelRequest},
-hasFinishedSearch: ${hasFinishedSearch}
+state: ${state},
+magnetLinks: ${magnetLinks}
     ''';
   }
 }

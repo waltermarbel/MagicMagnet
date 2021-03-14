@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../../settings/presentation/controllers/settings_controller.dart';
+import '../../../../core/domain/usecases/get_enabled_usecases.dart';
+import 'search_states.dart';
 
 part 'search_controller.g.dart';
 
@@ -12,96 +12,108 @@ class SearchController = _SearchControllerBase with _$SearchController;
 
 abstract class _SearchControllerBase with Store {
   final GetInfoForMagnetLink _getInfoForMagnetLink;
+  final GetEnabledUsecases _getEnabledUsecases;
 
-  _SearchControllerBase(this._getInfoForMagnetLink);
+  _SearchControllerBase(
+    this._getInfoForMagnetLink,
+    this._getEnabledUsecases,
+  );
+
+  @observable
+  SearchState state = InitialState();
 
   @observable
   var magnetLinks = <MagnetLink>[].asObservable();
 
-  @observable
-  String errorMessage = '';
-
-  @observable
-  var hasCancelRequest = false;
-
-  @observable
-  var hasFinishedSearch = false;
+  var enabledUsecases = <Usecase<Stream<MagnetLink>, SearchParameters>>[];
 
   @action
-  void cancelSearch() {
-    hasCancelRequest = true;
-  }
-
-  @action
-  void clearErrorMessage() => errorMessage = '';
-
-  @action
-  void markAsFinished() => hasFinishedSearch = true;
-
-  @action
-  int addMagnetLink(MagnetLink magnetLink) {
+  int _addMagnetLink(MagnetLink magnetLink) {
     magnetLinks.add(magnetLink);
     return magnetLinks.indexOf(magnetLink);
   }
 
   @action
+  Future<void> _getUsecases() async {
+    final result = await _getEnabledUsecases(NoParams());
+
+    result.fold(
+      (left) => state = FatalErrorState(),
+      (right) => enabledUsecases = right.toList(),
+    );
+
+    print('Usecases quantity: ${enabledUsecases.length}');
+  }
+
+  @action
+  void cancelSearch(String content) {
+    state = CancelledSearchState(content);
+  }
+
+  @action
   Future<void> performSearch(String content) async {
-    var finishCounter = 0;
-    hasFinishedSearch = false;
-    hasCancelRequest = false;
+    await _getUsecases();
 
-    magnetLinks.clear();
-    clearErrorMessage();
+    print(enabledUsecases);
 
-    final enabledUsecases = Modular.get<SettingsController>().enabledUsecases;
+    if (enabledUsecases.isEmpty) {
+      state = FatalErrorState();
+    } else {
+      magnetLinks.clear();
 
-    for (var usecase in enabledUsecases) {
-      final result = usecase(SearchParameters(content));
+      state = SearchingState(content);
 
-      result.fold(
-        (left) {
-          if (left.runtimeType == InvalidSearchParametersFailure) {
-            errorMessage = 'Invalid search term';
-          } else {
-            errorMessage = 'An error occurred';
-          }
+      var finishedCounter = 0;
 
-          cancelSearch();
-        },
-        (Stream<MagnetLink> right) async {
-          StreamSubscription<MagnetLink> stream;
+      for (var usecase in enabledUsecases) {
+        final result = usecase(SearchParameters(content));
 
-          stream = right.listen(
-            (magnetLink) async {
-              if (hasCancelRequest) {
-                stream.cancel();
-                cancelSearch();
-              } else {
-                final index = addMagnetLink(magnetLink);
+        result.fold(
+          (left) {
+            if (left.runtimeType == InvalidSearchParametersFailure) {
+              state = FatalErrorState();
+            } else {
+              state = ErrorState(content);
+            }
+          },
+          (right) async {
+            StreamSubscription<MagnetLink> stream;
+
+            stream = right.listen(
+              (magnetLink) async {
+                if (state.runtimeType == FatalErrorState ||
+                    state.runtimeType == ErrorState ||
+                    state.runtimeType == CancelledSearchState ||
+                    state.runtimeType == FinishedState) {
+                  stream.cancel();
+                }
+
+                final index = _addMagnetLink(magnetLink);
 
                 if (usecase.runtimeType == GetMagnetLinksFromGoogle ||
                     usecase.runtimeType == GetMagnetLinksFromYTS) {
                   final result = await _getInfoForMagnetLink(magnetLink);
+
                   result.fold(
-                    (l) => print(l),
+                    (left) => state = ErrorState(content),
                     (right) {
                       magnetLinks.elementAt(index).magnetLinkInfo = right;
                     },
                   );
                 }
-              }
-            },
-            onDone: () {
-              finishCounter++;
+              },
+              onDone: () {
+                finishedCounter++;
 
-              if (finishCounter == enabledUsecases.length) {
-                markAsFinished();
-                print('Searched has finished successfully');
-              }
-            },
-          );
-        },
-      );
+                if (finishedCounter == enabledUsecases.length) {
+                  state = FinishedState(content);
+                  stream.cancel();
+                }
+              },
+            );
+          },
+        );
+      }
     }
   }
 }

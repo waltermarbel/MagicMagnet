@@ -23,7 +23,7 @@ class DetailModal extends StatelessWidget {
         adUnitId: AdmobCodes.copyInteresticialID,
         targetingInfo: MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          print("InterstitialAd event is $event");
+          debugPrint("InterstitialAd event is $event");
         },
       );
 
@@ -37,7 +37,7 @@ class DetailModal extends StatelessWidget {
         adUnitId: AdmobCodes.openInteresticialID,
         targetingInfo: MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          print("InterstitialAd event is $event");
+          debugPrint("InterstitialAd event is $event");
         },
       );
 

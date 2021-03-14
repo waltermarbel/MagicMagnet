@@ -6,7 +6,7 @@ import 'presentation/pages/result_page.dart';
 class SearchModule extends ChildModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => SearchController(i())),
+        Bind((i) => SearchController(i(), i())),
       ];
 
   @override

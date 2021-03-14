@@ -12,6 +12,7 @@ import '../../../home/presentation/widgets/loading_indicator.dart';
 import '../../../home/presentation/widgets/result_card.dart';
 import '../../../home/presentation/widgets/rounded_button.dart';
 import '../controllers/search_controller.dart';
+import '../controllers/search_states.dart';
 
 class ResultPage extends StatefulWidget {
   final String content;
@@ -25,6 +26,12 @@ class ResultPage extends StatefulWidget {
 class _ResultPageState extends State<ResultPage> {
   final searchController = Modular.get<SearchController>();
 
+  @override
+  void initState() {
+    super.initState();
+    searchController.performSearch(widget.content);
+  }
+
   BannerAd resultsBanner;
 
   @override
@@ -37,18 +44,9 @@ class _ResultPageState extends State<ResultPage> {
         size: AdSize.smartBanner,
         targetingInfo: MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          print("BannerAd event is $event");
+          debugPrint("BannerAd event is $event");
         },
       );
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    if (AppConfig.of(context).isFree) {
-      resultsBanner..dispose();
     }
   }
 
@@ -57,7 +55,7 @@ class _ResultPageState extends State<ResultPage> {
       adUnitId: AdmobCodes.resultsInteresticialID,
       targetingInfo: MobileAdTargetingInfo(),
       listener: (MobileAdEvent event) {
-        print("InterstitialAd event is $event");
+        debugPrint("InterstitialAd event is $event");
       },
     );
 
@@ -71,13 +69,15 @@ class _ResultPageState extends State<ResultPage> {
       _showInteresticialAd();
     }
 
+    if (AppConfig.of(context).isFree) {
+      resultsBanner..dispose();
+    }
+
     return true;
   }
 
   @override
   Widget build(BuildContext context) {
-    searchController.performSearch(widget.content);
-
     return WillPopScope(
       onWillPop: _willPop,
       child: Listener(
@@ -90,9 +90,21 @@ class _ResultPageState extends State<ResultPage> {
         },
         child: Observer(
           builder: (_) {
-            if (AppConfig.of(context).isFree &&
-                (searchController.hasFinishedSearch ||
-                    searchController.hasCancelRequest)) {
+            if (searchController.state.runtimeType == FatalErrorState ||
+                searchController.state.runtimeType == CancelledSearchState) {
+              Future.delayed(Duration(seconds: 5), () {
+                Modular.navigator.maybePop();
+                if (AppConfig.of(context).isFree) {
+                  _showInteresticialAd();
+                }
+
+                if (AppConfig.of(context).isFree) {
+                  resultsBanner..dispose();
+                }
+              });
+            }
+
+            if (AppConfig.of(context).isFree) {
               resultsBanner
                 ..load()
                 ..show(anchorType: AnchorType.top);
@@ -102,8 +114,12 @@ class _ResultPageState extends State<ResultPage> {
               floatingActionButtonAnimator: _NoScalingAnimation(),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerFloat,
-              floatingActionButton: searchController.hasFinishedSearch ||
-                      searchController.hasCancelRequest
+              floatingActionButton: searchController.state.runtimeType ==
+                          FatalErrorState ||
+                      searchController.state.runtimeType == ErrorState ||
+                      searchController.state.runtimeType ==
+                          CancelledSearchState ||
+                      searchController.state.runtimeType == FinishedState
                   ? null
                   : Container(
                       height: 55,
@@ -111,7 +127,8 @@ class _ResultPageState extends State<ResultPage> {
                       child: RoundedButton(
                         color: Colors.redAccent[700],
                         padding: EdgeInsets.all(16),
-                        onTap: () => searchController.cancelSearch(),
+                        onTap: () =>
+                            searchController.cancelSearch(widget.content),
                         child: Center(
                           child: Text(
                             'Cancel search',
@@ -136,6 +153,10 @@ class _ResultPageState extends State<ResultPage> {
                     if (AppConfig.of(context).isFree) {
                       _showInteresticialAd();
                     }
+
+                    if (AppConfig.of(context).isFree) {
+                      resultsBanner..dispose();
+                    }
                   },
                   child: Icon(
                     UniconsLine.arrow_left,
@@ -151,66 +172,108 @@ class _ResultPageState extends State<ResultPage> {
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              body: searchController.magnetLinks.isEmpty &&
-                      !searchController.hasCancelRequest &&
-                      !searchController.hasFinishedSearch
-                  ? Container(
-                      height: MediaQuery.of(context).size.height - 200,
-                      child: Center(
-                        child: LoadingIndicator(),
+              body: searchController.state.runtimeType == ErrorState ||
+                      searchController.state.runtimeType == CancelledSearchState
+                  ? Center(
+                      child: Text(
+                        searchController.state.message,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1
+                            .copyWith(fontWeight: FontWeight.w600),
                       ),
                     )
-                  : NoSplash(
-                      child: ListView(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        children: [
-                          SizedBox(height: 16),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 32),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${searchController.magnetLinks.length} links has been found',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'Click in each tile for more info',
-                                  style: Theme.of(context).textTheme.subtitle2,
-                                ),
-                              ],
-                            ),
+                  : searchController.state.runtimeType == SearchingState ||
+                          searchController.state.runtimeType == FinishedState
+                      ? searchController.magnetLinks.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    searchController.state.message,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1
+                                        .copyWith(fontWeight: FontWeight.w600),
+                                  ),
+                                  if (searchController.state.runtimeType ==
+                                      SearchingState) ...[
+                                    SizedBox(height: 24),
+                                    LoadingIndicator(),
+                                  ]
+                                ],
+                              ),
+                            )
+                          : NoSplash(
+                              child: ListView(
+                                physics: AlwaysScrollableScrollPhysics(),
+                                children: [
+                                  SizedBox(height: 16),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 32),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${searchController.magnetLinks.length} links has been found',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          'Click in each tile for more info',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 4,
+                                    ),
+                                    shrinkWrap: true,
+                                    addRepaintBoundaries: true,
+                                    cacheExtent:
+                                        MediaQuery.of(context).size.height * 5,
+                                    itemCount:
+                                        searchController.magnetLinks.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: ResultCard(
+                                          magnetLink: searchController
+                                              .magnetLinks
+                                              .elementAt(index),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(height: 8),
+                                ],
+                              ),
+                            )
+                      : Center(
+                          child: Text(
+                            searchController.state.message,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1
+                                .copyWith(fontWeight: FontWeight.w600),
                           ),
-                          SizedBox(height: 8),
-                          ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 4,
-                            ),
-                            shrinkWrap: true,
-                            addRepaintBoundaries: true,
-                            cacheExtent: MediaQuery.of(context).size.height * 5,
-                            itemCount: searchController.magnetLinks.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: ResultCard(
-                                  magnetLink: searchController.magnetLinks
-                                      .elementAt(index),
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(height: 8),
-                        ],
-                      ),
-                    ),
+                        ),
             );
           },
         ),

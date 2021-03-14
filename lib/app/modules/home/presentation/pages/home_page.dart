@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
         size: AdSize.banner,
         targetingInfo: MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          print("BannerAd event is $event");
+          debugPrint("BannerAd event is $event");
         },
       );
 
@@ -92,7 +92,10 @@ class _HomePageState extends State<HomePage> {
       isAdLoaded = false;
     }
 
-    Modular.navigator.pushNamed('/search/${textController.text}');
+    if (textController.text.isNotEmpty || textController.text != '') {
+      Modular.navigator.pushNamed('/search/${textController.text}');
+    }
+
     // }
     // }
   }

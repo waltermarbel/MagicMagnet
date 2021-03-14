@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import 'modules/settings/presentation/controllers/settings_controller.dart';
+import 'core/presentation/controllers/theme_controller.dart';
 
 class AppWidget extends StatefulWidget {
   @override
@@ -11,15 +11,15 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> with WidgetsBindingObserver {
-  SettingsController settingsController;
+  ThemeController themeController;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    settingsController = Modular.get<SettingsController>();
-    settingsController.fetchPreferredTheme();
+    themeController = Modular.get<ThemeController>();
+    themeController.fetchPreferredTheme();
   }
 
   @override
@@ -31,7 +31,7 @@ class _AppWidgetState extends State<AppWidget> with WidgetsBindingObserver {
   @override
   Future<void> didChangePlatformBrightness() async {
     super.didChangePlatformBrightness();
-    settingsController.changeAppTheme();
+    themeController.changeAppTheme();
   }
 
   @override
@@ -43,7 +43,7 @@ class _AppWidgetState extends State<AppWidget> with WidgetsBindingObserver {
         builder: asuka.builder,
         navigatorKey: Modular.navigatorKey,
         onGenerateRoute: Modular.generateRoute,
-        theme: settingsController.appTheme,
+        theme: themeController.appTheme,
         title: 'Magic Magnet',
       );
     });

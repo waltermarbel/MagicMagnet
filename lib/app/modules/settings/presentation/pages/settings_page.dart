@@ -6,12 +6,14 @@ import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/domain/entities/usecase_entity.dart';
+import '../../../../core/presentation/controllers/theme_controller.dart';
 import '../../../../core/utils/app_config/app_config.dart';
 import '../../../../core/utils/user_interface/admob.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import '../../../../core/utils/user_interface/themes.dart';
 import '../../../home/presentation/widgets/circular_button.dart';
 import '../controllers/settings_controller.dart';
+import '../utils/extensions.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -32,7 +34,7 @@ class _SettingsPageState
         size: AdSize.smartBanner,
         targetingInfo: MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          print("BannerAd event is $event");
+          debugPrint("BannerAd event is $event");
         },
       );
 
@@ -42,21 +44,12 @@ class _SettingsPageState
     }
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-
-    if (AppConfig.of(context).isFree) {
-      settingsBanner..dispose();
-    }
-  }
-
   void _showInteresticialAd() {
     InterstitialAd settingsInteresticial = InterstitialAd(
       adUnitId: AdmobCodes.settingsInteresticialID,
       targetingInfo: MobileAdTargetingInfo(),
       listener: (MobileAdEvent event) {
-        print("InterstitialAd event is $event");
+        debugPrint("InterstitialAd event is $event");
       },
     );
 
@@ -70,13 +63,17 @@ class _SettingsPageState
       _showInteresticialAd();
     }
 
+    if (AppConfig.of(context).isFree) {
+      settingsBanner..dispose();
+    }
+
     return true;
   }
 
   @override
   Widget build(BuildContext context) {
     final settingsController = Modular.get<SettingsController>();
-    print(settingsController.enabledUsecases);
+    final themeController = Modular.get<ThemeController>();
 
     return WillPopScope(
       onWillPop: _willPop,
@@ -94,6 +91,10 @@ class _SettingsPageState
 
                 if (AppConfig.of(context).isFree) {
                   _showInteresticialAd();
+                }
+
+                if (AppConfig.of(context).isFree) {
+                  settingsBanner..dispose();
                 }
               },
               child: Icon(
@@ -125,7 +126,8 @@ class _SettingsPageState
                 SizedBox(height: 6),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: settingsController.isGoogleEnabled,
+                  value: settingsController
+                      .hasUsecaseOfType<GetMagnetLinksFromGoogle>(),
                   title: Text(
                     'Google',
                     style: Theme.of(context)
@@ -147,7 +149,8 @@ class _SettingsPageState
                 ),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: settingsController.isTPBEnabled,
+                  value: settingsController
+                      .hasUsecaseOfType<GetMagnetLinksFromTPB>(),
                   title: Text(
                     'The Pirate Bay',
                     style: Theme.of(context)
@@ -170,7 +173,8 @@ class _SettingsPageState
                 ),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: settingsController.is1337XEnabled,
+                  value: settingsController
+                      .hasUsecaseOfType<GetMagnetLinksFrom1337X>(),
                   title: Text(
                     '1337x',
                     style: Theme.of(context)
@@ -192,7 +196,8 @@ class _SettingsPageState
                 ),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: settingsController.isLimeTorrentsEnabled,
+                  value: settingsController
+                      .hasUsecaseOfType<GetMagnetLinksFromLimeTorrents>(),
                   title: Text(
                     'LimeTorrents',
                     style: Theme.of(context)
@@ -215,7 +220,8 @@ class _SettingsPageState
                 ),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: settingsController.isNyaaEnabled,
+                  value: settingsController
+                      .hasUsecaseOfType<GetMagnetLinksFromNyaa>(),
                   title: Text(
                     'Nyaa',
                     style: Theme.of(context)
@@ -237,7 +243,8 @@ class _SettingsPageState
                 ),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: settingsController.isEZTVEnabled,
+                  value: settingsController
+                      .hasUsecaseOfType<GetMagnetLinksFromEZTV>(),
                   title: Text(
                     'EZTV',
                     style: Theme.of(context)
@@ -259,7 +266,8 @@ class _SettingsPageState
                 ),
                 CheckboxListTile(
                   activeColor: Theme.of(context).primaryColor,
-                  value: settingsController.isYTSEnabled,
+                  value: settingsController
+                      .hasUsecaseOfType<GetMagnetLinksFromYTS>(),
                   title: Text(
                     'YTS',
                     style: Theme.of(context)
@@ -289,7 +297,7 @@ class _SettingsPageState
                 SwitchListTile(
                   activeColor: Theme.of(context).primaryColor,
                   title: Text(
-                    "Current theme: ${settingsController.currentTheme == Themes.light ? 'Light' : 'Dark'}",
+                    "Current theme: ${themeController.currentTheme.name}",
                     style: Theme.of(context)
                         .textTheme
                         .subtitle1
@@ -299,12 +307,12 @@ class _SettingsPageState
                     'Click to toogle the theme',
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
-                  value: settingsController.currentTheme == Themes.dark,
+                  value: themeController.currentTheme == Themes.dark,
                   onChanged: (value) async {
                     value
-                        ? await settingsController.changeAppTheme(
+                        ? await themeController.changeAppTheme(
                             theme: Themes.dark)
-                        : await settingsController.changeAppTheme(
+                        : await themeController.changeAppTheme(
                             theme: Themes.light);
                   },
                 ),
