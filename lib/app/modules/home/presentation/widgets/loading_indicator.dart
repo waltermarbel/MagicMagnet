@@ -6,7 +6,7 @@ class LoadingIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return SleekCircularSlider(
       appearance: CircularSliderAppearance(
-        size: 80,
+        size: 70,
         spinnerMode: true,
         customWidths: CustomSliderWidths(
           trackWidth: 5,

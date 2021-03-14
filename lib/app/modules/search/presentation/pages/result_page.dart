@@ -80,30 +80,9 @@ class _ResultPageState extends State<ResultPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _willPop,
-      child: Listener(
-        onPointerDown: (_) {
-          final currentFocus = FocusScope.of(context);
-
-          if (!currentFocus.hasPrimaryFocus &&
-              currentFocus.focusedChild != null)
-            currentFocus.focusedChild.unfocus();
-        },
-        child: Observer(
-          builder: (_) {
-            if (searchController.state.runtimeType == FatalErrorState ||
-                searchController.state.runtimeType == CancelledSearchState) {
-              Future.delayed(Duration(seconds: 5), () {
-                Modular.navigator.maybePop();
-                if (AppConfig.of(context).isFree) {
-                  _showInteresticialAd();
-                }
-
-                if (AppConfig.of(context).isFree) {
-                  resultsBanner..dispose();
-                }
-              });
-            }
-
+      child: Observer(
+        builder: (context) {
+          if (searchController.state is SuccessState) {
             if (AppConfig.of(context).isFree) {
               resultsBanner
                 ..load()
@@ -114,12 +93,8 @@ class _ResultPageState extends State<ResultPage> {
               floatingActionButtonAnimator: _NoScalingAnimation(),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerFloat,
-              floatingActionButton: searchController.state.runtimeType ==
-                          FatalErrorState ||
-                      searchController.state.runtimeType == ErrorState ||
-                      searchController.state.runtimeType ==
-                          CancelledSearchState ||
-                      searchController.state.runtimeType == FinishedState
+              floatingActionButton: searchController.state
+                      is FinishedSearchState
                   ? null
                   : Container(
                       height: 55,
@@ -150,13 +125,7 @@ class _ResultPageState extends State<ResultPage> {
                   color: Theme.of(context).scaffoldBackgroundColor,
                   onTap: () async {
                     await Modular.navigator.maybePop();
-                    if (AppConfig.of(context).isFree) {
-                      _showInteresticialAd();
-                    }
-
-                    if (AppConfig.of(context).isFree) {
-                      resultsBanner..dispose();
-                    }
+                    await _willPop();
                   },
                   child: Icon(
                     UniconsLine.arrow_left,
@@ -172,111 +141,121 @@ class _ResultPageState extends State<ResultPage> {
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              body: searchController.state.runtimeType == ErrorState ||
-                      searchController.state.runtimeType == CancelledSearchState
-                  ? Center(
-                      child: Text(
-                        searchController.state.message,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle1
-                            .copyWith(fontWeight: FontWeight.w600),
-                      ),
-                    )
-                  : searchController.state.runtimeType == SearchingState ||
-                          searchController.state.runtimeType == FinishedState
-                      ? searchController.magnetLinks.isEmpty
-                          ? Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    searchController.state.message,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle1
-                                        .copyWith(fontWeight: FontWeight.w600),
-                                  ),
-                                  if (searchController.state.runtimeType ==
-                                      SearchingState) ...[
-                                    SizedBox(height: 24),
-                                    LoadingIndicator(),
-                                  ]
-                                ],
-                              ),
-                            )
-                          : NoSplash(
-                              child: ListView(
-                                physics: AlwaysScrollableScrollPhysics(),
-                                children: [
-                                  SizedBox(height: 16),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 32),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${searchController.magnetLinks.length} links has been found',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          'Click in each tile for more info',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle2,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 4,
-                                    ),
-                                    shrinkWrap: true,
-                                    addRepaintBoundaries: true,
-                                    cacheExtent:
-                                        MediaQuery.of(context).size.height * 5,
-                                    itemCount:
-                                        searchController.magnetLinks.length,
-                                    itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8.0),
-                                        child: ResultCard(
-                                          magnetLink: searchController
-                                              .magnetLinks
-                                              .elementAt(index),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  SizedBox(height: 8),
-                                ],
-                              ),
-                            )
-                      : Center(
-                          child: Text(
+              body: NoSplash(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
                             searchController.state.message,
                             style: Theme.of(context)
                                 .textTheme
-                                .subtitle1
-                                .copyWith(fontWeight: FontWeight.w600),
+                                .headline6
+                                .copyWith(fontWeight: FontWeight.bold),
                           ),
-                        ),
+                          Text(
+                            '${searchController.magnetLinks.length} results has been found',
+                            style: Theme.of(context).textTheme.subtitle2,
+                          ),
+                          SizedBox(height: 16),
+                          ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            addRepaintBoundaries: true,
+                            cacheExtent: MediaQuery.of(context).size.height * 5,
+                            itemCount: searchController.magnetLinks.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: ResultCard(
+                                  magnetLink: searchController.magnetLinks
+                                      .elementAt(index),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             );
-          },
-        ),
+          }
+
+          if (searchController.state is ErrorState) {
+            Future.delayed(Duration(seconds: 5), () async {
+              await Modular.navigator.maybePop();
+              await _willPop();
+            });
+
+            return Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                elevation: 0,
+                brightness: Theme.of(context).brightness,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                leading: CircularButton(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  onTap: () async {
+                    await Modular.navigator.maybePop();
+                    await _willPop();
+                  },
+                  child: Icon(
+                    UniconsLine.arrow_left,
+                    size: 30,
+                    color: Theme.of(context).textTheme.headline6.color,
+                  ),
+                ),
+                title: Text(
+                  'Results for ${widget.content}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              body: NoSplash(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(
+                    child: Text(
+                      searchController.state.message,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    searchController.state.message,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 32),
+                  LoadingIndicator(),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

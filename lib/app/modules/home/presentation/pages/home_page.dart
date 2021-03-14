@@ -51,42 +51,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> search() async {
-    // TODO: Handle this errors in search module
-
-    // if (searchController.enabledUsecases.isEmpty) {
-    //   await asuka
-    //       .showSnackBar(
-    //         SnackBar(
-    //           backgroundColor: Colors.transparent,
-    //           padding: EdgeInsets.zero,
-    //           elevation: 0,
-    //           content: FloatingSnackBar(
-    //             text: 'You should enable at least 1 source in settings',
-    //           ),
-    //         ),
-    //       )
-    //       .closed;
-    // } else {
-    // final searchController = Modular.get<SearchController>();
-    // searchController.performSearch(textController.text);
-
-    // if (searchController.errorMessage.isNotEmpty) {
-    //   final isClosed = await asuka
-    //       .showSnackBar(
-    //         SnackBar(
-    //           backgroundColor: Colors.transparent,
-    //           padding: EdgeInsets.zero,
-    //           elevation: 0,
-    //           content: FloatingSnackBar(
-    //             text: searchController.errorMessage,
-    //           ),
-    //         ),
-    //       )
-    //       .closed;
-    //   if (isClosed.index != null) {
-    //     searchController.clearErrorMessage();
-    //   }
-    // } else {
     if (isAdLoaded) {
       homeBanner..dispose();
       isAdLoaded = false;
@@ -95,9 +59,6 @@ class _HomePageState extends State<HomePage> {
     if (textController.text.isNotEmpty || textController.text != '') {
       Modular.navigator.pushNamed('/search/${textController.text}');
     }
-
-    // }
-    // }
   }
 
   @override

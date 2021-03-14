@@ -4,44 +4,56 @@ abstract class SearchState {
   SearchState(this.message);
 }
 
-class InitialState implements SearchState {
-  @override
-  String get message => 'Initializing Search';
+abstract class IdleState extends SearchState {
+  IdleState(String message) : super(message);
 }
 
-class SearchingState implements SearchState {
+abstract class ErrorState extends SearchState {
+  ErrorState(String message) : super(message);
+}
+
+abstract class SuccessState extends SearchState {
+  SuccessState(String message) : super(message);
+}
+
+class InitialState implements IdleState {
+  @override
+  String get message => 'Initializing search';
+}
+
+class SearchingContentState implements SuccessState {
   final String content;
 
-  SearchingState(this.content);
+  SearchingContentState(this.content);
 
   @override
   String get message => 'Searching for $content';
 }
 
-class ErrorState implements SearchState {
+class FinishedSearchState implements SuccessState {
   final String content;
 
-  ErrorState(this.content);
-
-  @override
-  String get message => 'An error occurred while searching for $content';
-}
-
-class FatalErrorState implements SearchState {
-  @override
-  String get message => 'A fatal error ocurred';
-}
-
-class FinishedState implements SearchState {
-  final String content;
-
-  FinishedState(this.content);
+  FinishedSearchState(this.content);
 
   @override
   String get message => 'Search for $content has been finished';
 }
 
-class CancelledSearchState implements SearchState {
+class SearchErrorState implements ErrorState {
+  final String content;
+
+  SearchErrorState(this.content);
+
+  @override
+  String get message => 'An error occurred while searching for $content';
+}
+
+class FatalErrorState implements ErrorState {
+  @override
+  String get message => 'A fatal error ocurred';
+}
+
+class CancelledSearchState implements ErrorState {
   final String content;
 
   CancelledSearchState(this.content);
