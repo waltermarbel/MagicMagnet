@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences_windows/shared_preferences_windows.dart';
@@ -10,10 +9,11 @@ import '../error/exceptions.dart';
 import '../infrastructure/datasources/usecases_datasource.dart';
 
 class UsecasesDataSourceImplementation implements UsecasesDataSource {
+  final HttpClient httpClient;
   SharedPreferencesWindows sharedPreferencesWindows;
   SharedPreferences sharedPreferences;
 
-  UsecasesDataSourceImplementation() {
+  UsecasesDataSourceImplementation(this.httpClient) {
     _getInstances();
   }
 
@@ -32,7 +32,8 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
       '1337x',
       'Nyaa',
       'EZTV',
-      'YTS'
+      'YTS',
+      'LimeTorrents'
     ];
 
     if (Platform.isWindows) {
@@ -45,27 +46,45 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
       }
 
       if (prefs['Google']) {
-        enabledUsecases.add(Modular.get<GetMagnetLinksFromGoogle>());
+        final dataSource = GoogleDataSourceImplementation(httpClient);
+        final repository = GoogleRepositoryImplementation(dataSource);
+        enabledUsecases.add(GetMagnetLinksFromGoogle(repository));
       }
 
       if (prefs['The Pirate Bay']) {
-        enabledUsecases.add(Modular.get<GetMagnetLinksFromTPB>());
+        final dataSource = TPBDataSourceImplementation(httpClient);
+        final repository = TPBRepositoryImplementation(dataSource);
+        enabledUsecases.add(GetMagnetLinksFromTPB(repository));
       }
 
       if (prefs['1337x']) {
-        enabledUsecases.add(Modular.get<GetMagnetLinksFrom1337X>());
+        final dataSource = I337XDataSourceImplementation(httpClient);
+        final repository = I337XRepositoryImplementation(dataSource);
+        enabledUsecases.add(GetMagnetLinksFrom1337X(repository));
       }
 
       if (prefs['Nyaa']) {
-        enabledUsecases.add(Modular.get<GetMagnetLinksFromNyaa>());
+        final dataSource = NyaaDataSourceImplementation(httpClient);
+        final repository = NyaaRepositoryImplementation(dataSource);
+        enabledUsecases.add(GetMagnetLinksFromNyaa(repository));
       }
 
       if (prefs['EZTV']) {
-        enabledUsecases.add(Modular.get<GetMagnetLinksFromEZTV>());
+        final dataSource = EZTVDataSourceImplementation(httpClient);
+        final repository = EZTVRepositoryImplementation(dataSource);
+        enabledUsecases.add(GetMagnetLinksFromEZTV(repository));
       }
 
       if (prefs['YTS']) {
-        enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
+        final dataSource = YTSDataSourceImplementation(httpClient);
+        final repository = YTSRepositoryImplementation(dataSource);
+        enabledUsecases.add(GetMagnetLinksFromYTS(repository));
+      }
+
+      if (prefs['LimeTorrents']) {
+        final dataSource = LimeTorrentsDataSourceImplementation(httpClient);
+        final repository = LimeTorrentsRepositoryImplementation(dataSource);
+        enabledUsecases.add(GetMagnetLinksFromLimeTorrents(repository));
       }
 
       return enabledUsecases;
@@ -78,22 +97,39 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
 
         if (sharedPreferences.getBool(dataSource)) {
           if (dataSource == 'Google') {
-            enabledUsecases.add(Modular.get<GetMagnetLinksFromGoogle>());
+            final dataSource = GoogleDataSourceImplementation(httpClient);
+            final repository = GoogleRepositoryImplementation(dataSource);
+            enabledUsecases.add(GetMagnetLinksFromGoogle(repository));
           }
           if (dataSource == 'The Pirate Bay') {
-            enabledUsecases.add(Modular.get<GetMagnetLinksFromTPB>());
+            final dataSource = TPBDataSourceImplementation(httpClient);
+            final repository = TPBRepositoryImplementation(dataSource);
+            enabledUsecases.add(GetMagnetLinksFromTPB(repository));
           }
           if (dataSource == '1337x') {
-            enabledUsecases.add(Modular.get<GetMagnetLinksFrom1337X>());
+            final dataSource = I337XDataSourceImplementation(httpClient);
+            final repository = I337XRepositoryImplementation(dataSource);
+            enabledUsecases.add(GetMagnetLinksFrom1337X(repository));
           }
           if (dataSource == 'Nyaa') {
-            enabledUsecases.add(Modular.get<GetMagnetLinksFromNyaa>());
+            final dataSource = NyaaDataSourceImplementation(httpClient);
+            final repository = NyaaRepositoryImplementation(dataSource);
+            enabledUsecases.add(GetMagnetLinksFromNyaa(repository));
           }
           if (dataSource == 'EZTV') {
-            enabledUsecases.add(Modular.get<GetMagnetLinksFromEZTV>());
+            final dataSource = EZTVDataSourceImplementation(httpClient);
+            final repository = EZTVRepositoryImplementation(dataSource);
+            enabledUsecases.add(GetMagnetLinksFromEZTV(repository));
           }
           if (dataSource == 'YTS') {
-            enabledUsecases.add(Modular.get<GetMagnetLinksFromYTS>());
+            final dataSource = YTSDataSourceImplementation(httpClient);
+            final repository = YTSRepositoryImplementation(dataSource);
+            enabledUsecases.add(GetMagnetLinksFromYTS(repository));
+          }
+          if (dataSource == 'LimeTorrents') {
+            final dataSource = LimeTorrentsDataSourceImplementation(httpClient);
+            final repository = LimeTorrentsRepositoryImplementation(dataSource);
+            enabledUsecases.add(GetMagnetLinksFromLimeTorrents(repository));
           }
         }
       }
@@ -105,43 +141,64 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
   }
 
   @override
+  // ignore: missing_return
   Future<Usecase<Stream<MagnetLink>, SearchParameters>> enableUsecase(
       UsecaseEntity usecaseEntity) async {
     if (Platform.isAndroid || Platform.isIOS) {
       if (usecaseEntity.key == 'Google') {
         await sharedPreferences.setBool(usecaseEntity.key, true);
 
-        return Modular.get<GetMagnetLinksFromGoogle>();
+        final dataSource = GoogleDataSourceImplementation(httpClient);
+        final repository = GoogleRepositoryImplementation(dataSource);
+        return GetMagnetLinksFromGoogle(repository);
       }
 
       if (usecaseEntity.key == 'The Pirate Bay') {
         await sharedPreferences.setBool(usecaseEntity.key, true);
 
-        return Modular.get<GetMagnetLinksFromTPB>();
+        final dataSource = TPBDataSourceImplementation(httpClient);
+        final repository = TPBRepositoryImplementation(dataSource);
+        return GetMagnetLinksFromTPB(repository);
       }
 
       if (usecaseEntity.key == '1337x') {
         await sharedPreferences.setBool(usecaseEntity.key, true);
 
-        return Modular.get<GetMagnetLinksFrom1337X>();
+        final dataSource = I337XDataSourceImplementation(httpClient);
+        final repository = I337XRepositoryImplementation(dataSource);
+        return GetMagnetLinksFrom1337X(repository);
       }
 
       if (usecaseEntity.key == 'Nyaa') {
         await sharedPreferences.setBool(usecaseEntity.key, true);
 
-        return Modular.get<GetMagnetLinksFromNyaa>();
+        final dataSource = NyaaDataSourceImplementation(httpClient);
+        final repository = NyaaRepositoryImplementation(dataSource);
+        return GetMagnetLinksFromNyaa(repository);
       }
 
       if (usecaseEntity.key == 'EZTV') {
         await sharedPreferences.setBool(usecaseEntity.key, true);
 
-        return Modular.get<GetMagnetLinksFromEZTV>();
+        final dataSource = EZTVDataSourceImplementation(httpClient);
+        final repository = EZTVRepositoryImplementation(dataSource);
+        return GetMagnetLinksFromEZTV(repository);
       }
 
       if (usecaseEntity.key == 'YTS') {
         await sharedPreferences.setBool(usecaseEntity.key, true);
 
-        return Modular.get<GetMagnetLinksFromYTS>();
+        final dataSource = YTSDataSourceImplementation(httpClient);
+        final repository = YTSRepositoryImplementation(dataSource);
+        return GetMagnetLinksFromYTS(repository);
+      }
+
+      if (usecaseEntity.key == 'LimeTorrents') {
+        await sharedPreferences.setBool(usecaseEntity.key, true);
+
+        final dataSource = LimeTorrentsDataSourceImplementation(httpClient);
+        final repository = LimeTorrentsRepositoryImplementation(dataSource);
+        return GetMagnetLinksFromLimeTorrents(repository);
       }
     } else if (Platform.isWindows) {
       if (usecaseEntity.key == 'Google') {
@@ -151,7 +208,9 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
           true,
         );
 
-        return Modular.get<GetMagnetLinksFromGoogle>();
+        final dataSource = GoogleDataSourceImplementation(httpClient);
+        final repository = GoogleRepositoryImplementation(dataSource);
+        return GetMagnetLinksFromGoogle(repository);
       }
 
       if (usecaseEntity.key == 'The Pirate Bay') {
@@ -160,8 +219,9 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
           usecaseEntity.key,
           true,
         );
-
-        return Modular.get<GetMagnetLinksFromTPB>();
+        final dataSource = TPBDataSourceImplementation(httpClient);
+        final repository = TPBRepositoryImplementation(dataSource);
+        return GetMagnetLinksFromTPB(repository);
       }
 
       if (usecaseEntity.key == '1337x') {
@@ -171,7 +231,9 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
           true,
         );
 
-        return Modular.get<GetMagnetLinksFrom1337X>();
+        final dataSource = I337XDataSourceImplementation(httpClient);
+        final repository = I337XRepositoryImplementation(dataSource);
+        return GetMagnetLinksFrom1337X(repository);
       }
 
       if (usecaseEntity.key == 'Nyaa') {
@@ -181,7 +243,9 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
           true,
         );
 
-        return Modular.get<GetMagnetLinksFromNyaa>();
+        final dataSource = NyaaDataSourceImplementation(httpClient);
+        final repository = NyaaRepositoryImplementation(dataSource);
+        return GetMagnetLinksFromNyaa(repository);
       }
 
       if (usecaseEntity.key == 'EZTV') {
@@ -191,7 +255,9 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
           true,
         );
 
-        return Modular.get<GetMagnetLinksFromEZTV>();
+        final dataSource = EZTVDataSourceImplementation(httpClient);
+        final repository = EZTVRepositoryImplementation(dataSource);
+        return GetMagnetLinksFromEZTV(repository);
       }
 
       if (usecaseEntity.key == 'YTS') {
@@ -201,7 +267,21 @@ class UsecasesDataSourceImplementation implements UsecasesDataSource {
           true,
         );
 
-        return Modular.get<GetMagnetLinksFromYTS>();
+        final dataSource = YTSDataSourceImplementation(httpClient);
+        final repository = YTSRepositoryImplementation(dataSource);
+        return GetMagnetLinksFromYTS(repository);
+      }
+
+      if (usecaseEntity.key == 'LimeTorrents') {
+        await sharedPreferencesWindows.setValue(
+          'Bool',
+          usecaseEntity.key,
+          true,
+        );
+
+        final dataSource = LimeTorrentsDataSourceImplementation(httpClient);
+        final repository = LimeTorrentsRepositoryImplementation(dataSource);
+        return GetMagnetLinksFromLimeTorrents(repository);
       }
     } else {
       throw UnsupportedPlatformException();

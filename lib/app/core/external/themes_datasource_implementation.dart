@@ -20,6 +20,7 @@ class ThemesDataSourceImplementation implements ThemesDataSource {
   }
 
   @override
+  // ignore: missing_return
   Future<Themes> getPreferredTheme() async {
     if (Platform.isWindows) {
       final prefs = await sharedPreferencesWindows.getAll();
@@ -55,8 +56,6 @@ class ThemesDataSourceImplementation implements ThemesDataSource {
   Future<void> setPreferredTheme(Themes newPreferredTheme) async {
     if (newPreferredTheme == Themes.light) {
       if (Platform.isWindows) {
-        final prefs = await sharedPreferencesWindows.getAll();
-
         await sharedPreferencesWindows.setValue(
           'String',
           'Preferred Theme',
@@ -69,8 +68,6 @@ class ThemesDataSourceImplementation implements ThemesDataSource {
       }
     } else if (newPreferredTheme == Themes.dark) {
       if (Platform.isWindows) {
-        final prefs = await sharedPreferencesWindows.getAll();
-
         await sharedPreferencesWindows.setValue(
           'String',
           'Preferred Theme',

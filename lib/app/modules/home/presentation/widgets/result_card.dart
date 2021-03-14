@@ -6,6 +6,7 @@ import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/utils/app_config/app_config.dart';
 import '../../../../core/utils/user_interface/admob.dart';
 import 'detail_modal.dart';
 import 'floating_snack_bar.dart';
@@ -23,7 +24,7 @@ class ResultCard extends StatelessWidget {
         adUnitId: AdmobCodes.detailInteresticialID,
         targetingInfo: MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          print("InterstitialAd event is $event");
+          debugPrint("InterstitialAd event is $event");
         },
       );
 
@@ -37,7 +38,7 @@ class ResultCard extends StatelessWidget {
         adUnitId: AdmobCodes.copyInteresticialID,
         targetingInfo: MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          print("InterstitialAd event is $event");
+          debugPrint("InterstitialAd event is $event");
         },
       );
 
@@ -51,7 +52,7 @@ class ResultCard extends StatelessWidget {
         adUnitId: AdmobCodes.openInteresticialID,
         targetingInfo: MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          print("InterstitialAd event is $event");
+          debugPrint("InterstitialAd event is $event");
         },
       );
 
@@ -74,7 +75,9 @@ class ResultCard extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 builder: (context) => DetailModal(magnetLink: magnetLink),
               ).whenComplete(() {
-                _showDetailInteresticialAd();
+                if (AppConfig.of(context).isFree) {
+                  _showDetailInteresticialAd();
+                }
               });
             },
             child: Row(
@@ -108,7 +111,10 @@ class ResultCard extends StatelessWidget {
                     color: Theme.of(context).accentColor,
                     padding: EdgeInsets.all(16),
                     onTap: () async {
-                      _showCopyInteresticialAd();
+                      if (AppConfig.of(context).isFree) {
+                        _showCopyInteresticialAd();
+                      }
+
                       await FlutterClipboard.copy(
                         magnetLink.magnetLink,
                       ).then(
@@ -142,7 +148,10 @@ class ResultCard extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                     padding: EdgeInsets.all(16),
                     onTap: () async {
-                      await _showOpenInteresticialAd();
+                      if (AppConfig.of(context).isFree) {
+                        await _showOpenInteresticialAd();
+                      }
+
                       try {
                         await launch(magnetLink.magnetLink);
                       } catch (e) {

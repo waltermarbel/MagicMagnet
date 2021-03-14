@@ -1,13 +1,11 @@
-import 'package:asuka/asuka.dart' as asuka;
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:unicons/unicons.dart';
 
-import '../../../../core/presentation/controllers/app_controller.dart';
+import '../../../../core/utils/app_config/app_config.dart';
 import '../../../../core/utils/user_interface/admob.dart';
 import '../widgets/circular_button.dart';
-import '../widgets/floating_snack_bar.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,82 +15,89 @@ class HomePage extends StatefulWidget {
 bool isAdLoaded = false;
 
 class _HomePageState extends State<HomePage> {
-  final appController = Modular.get<AppController>();
+  final textController = TextEditingController();
 
   BannerAd homeBanner;
 
   @override
-  void initState() {
-    super.initState();
-    homeBanner = BannerAd(
-      adUnitId: AdmobCodes.homeBannerID,
-      size: AdSize.banner,
-      targetingInfo: MobileAdTargetingInfo(),
-      listener: (MobileAdEvent event) {
-        print("BannerAd event is $event");
-      },
-    );
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (AppConfig.of(context).isFree) {
+      homeBanner = BannerAd(
+        adUnitId: AdmobCodes.homeBannerID,
+        size: AdSize.banner,
+        targetingInfo: MobileAdTargetingInfo(),
+        listener: (MobileAdEvent event) {
+          debugPrint("BannerAd event is $event");
+        },
+      );
 
-    homeBanner
-      ..load()
-      ..show(anchorType: AnchorType.bottom);
+      homeBanner
+        ..load()
+        ..show(anchorType: AnchorType.bottom);
 
-    isAdLoaded = true;
+      isAdLoaded = true;
+    }
   }
 
   @override
   void dispose() {
-    homeBanner..dispose();
-    isAdLoaded = false;
+    if (isAdLoaded) {
+      homeBanner..dispose();
+      isAdLoaded = false;
+    }
+
     super.dispose();
   }
 
   Future<void> search() async {
-    if (appController.enabledUsecases.isEmpty) {
-      await asuka
-          .showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.transparent,
-              padding: EdgeInsets.zero,
-              elevation: 0,
-              content: FloatingSnackBar(
-                text: 'You should enable at least 1 source in settings',
-              ),
-            ),
-          )
-          .closed;
-    } else {
-      if (appController.magnetLinks.isNotEmpty) {
-        appController.magnetLinks.clear();
-      }
+    // TODO: Handle this errors in search module
 
-      appController.performSearch();
+    // if (searchController.enabledUsecases.isEmpty) {
+    //   await asuka
+    //       .showSnackBar(
+    //         SnackBar(
+    //           backgroundColor: Colors.transparent,
+    //           padding: EdgeInsets.zero,
+    //           elevation: 0,
+    //           content: FloatingSnackBar(
+    //             text: 'You should enable at least 1 source in settings',
+    //           ),
+    //         ),
+    //       )
+    //       .closed;
+    // } else {
+    // final searchController = Modular.get<SearchController>();
+    // searchController.performSearch(textController.text);
 
-      if (appController.errorMessage.isNotEmpty) {
-        final isClosed = await asuka
-            .showSnackBar(
-              SnackBar(
-                backgroundColor: Colors.transparent,
-                padding: EdgeInsets.zero,
-                elevation: 0,
-                content: FloatingSnackBar(
-                  text: appController.errorMessage,
-                ),
-              ),
-            )
-            .closed;
-        if (isClosed.index != null) {
-          appController.clearErrorMessage();
-        }
-      } else {
-        if (isAdLoaded) {
-          homeBanner..dispose();
-          isAdLoaded = false;
-        }
-
-        Modular.navigator.pushNamed('/result');
-      }
+    // if (searchController.errorMessage.isNotEmpty) {
+    //   final isClosed = await asuka
+    //       .showSnackBar(
+    //         SnackBar(
+    //           backgroundColor: Colors.transparent,
+    //           padding: EdgeInsets.zero,
+    //           elevation: 0,
+    //           content: FloatingSnackBar(
+    //             text: searchController.errorMessage,
+    //           ),
+    //         ),
+    //       )
+    //       .closed;
+    //   if (isClosed.index != null) {
+    //     searchController.clearErrorMessage();
+    //   }
+    // } else {
+    if (isAdLoaded) {
+      homeBanner..dispose();
+      isAdLoaded = false;
     }
+
+    if (textController.text.isNotEmpty || textController.text != '') {
+      Modular.navigator.pushNamed('/search/${textController.text}');
+    }
+
+    // }
+    // }
   }
 
   @override
@@ -164,14 +169,13 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.all(Radius.circular(12)),
                         ),
                         child: TextField(
-                          controller: appController.searchTextFieldController,
+                          controller: textController,
                           textInputAction: TextInputAction.search,
                           textCapitalization: TextCapitalization.sentences,
                           enableSuggestions: true,
                           enableInteractiveSelection: true,
                           textAlign: TextAlign.center,
-                          showCursor: appController
-                              .searchTextFieldController.text.isNotEmpty,
+                          showCursor: textController.text.isNotEmpty,
                           maxLines: 1,
                           autocorrect: true,
                           cursorColor: Theme.of(context).primaryColor,

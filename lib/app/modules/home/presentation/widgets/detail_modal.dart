@@ -1,9 +1,12 @@
 import 'package:asuka/asuka.dart' as asuka;
 import 'package:clipboard/clipboard.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/utils/app_config/app_config.dart';
+import '../../../../core/utils/user_interface/admob.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import 'floating_snack_bar.dart';
 import 'rounded_button.dart';
@@ -15,6 +18,33 @@ class DetailModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _showCopyInteresticialAd() {
+      InterstitialAd copyInteresticial = InterstitialAd(
+        adUnitId: AdmobCodes.copyInteresticialID,
+        targetingInfo: MobileAdTargetingInfo(),
+        listener: (MobileAdEvent event) {
+          debugPrint("InterstitialAd event is $event");
+        },
+      );
+
+      copyInteresticial
+        ..load()
+        ..show();
+    }
+
+    Future<void> _showOpenInteresticialAd() async {
+      InterstitialAd openInteresticial = InterstitialAd(
+        adUnitId: AdmobCodes.openInteresticialID,
+        targetingInfo: MobileAdTargetingInfo(),
+        listener: (MobileAdEvent event) {
+          debugPrint("InterstitialAd event is $event");
+        },
+      );
+
+      await openInteresticial.load();
+      await openInteresticial.show();
+    }
+
     return Container(
       height: MediaQuery.of(context).size.height * 0.75,
       decoration: BoxDecoration(
@@ -131,6 +161,10 @@ class DetailModal extends StatelessWidget {
                       color: Theme.of(context).accentColor,
                       padding: EdgeInsets.all(16),
                       onTap: () async {
+                        if (AppConfig.of(context).isFree) {
+                          _showCopyInteresticialAd();
+                        }
+
                         await FlutterClipboard.copy(
                           magnetLink.magnetLink,
                         ).then(
@@ -163,6 +197,10 @@ class DetailModal extends StatelessWidget {
                       padding: EdgeInsets.all(16),
                       onTap: () async {
                         try {
+                          if (AppConfig.of(context).isFree) {
+                            _showOpenInteresticialAd();
+                          }
+
                           await launch(
                             magnetLink.magnetLink,
                           );

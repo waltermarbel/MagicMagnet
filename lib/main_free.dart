@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'app/app_module.dart';
+import 'app/core/utils/app_config/app_config.dart';
 import 'app/core/utils/user_interface/admob.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseAdMob.instance.initialize(appId: AdmobCodes.appID);
-  runApp(ModularApp(module: AppModule()));
+
+  runApp(AppConfig(
+    flavor: Flavor.free,
+    child: ModularApp(module: AppModule()),
+  ));
 }
