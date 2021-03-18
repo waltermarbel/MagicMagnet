@@ -14,16 +14,16 @@ import '../../../home/presentation/widgets/result_card.dart';
 import '../../../home/presentation/widgets/rounded_button.dart';
 import '../controllers/search_controller.dart';
 
-class ResultPage extends StatefulWidget {
+class SearchPage extends StatefulWidget {
   final String content;
 
-  const ResultPage({@required this.content});
+  const SearchPage({@required this.content});
 
   @override
-  _ResultPageState createState() => _ResultPageState();
+  _SearchPageState createState() => _SearchPageState();
 }
 
-class _ResultPageState extends State<ResultPage> {
+class _SearchPageState extends State<SearchPage> {
   final searchController = Modular.get<SearchController>();
 
   @override

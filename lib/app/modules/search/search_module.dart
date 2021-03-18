@@ -1,7 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'presentation/controllers/search_controller.dart';
-import 'presentation/pages/result_page.dart';
+import 'presentation/pages/search_page.dart';
 
 class SearchModule extends ChildModule {
   @override
@@ -13,7 +13,7 @@ class SearchModule extends ChildModule {
   List<ModularRouter> get routers => [
         ModularRouter(
           '/:content',
-          child: (_, args) => ResultPage(content: args.params['content']),
+          child: (_, args) => SearchPage(content: args.params['content']),
         ),
       ];
 }
