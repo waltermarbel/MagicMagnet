@@ -1,63 +1,22 @@
-abstract class SearchState {
-  final String message;
+enum SearchState { idle, searching, finished, cancelled, error, fatalError }
 
-  SearchState(this.message);
-}
-
-abstract class IdleState extends SearchState {
-  IdleState(String message) : super(message);
-}
-
-abstract class ErrorState extends SearchState {
-  ErrorState(String message) : super(message);
-}
-
-abstract class SuccessState extends SearchState {
-  SuccessState(String message) : super(message);
-}
-
-class InitialState implements IdleState {
-  @override
-  String get message => 'Initializing search';
-}
-
-class SearchingContentState implements SuccessState {
-  final String content;
-
-  SearchingContentState(this.content);
-
-  @override
-  String get message => 'Searching for $content';
-}
-
-class FinishedSearchState implements SuccessState {
-  final String content;
-
-  FinishedSearchState(this.content);
-
-  @override
-  String get message => 'Search for $content has been finished';
-}
-
-class SearchErrorState implements ErrorState {
-  final String content;
-
-  SearchErrorState(this.content);
-
-  @override
-  String get message => 'An error occurred while searching for $content';
-}
-
-class FatalErrorState implements ErrorState {
-  @override
-  String get message => 'A fatal error ocurred';
-}
-
-class CancelledSearchState implements ErrorState {
-  final String content;
-
-  CancelledSearchState(this.content);
-
-  @override
-  String get message => 'The search for $content has been cancelled';
+extension SearchStateExtension on SearchState {
+  String get message {
+    switch (this) {
+      case SearchState.idle:
+        return 'Initializing search';
+      case SearchState.searching:
+        return 'Search in progress';
+      case SearchState.finished:
+        return 'Search finished successfully';
+      case SearchState.cancelled:
+        return 'Search has been cancelled';
+      case SearchState.error:
+        return 'An error occurred in search';
+      case SearchState.fatalError:
+        return 'A fatal error occurred';
+      default:
+        return 'Unknown state';
+    }
+  }
 }

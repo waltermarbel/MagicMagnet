@@ -20,7 +20,7 @@ abstract class _SearchControllerBase with Store {
   );
 
   @observable
-  SearchState state = InitialState();
+  SearchState state = SearchState.idle;
 
   @observable
   var magnetLinks = <MagnetLink>[].asObservable();
@@ -38,7 +38,7 @@ abstract class _SearchControllerBase with Store {
     final result = await _getEnabledUsecases(NoParams());
 
     result.fold(
-      (left) => state = FatalErrorState(),
+      (left) => state = SearchState.fatalError,
       (right) => enabledUsecases = right.toList(),
     );
 
@@ -47,7 +47,7 @@ abstract class _SearchControllerBase with Store {
 
   @action
   void cancelSearch(String content) {
-    state = CancelledSearchState(content);
+    state = SearchState.cancelled;
     magnetLinks.clear();
   }
 
@@ -58,7 +58,7 @@ abstract class _SearchControllerBase with Store {
     print(enabledUsecases);
 
     if (enabledUsecases.isEmpty) {
-      state = FatalErrorState();
+      state = SearchState.fatalError;
     } else {
       magnetLinks.clear();
 
@@ -70,9 +70,9 @@ abstract class _SearchControllerBase with Store {
         result.fold(
           (left) {
             if (left is InvalidSearchParametersFailure) {
-              state = FatalErrorState();
+              state = SearchState.fatalError;
             } else {
-              state = SearchErrorState(content);
+              state = SearchState.error;
             }
           },
           (right) async {
@@ -80,15 +80,16 @@ abstract class _SearchControllerBase with Store {
 
             stream = right.listen(
               (magnetLink) async {
-                if (state is ErrorState || state is FinishedSearchState) {
+                if (state == SearchState.cancelled ||
+                    state == SearchState.error ||
+                    state == SearchState.finished) {
                   stream.cancel();
-                  magnetLinks.clear();
                 }
 
                 final index = _addMagnetLink(magnetLink);
 
-                if (state is InitialState) {
-                  state = SearchingContentState(content);
+                if (state == SearchState.idle) {
+                  state = SearchState.searching;
                 }
 
                 if (usecase is GetMagnetLinksFromGoogle ||
@@ -96,7 +97,7 @@ abstract class _SearchControllerBase with Store {
                   final result = await _getInfoForMagnetLink(magnetLink);
 
                   result.fold(
-                    (left) => state = SearchErrorState(content),
+                    (left) => state = SearchState.error,
                     (right) {
                       magnetLinks.elementAt(index).magnetLinkInfo = right;
                     },
@@ -107,7 +108,7 @@ abstract class _SearchControllerBase with Store {
                 finishedCounter++;
 
                 if (finishedCounter == enabledUsecases.length) {
-                  state = FinishedSearchState(content);
+                  state = SearchState.finished;
                   stream.cancel();
                 }
               },

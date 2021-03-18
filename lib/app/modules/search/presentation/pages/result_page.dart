@@ -2,6 +2,7 @@ import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:magicmagnet/app/modules/search/presentation/controllers/search_states.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/utils/app_config/app_config.dart';
@@ -12,7 +13,6 @@ import '../../../home/presentation/widgets/loading_indicator.dart';
 import '../../../home/presentation/widgets/result_card.dart';
 import '../../../home/presentation/widgets/rounded_button.dart';
 import '../controllers/search_controller.dart';
-import '../controllers/search_states.dart';
 
 class ResultPage extends StatefulWidget {
   final String content;
@@ -82,7 +82,8 @@ class _ResultPageState extends State<ResultPage> {
       onWillPop: _willPop,
       child: Observer(
         builder: (context) {
-          if (searchController.state is SuccessState) {
+          if (searchController.state == SearchState.searching ||
+              searchController.state == SearchState.finished) {
             if (AppConfig.of(context).isFree) {
               resultsBanner
                 ..load()
@@ -93,8 +94,8 @@ class _ResultPageState extends State<ResultPage> {
               floatingActionButtonAnimator: _NoScalingAnimation(),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerFloat,
-              floatingActionButton: searchController.state
-                      is FinishedSearchState
+              floatingActionButton: searchController.state ==
+                      SearchState.finished
                   ? null
                   : Container(
                       height: 55,
@@ -188,7 +189,9 @@ class _ResultPageState extends State<ResultPage> {
             );
           }
 
-          if (searchController.state is ErrorState) {
+          if (searchController.state == SearchState.cancelled ||
+              searchController.state == SearchState.error ||
+              searchController.state == SearchState.fatalError) {
             Future.delayed(Duration(seconds: 5), () async {
               await Modular.navigator.maybePop();
               await _willPop();
