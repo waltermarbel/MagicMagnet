@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-class UsecaseEntity extends Equatable {
+class SearchProvider extends Equatable {
   final String key;
 
-  UsecaseEntity(this.key);
+  SearchProvider(this.key);
 
   @override
   List<Object> get props => [key];

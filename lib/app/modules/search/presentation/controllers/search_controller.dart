@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../../../core/domain/usecases/get_enabled_usecases.dart';
+import '../../../../core/domain/usecases/get_enabled_search_providers.dart';
 import 'search_states.dart';
 
 part 'search_controller.g.dart';
@@ -12,11 +12,11 @@ class SearchController = _SearchControllerBase with _$SearchController;
 
 abstract class _SearchControllerBase with Store {
   final GetInfoForMagnetLink _getInfoForMagnetLink;
-  final GetEnabledUsecases _getEnabledUsecases;
+  final GetEnabledSearchProviders _getSearchProviders;
 
   _SearchControllerBase(
     this._getInfoForMagnetLink,
-    this._getEnabledUsecases,
+    this._getSearchProviders,
   );
 
   @observable
@@ -25,7 +25,7 @@ abstract class _SearchControllerBase with Store {
   @observable
   var magnetLinks = <MagnetLink>[].asObservable();
 
-  var enabledUsecases = <Usecase<Stream<MagnetLink>, SearchParameters>>[];
+  var searchProviders = <Usecase<Stream<MagnetLink>, SearchParameters>>[];
 
   @action
   int _addMagnetLink(MagnetLink magnetLink) {
@@ -35,14 +35,14 @@ abstract class _SearchControllerBase with Store {
 
   @action
   Future<void> _getUsecases() async {
-    final result = await _getEnabledUsecases(NoParams());
+    final result = await _getSearchProviders(NoParams());
 
     result.fold(
       (left) => state = SearchState.fatalError,
-      (right) => enabledUsecases = right.toList(),
+      (right) => searchProviders = right.toList(),
     );
 
-    print('Usecases quantity: ${enabledUsecases.length}');
+    print('Usecases quantity: ${searchProviders.length}');
   }
 
   @action
@@ -55,17 +55,17 @@ abstract class _SearchControllerBase with Store {
   Future<void> performSearch(String content) async {
     await _getUsecases();
 
-    print(enabledUsecases);
+    print(searchProviders);
 
-    if (enabledUsecases.isEmpty) {
+    if (searchProviders.isEmpty) {
       state = SearchState.fatalError;
     } else {
       magnetLinks.clear();
 
       var finishedCounter = 0;
 
-      for (var usecase in enabledUsecases) {
-        final result = usecase(SearchParameters(content));
+      for (var searchProviderUsecase in searchProviders) {
+        final result = searchProviderUsecase(SearchParameters(content));
 
         result.fold(
           (left) {
@@ -92,8 +92,8 @@ abstract class _SearchControllerBase with Store {
                   state = SearchState.searching;
                 }
 
-                if (usecase is GetMagnetLinksFromGoogle ||
-                    usecase is GetMagnetLinksFromYTS) {
+                if (searchProviderUsecase is GetMagnetLinksFromGoogle ||
+                    searchProviderUsecase is GetMagnetLinksFromYTS) {
                   final result = await _getInfoForMagnetLink(magnetLink);
 
                   result.fold(
@@ -107,7 +107,7 @@ abstract class _SearchControllerBase with Store {
               onDone: () {
                 finishedCounter++;
 
-                if (finishedCounter == enabledUsecases.length) {
+                if (finishedCounter == searchProviders.length) {
                   state = SearchState.finished;
                   stream.cancel();
                 }

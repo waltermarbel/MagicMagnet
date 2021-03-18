@@ -5,7 +5,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:unicons/unicons.dart';
 
-import '../../../../core/domain/entities/usecase_entity.dart';
+import '../../../../core/domain/entities/search_provider.dart';
 import '../../../../core/presentation/controllers/theme_controller.dart';
 import '../../../../core/utils/app_config/app_config.dart';
 import '../../../../core/utils/user_interface/admob.dart';
@@ -142,9 +142,9 @@ class _SettingsPageState
                   onChanged: (value) {
                     value
                         ? settingsController
-                            .enableUsecase(UsecaseEntity('Google'))
-                        : settingsController.disableUsecase<
-                            GetMagnetLinksFromGoogle>(UsecaseEntity('Google'));
+                            .enableSearchProvider(SearchProvider('Google'))
+                        : settingsController.disableSearchProvider<
+                            GetMagnetLinksFromGoogle>(SearchProvider('Google'));
                   },
                 ),
                 CheckboxListTile(
@@ -164,11 +164,11 @@ class _SettingsPageState
                   ),
                   onChanged: (value) {
                     value
-                        ? settingsController
-                            .enableUsecase(UsecaseEntity('The Pirate Bay'))
+                        ? settingsController.enableSearchProvider(
+                            SearchProvider('The Pirate Bay'))
                         : settingsController
-                            .disableUsecase<GetMagnetLinksFromTPB>(
-                                UsecaseEntity('The Pirate Bay'));
+                            .disableSearchProvider<GetMagnetLinksFromTPB>(
+                                SearchProvider('The Pirate Bay'));
                   },
                 ),
                 CheckboxListTile(
@@ -189,9 +189,9 @@ class _SettingsPageState
                   onChanged: (value) {
                     value
                         ? settingsController
-                            .enableUsecase(UsecaseEntity('1337x'))
-                        : settingsController.disableUsecase<
-                            GetMagnetLinksFrom1337X>(UsecaseEntity('1337x'));
+                            .enableSearchProvider(SearchProvider('1337x'))
+                        : settingsController.disableSearchProvider<
+                            GetMagnetLinksFrom1337X>(SearchProvider('1337x'));
                   },
                 ),
                 CheckboxListTile(
@@ -211,11 +211,11 @@ class _SettingsPageState
                   ),
                   onChanged: (value) {
                     value
-                        ? settingsController
-                            .enableUsecase(UsecaseEntity('LimeTorrents'))
-                        : settingsController
-                            .disableUsecase<GetMagnetLinksFromLimeTorrents>(
-                                UsecaseEntity('LimeTorrents'));
+                        ? settingsController.enableSearchProvider(
+                            SearchProvider('LimeTorrents'))
+                        : settingsController.disableSearchProvider<
+                                GetMagnetLinksFromLimeTorrents>(
+                            SearchProvider('LimeTorrents'));
                   },
                 ),
                 CheckboxListTile(
@@ -236,9 +236,9 @@ class _SettingsPageState
                   onChanged: (value) {
                     value
                         ? settingsController
-                            .enableUsecase(UsecaseEntity('Nyaa'))
-                        : settingsController.disableUsecase<
-                            GetMagnetLinksFromNyaa>(UsecaseEntity('Nyaa'));
+                            .enableSearchProvider(SearchProvider('Nyaa'))
+                        : settingsController.disableSearchProvider<
+                            GetMagnetLinksFromNyaa>(SearchProvider('Nyaa'));
                   },
                 ),
                 CheckboxListTile(
@@ -259,9 +259,9 @@ class _SettingsPageState
                   onChanged: (value) {
                     value
                         ? settingsController
-                            .enableUsecase(UsecaseEntity('EZTV'))
-                        : settingsController.disableUsecase<
-                            GetMagnetLinksFromEZTV>(UsecaseEntity('EZTV'));
+                            .enableSearchProvider(SearchProvider('EZTV'))
+                        : settingsController.disableSearchProvider<
+                            GetMagnetLinksFromEZTV>(SearchProvider('EZTV'));
                   },
                 ),
                 CheckboxListTile(
@@ -281,9 +281,10 @@ class _SettingsPageState
                   ),
                   onChanged: (value) {
                     value
-                        ? settingsController.enableUsecase(UsecaseEntity('YTS'))
-                        : settingsController.disableUsecase<
-                            GetMagnetLinksFromYTS>(UsecaseEntity('YTS'));
+                        ? settingsController
+                            .enableSearchProvider(SearchProvider('YTS'))
+                        : settingsController.disableSearchProvider<
+                            GetMagnetLinksFromYTS>(SearchProvider('YTS'));
                   },
                 ),
                 SizedBox(height: 12),
