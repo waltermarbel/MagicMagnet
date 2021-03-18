@@ -41,9 +41,13 @@ class SearchProvidersDataSourceImplementation
     if (Platform.isWindows) {
       final prefs = await sharedPreferencesWindows.getAll();
 
-      for (var dataSource in dataSources) {
+      if (!prefs.containsKey('Google')) {
+        sharedPreferencesWindows.setValue('Bool', 'Google', true);
+      }
+
+      for (var dataSource in dataSources.sublist(1)) {
         if (!prefs.containsKey(dataSource)) {
-          sharedPreferencesWindows.setValue('Bool', dataSource, true);
+          sharedPreferencesWindows.setValue('Bool', dataSource, false);
         }
       }
 
@@ -92,9 +96,14 @@ class SearchProvidersDataSourceImplementation
       return enabledSearchProviders;
     } else if (Platform.isAndroid || Platform.isIOS) {
       sharedPreferences = await SharedPreferences.getInstance();
+
+      if (!sharedPreferences.containsKey('Google')) {
+        sharedPreferences.setBool('Google', true);
+      }
+
       for (var dataSource in dataSources) {
         if (!sharedPreferences.containsKey(dataSource)) {
-          sharedPreferences.setBool(dataSource, true);
+          sharedPreferences.setBool(dataSource, false);
         }
 
         if (sharedPreferences.getBool(dataSource)) {
