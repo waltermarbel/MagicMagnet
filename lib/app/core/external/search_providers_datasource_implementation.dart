@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
+import 'package:magicmagnet/app/core/domain/usecases/get_trackers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences_windows/shared_preferences_windows.dart';
 
@@ -11,10 +12,14 @@ import '../infrastructure/datasources/search_providers_datasource.dart';
 class SearchProvidersDataSourceImplementation
     implements SearchProvidersDataSource {
   final HttpClient httpClient;
+  final GetTrackers getTrackers;
   SharedPreferencesWindows sharedPreferencesWindows;
   SharedPreferences sharedPreferences;
 
-  SearchProvidersDataSourceImplementation(this.httpClient) {
+  SearchProvidersDataSourceImplementation(
+    this.httpClient,
+    this.getTrackers,
+  ) {
     _getInstances();
   }
 
@@ -52,43 +57,43 @@ class SearchProvidersDataSourceImplementation
       }
 
       if (prefs['Google']) {
-        final dataSource = GoogleDataSourceImplementation(httpClient);
+        final dataSource = GoogleDataSourceImplementation(httpClient, []);
         final repository = GoogleRepositoryImplementation(dataSource);
         enabledSearchProviders.add(GetMagnetLinksFromGoogle(repository));
       }
 
       if (prefs['The Pirate Bay']) {
-        final dataSource = TPBDataSourceImplementation(httpClient);
+        final dataSource = TPBDataSourceImplementation(httpClient, []);
         final repository = TPBRepositoryImplementation(dataSource);
         enabledSearchProviders.add(GetMagnetLinksFromTPB(repository));
       }
 
       if (prefs['1337x']) {
-        final dataSource = I337XDataSourceImplementation(httpClient);
+        final dataSource = I337XDataSourceImplementation(httpClient, []);
         final repository = I337XRepositoryImplementation(dataSource);
         enabledSearchProviders.add(GetMagnetLinksFrom1337X(repository));
       }
 
       if (prefs['Nyaa']) {
-        final dataSource = NyaaDataSourceImplementation(httpClient);
+        final dataSource = NyaaDataSourceImplementation(httpClient, []);
         final repository = NyaaRepositoryImplementation(dataSource);
         enabledSearchProviders.add(GetMagnetLinksFromNyaa(repository));
       }
 
       if (prefs['EZTV']) {
-        final dataSource = EZTVDataSourceImplementation(httpClient);
+        final dataSource = EZTVDataSourceImplementation(httpClient, []);
         final repository = EZTVRepositoryImplementation(dataSource);
         enabledSearchProviders.add(GetMagnetLinksFromEZTV(repository));
       }
 
       if (prefs['YTS']) {
-        final dataSource = YTSDataSourceImplementation(httpClient);
+        final dataSource = YTSDataSourceImplementation(httpClient, []);
         final repository = YTSRepositoryImplementation(dataSource);
         enabledSearchProviders.add(GetMagnetLinksFromYTS(repository));
       }
 
       if (prefs['LimeTorrents']) {
-        final dataSource = LimeTorrentsDataSourceImplementation(httpClient);
+        final dataSource = LimeTorrentsDataSourceImplementation(httpClient, []);
         final repository = LimeTorrentsRepositoryImplementation(dataSource);
         enabledSearchProviders.add(GetMagnetLinksFromLimeTorrents(repository));
       }
@@ -96,6 +101,14 @@ class SearchProvidersDataSourceImplementation
       return enabledSearchProviders;
     } else if (Platform.isAndroid || Platform.isIOS) {
       sharedPreferences = await SharedPreferences.getInstance();
+      final result = await getTrackers(NoParams());
+
+      List<Tracker> trackers;
+
+      result.fold(
+        (failure) => throw Exception(),
+        (success) => trackers = success,
+      );
 
       if (!sharedPreferences.containsKey('Google')) {
         sharedPreferences.setBool('Google', true);
@@ -108,37 +121,44 @@ class SearchProvidersDataSourceImplementation
 
         if (sharedPreferences.getBool(dataSource)) {
           if (dataSource == 'Google') {
-            final dataSource = GoogleDataSourceImplementation(httpClient);
+            final dataSource =
+                GoogleDataSourceImplementation(httpClient, trackers);
             final repository = GoogleRepositoryImplementation(dataSource);
             enabledSearchProviders.add(GetMagnetLinksFromGoogle(repository));
           }
           if (dataSource == 'The Pirate Bay') {
-            final dataSource = TPBDataSourceImplementation(httpClient);
+            final dataSource =
+                TPBDataSourceImplementation(httpClient, trackers);
             final repository = TPBRepositoryImplementation(dataSource);
             enabledSearchProviders.add(GetMagnetLinksFromTPB(repository));
           }
           if (dataSource == '1337x') {
-            final dataSource = I337XDataSourceImplementation(httpClient);
+            final dataSource =
+                I337XDataSourceImplementation(httpClient, trackers);
             final repository = I337XRepositoryImplementation(dataSource);
             enabledSearchProviders.add(GetMagnetLinksFrom1337X(repository));
           }
           if (dataSource == 'Nyaa') {
-            final dataSource = NyaaDataSourceImplementation(httpClient);
+            final dataSource =
+                NyaaDataSourceImplementation(httpClient, trackers);
             final repository = NyaaRepositoryImplementation(dataSource);
             enabledSearchProviders.add(GetMagnetLinksFromNyaa(repository));
           }
           if (dataSource == 'EZTV') {
-            final dataSource = EZTVDataSourceImplementation(httpClient);
+            final dataSource =
+                EZTVDataSourceImplementation(httpClient, trackers);
             final repository = EZTVRepositoryImplementation(dataSource);
             enabledSearchProviders.add(GetMagnetLinksFromEZTV(repository));
           }
           if (dataSource == 'YTS') {
-            final dataSource = YTSDataSourceImplementation(httpClient);
+            final dataSource =
+                YTSDataSourceImplementation(httpClient, trackers);
             final repository = YTSRepositoryImplementation(dataSource);
             enabledSearchProviders.add(GetMagnetLinksFromYTS(repository));
           }
           if (dataSource == 'LimeTorrents') {
-            final dataSource = LimeTorrentsDataSourceImplementation(httpClient);
+            final dataSource =
+                LimeTorrentsDataSourceImplementation(httpClient, trackers);
             final repository = LimeTorrentsRepositoryImplementation(dataSource);
             enabledSearchProviders
                 .add(GetMagnetLinksFromLimeTorrents(repository));
@@ -157,10 +177,17 @@ class SearchProvidersDataSourceImplementation
   Future<Usecase<Stream<MagnetLink>, SearchParameters>> enableSearchProvider(
       SearchProvider searchProvider) async {
     if (Platform.isAndroid || Platform.isIOS) {
+      final result = await getTrackers(NoParams());
+      List<Tracker> trackers;
+      result.fold(
+        (failure) => throw Exception(),
+        (success) => trackers = success,
+      );
+
       if (searchProvider.key == 'Google') {
         await sharedPreferences.setBool(searchProvider.key, true);
 
-        final dataSource = GoogleDataSourceImplementation(httpClient);
+        final dataSource = GoogleDataSourceImplementation(httpClient, trackers);
         final repository = GoogleRepositoryImplementation(dataSource);
         return GetMagnetLinksFromGoogle(repository);
       }
@@ -168,7 +195,7 @@ class SearchProvidersDataSourceImplementation
       if (searchProvider.key == 'The Pirate Bay') {
         await sharedPreferences.setBool(searchProvider.key, true);
 
-        final dataSource = TPBDataSourceImplementation(httpClient);
+        final dataSource = TPBDataSourceImplementation(httpClient, trackers);
         final repository = TPBRepositoryImplementation(dataSource);
         return GetMagnetLinksFromTPB(repository);
       }
@@ -176,7 +203,7 @@ class SearchProvidersDataSourceImplementation
       if (searchProvider.key == '1337x') {
         await sharedPreferences.setBool(searchProvider.key, true);
 
-        final dataSource = I337XDataSourceImplementation(httpClient);
+        final dataSource = I337XDataSourceImplementation(httpClient, trackers);
         final repository = I337XRepositoryImplementation(dataSource);
         return GetMagnetLinksFrom1337X(repository);
       }
@@ -184,7 +211,7 @@ class SearchProvidersDataSourceImplementation
       if (searchProvider.key == 'Nyaa') {
         await sharedPreferences.setBool(searchProvider.key, true);
 
-        final dataSource = NyaaDataSourceImplementation(httpClient);
+        final dataSource = NyaaDataSourceImplementation(httpClient, trackers);
         final repository = NyaaRepositoryImplementation(dataSource);
         return GetMagnetLinksFromNyaa(repository);
       }
@@ -192,7 +219,7 @@ class SearchProvidersDataSourceImplementation
       if (searchProvider.key == 'EZTV') {
         await sharedPreferences.setBool(searchProvider.key, true);
 
-        final dataSource = EZTVDataSourceImplementation(httpClient);
+        final dataSource = EZTVDataSourceImplementation(httpClient, trackers);
         final repository = EZTVRepositoryImplementation(dataSource);
         return GetMagnetLinksFromEZTV(repository);
       }
@@ -200,7 +227,7 @@ class SearchProvidersDataSourceImplementation
       if (searchProvider.key == 'YTS') {
         await sharedPreferences.setBool(searchProvider.key, true);
 
-        final dataSource = YTSDataSourceImplementation(httpClient);
+        final dataSource = YTSDataSourceImplementation(httpClient, trackers);
         final repository = YTSRepositoryImplementation(dataSource);
         return GetMagnetLinksFromYTS(repository);
       }
@@ -208,7 +235,8 @@ class SearchProvidersDataSourceImplementation
       if (searchProvider.key == 'LimeTorrents') {
         await sharedPreferences.setBool(searchProvider.key, true);
 
-        final dataSource = LimeTorrentsDataSourceImplementation(httpClient);
+        final dataSource =
+            LimeTorrentsDataSourceImplementation(httpClient, trackers);
         final repository = LimeTorrentsRepositoryImplementation(dataSource);
         return GetMagnetLinksFromLimeTorrents(repository);
       }
@@ -220,7 +248,7 @@ class SearchProvidersDataSourceImplementation
           true,
         );
 
-        final dataSource = GoogleDataSourceImplementation(httpClient);
+        final dataSource = GoogleDataSourceImplementation(httpClient, []);
         final repository = GoogleRepositoryImplementation(dataSource);
         return GetMagnetLinksFromGoogle(repository);
       }
@@ -231,7 +259,7 @@ class SearchProvidersDataSourceImplementation
           searchProvider.key,
           true,
         );
-        final dataSource = TPBDataSourceImplementation(httpClient);
+        final dataSource = TPBDataSourceImplementation(httpClient, []);
         final repository = TPBRepositoryImplementation(dataSource);
         return GetMagnetLinksFromTPB(repository);
       }
@@ -243,7 +271,7 @@ class SearchProvidersDataSourceImplementation
           true,
         );
 
-        final dataSource = I337XDataSourceImplementation(httpClient);
+        final dataSource = I337XDataSourceImplementation(httpClient, []);
         final repository = I337XRepositoryImplementation(dataSource);
         return GetMagnetLinksFrom1337X(repository);
       }
@@ -255,7 +283,7 @@ class SearchProvidersDataSourceImplementation
           true,
         );
 
-        final dataSource = NyaaDataSourceImplementation(httpClient);
+        final dataSource = NyaaDataSourceImplementation(httpClient, []);
         final repository = NyaaRepositoryImplementation(dataSource);
         return GetMagnetLinksFromNyaa(repository);
       }
@@ -267,7 +295,7 @@ class SearchProvidersDataSourceImplementation
           true,
         );
 
-        final dataSource = EZTVDataSourceImplementation(httpClient);
+        final dataSource = EZTVDataSourceImplementation(httpClient, []);
         final repository = EZTVRepositoryImplementation(dataSource);
         return GetMagnetLinksFromEZTV(repository);
       }
@@ -279,7 +307,7 @@ class SearchProvidersDataSourceImplementation
           true,
         );
 
-        final dataSource = YTSDataSourceImplementation(httpClient);
+        final dataSource = YTSDataSourceImplementation(httpClient, []);
         final repository = YTSRepositoryImplementation(dataSource);
         return GetMagnetLinksFromYTS(repository);
       }
@@ -291,7 +319,7 @@ class SearchProvidersDataSourceImplementation
           true,
         );
 
-        final dataSource = LimeTorrentsDataSourceImplementation(httpClient);
+        final dataSource = LimeTorrentsDataSourceImplementation(httpClient, []);
         final repository = LimeTorrentsRepositoryImplementation(dataSource);
         return GetMagnetLinksFromLimeTorrents(repository);
       }

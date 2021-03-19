@@ -353,7 +353,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.0.1"
   logging:
     dependency: transitive
     description:
@@ -366,7 +366,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "4e95a5cc39cbbd966c9eef79a10b523c2ea5f784"
+      resolved-ref: ae1d9d50d3ded039b1c7e6060d4c1692f24c7eeb
       url: "https://github.com/pedrolemoz/MagicMagnetEngine"
     source: git
     version: "1.0.0+1"

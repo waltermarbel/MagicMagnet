@@ -7,7 +7,8 @@ abstract class SearchProvidersDataSource {
       getEnabledSearchProviders();
 
   Future<Usecase<Stream<MagnetLink>, SearchParameters>> enableSearchProvider(
-      SearchProvider searchProvider);
+    SearchProvider searchProvider,
+  );
 
   Future<void> disableSearchProvider(SearchProvider searchProvider);
 }

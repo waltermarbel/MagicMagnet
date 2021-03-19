@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 
 import 'presentation/controllers/search_controller.dart';
 import 'presentation/pages/search_page.dart';
@@ -6,7 +7,10 @@ import 'presentation/pages/search_page.dart';
 class SearchModule extends ChildModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => SearchController(i(), i())),
+        Bind((i) => SearchController(i(), i(), i())),
+        Bind((i) => MagnetLinkInfoDataSourceImplementation(i())),
+        Bind((i) => MagnetLinkInfoRepositoryImplementation(i())),
+        Bind((i) => GetInfoForMagnetLink(i())),
       ];
 
   @override
