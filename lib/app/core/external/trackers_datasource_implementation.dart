@@ -26,7 +26,7 @@ class TrackersDataSourceImplementation implements TrackersDataSource {
 
   @override
   Future<List<Tracker>> getTrackers() async {
-    List<Tracker> trackers;
+    List<Tracker> trackers = [];
 
     if (Platform.isAndroid || Platform.isIOS) {
       sharedPreferences = await SharedPreferences.getInstance();
@@ -42,10 +42,10 @@ class TrackersDataSourceImplementation implements TrackersDataSource {
 
           result.fold(
             (error) => throw Exception(),
-            (success) {
+            (success) async {
               trackers = success;
 
-              sharedPreferences.setStringList(
+              await sharedPreferences.setStringList(
                 'GitHub trackers',
                 success.map<String>((tracker) => tracker.toString()).toList(),
               );
@@ -60,11 +60,33 @@ class TrackersDataSourceImplementation implements TrackersDataSource {
               .toList();
         }
       } else {
-        trackers = sharedPreferences
-            .getStringList('Custom trackers')
-            .map<Tracker>((tracker) => TrackerModel.fromString(tracker))
-            .toList();
+        trackers = await getCustomTrackers();
       }
+    }
+
+    return trackers;
+  }
+
+  @override
+  Future<void> setCustomTrackers(List<String> customTrackers) async {
+    if (Platform.isAndroid || Platform.isIOS) {
+      sharedPreferences = await SharedPreferences.getInstance();
+
+      await sharedPreferences.setStringList('Custom trackers', customTrackers);
+    }
+  }
+
+  @override
+  Future<List<Tracker>> getCustomTrackers() async {
+    List<Tracker> trackers = [];
+
+    sharedPreferences = await SharedPreferences.getInstance();
+
+    if (sharedPreferences.containsKey('Custom trackers')) {
+      trackers = sharedPreferences
+          .getStringList('Custom trackers')
+          .map<Tracker>((tracker) => TrackerModel.fromString(tracker))
+          .toList();
     }
 
     return trackers;

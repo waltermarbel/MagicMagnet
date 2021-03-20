@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 
 import 'app_widget.dart';
+import 'core/domain/usecases/get_custom_trackers.dart';
 import 'core/domain/usecases/get_enabled_search_providers.dart';
 import 'core/domain/usecases/get_preferred_theme.dart';
 import 'core/domain/usecases/get_trackers.dart';
@@ -38,6 +39,7 @@ class AppModule extends MainModule {
         Bind((i) => SearchProvidersDataSourceImplementation(i(), i())),
         Bind((i) => SearchProvidersRepositoryImplementation(i())),
         Bind((i) => GetEnabledSearchProviders(i())),
+        Bind((i) => GetCustomTrackers(i())),
       ];
 
   @override

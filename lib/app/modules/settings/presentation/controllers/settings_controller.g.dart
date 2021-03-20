@@ -26,6 +26,22 @@ mixin _$SettingsController on _SettingsControllerBase, Store {
     });
   }
 
+  final _$customTrackersAtom =
+      Atom(name: '_SettingsControllerBase.customTrackers');
+
+  @override
+  ObservableList<String> get customTrackers {
+    _$customTrackersAtom.reportRead();
+    return super.customTrackers;
+  }
+
+  @override
+  set customTrackers(ObservableList<String> value) {
+    _$customTrackersAtom.reportWrite(value, super.customTrackers, () {
+      super.customTrackers = value;
+    });
+  }
+
   final _$enableSearchProviderAsyncAction =
       AsyncAction('_SettingsControllerBase.enableSearchProvider');
 
@@ -44,6 +60,24 @@ mixin _$SettingsController on _SettingsControllerBase, Store {
         .run(() => super.disableSearchProvider<T>(searchProvider));
   }
 
+  final _$_getCustomTrackersFromCacheAsyncAction =
+      AsyncAction('_SettingsControllerBase._getCustomTrackersFromCache');
+
+  @override
+  Future<void> _getCustomTrackersFromCache() {
+    return _$_getCustomTrackersFromCacheAsyncAction
+        .run(() => super._getCustomTrackersFromCache());
+  }
+
+  final _$setCustomTrackersAsyncAction =
+      AsyncAction('_SettingsControllerBase.setCustomTrackers');
+
+  @override
+  Future<void> setCustomTrackers(List<String> trackers) {
+    return _$setCustomTrackersAsyncAction
+        .run(() => super.setCustomTrackers(trackers));
+  }
+
   final _$_getSearchProvidersAsyncAction =
       AsyncAction('_SettingsControllerBase._getSearchProviders');
 
@@ -56,7 +90,8 @@ mixin _$SettingsController on _SettingsControllerBase, Store {
   @override
   String toString() {
     return '''
-enabledSearchProviders: ${enabledSearchProviders}
+enabledSearchProviders: ${enabledSearchProviders},
+customTrackers: ${customTrackers}
     ''';
   }
 }

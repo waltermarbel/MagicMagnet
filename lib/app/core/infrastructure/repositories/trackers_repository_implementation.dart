@@ -20,4 +20,25 @@ class TrackersRepositoryImplementation implements TrackersRepository {
       return left(UnsupportedPlatformFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, void>> setCustomTrackers(
+    List<String> customTrackers,
+  ) async {
+    try {
+      return right(await dataSource.setCustomTrackers(customTrackers));
+    } on UnsupportedPlatformException {
+      return left(UnsupportedPlatformFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Tracker>>> getCustomTrackers() async {
+    try {
+      final usecases = await dataSource.getCustomTrackers();
+      return right(usecases);
+    } on UnsupportedPlatformException {
+      return left(UnsupportedPlatformFailure());
+    }
+  }
 }

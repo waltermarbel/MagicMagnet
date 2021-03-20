@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:mobx/mobx.dart';
 
+import 'package:magicmagnet/app/core/domain/usecases/get_custom_trackers.dart';
 import 'package:magicmagnet/app/core/domain/usecases/get_trackers.dart';
 
 import '../../../../core/domain/usecases/get_enabled_search_providers.dart';
@@ -15,12 +16,10 @@ class SearchController = _SearchControllerBase with _$SearchController;
 abstract class _SearchControllerBase with Store {
   final GetInfoForMagnetLink _getInfoForMagnetLink;
   final GetEnabledSearchProviders _getSearchProviders;
-  final GetTrackers _getTrackers;
 
   _SearchControllerBase(
     this._getInfoForMagnetLink,
     this._getSearchProviders,
-    this._getTrackers,
   );
 
   @observable
@@ -68,15 +67,6 @@ abstract class _SearchControllerBase with Store {
 
       var finishedCounter = 0;
 
-      List<Tracker> trackers;
-
-      final result = await _getTrackers(NoParams());
-
-      result.fold(
-        (failure) => state = SearchState.error,
-        (success) => trackers = success,
-      );
-
       for (var searchProviderUsecase in searchProviders) {
         final result = searchProviderUsecase(SearchParameters(content));
 
@@ -105,19 +95,19 @@ abstract class _SearchControllerBase with Store {
                   state = SearchState.searching;
                 }
 
-                if (searchProviderUsecase is GetMagnetLinksFromGoogle ||
-                    searchProviderUsecase is GetMagnetLinksFromYTS) {
-                  final result = await _getInfoForMagnetLink(
-                    InfoParams(magnetLink, trackers),
-                  );
+                // if (searchProviderUsecase is GetMagnetLinksFromGoogle ||
+                //     searchProviderUsecase is GetMagnetLinksFromYTS) {
+                //   final result = await _getInfoForMagnetLink(
+                //     InfoParams(magnetLink, trackers),
+                //   );
 
-                  result.fold(
-                    (left) => state = SearchState.error,
-                    (right) {
-                      magnetLinks.elementAt(index).magnetLinkInfo = right;
-                    },
-                  );
-                }
+                //   result.fold(
+                //     (left) => state = SearchState.error,
+                //     (right) {
+                //       magnetLinks.elementAt(index).magnetLinkInfo = right;
+                //     },
+                //   );
+                // }
               },
               onDone: () {
                 finishedCounter++;

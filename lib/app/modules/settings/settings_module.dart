@@ -2,15 +2,18 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../core/domain/usecases/disable_search_provider.dart';
 import '../../core/domain/usecases/enable_search_provider.dart';
+import '../../core/domain/usecases/get_custom_trackers.dart';
+import '../../core/domain/usecases/set_custom_trackers.dart';
 import 'presentation/controllers/settings_controller.dart';
 import 'presentation/pages/settings_page.dart';
 
 class SettingsModule extends ChildModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => SettingsController(i(), i(), i())),
+        Bind((i) => SettingsController(i(), i(), i(), i(), i())),
         Bind((i) => EnableSearchProvider(i())),
         Bind((i) => DisableSearchProvider(i())),
+        Bind((i) => SetCustomTrackers(i())),
       ];
 
   @override
