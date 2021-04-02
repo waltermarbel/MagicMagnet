@@ -2,7 +2,6 @@ import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:magicmagnet/app/modules/search/presentation/controllers/search_states.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/utils/app_config/app_config.dart';
@@ -13,6 +12,7 @@ import '../../../home/presentation/widgets/loading_indicator.dart';
 import '../../../home/presentation/widgets/result_card.dart';
 import '../../../home/presentation/widgets/rounded_button.dart';
 import '../controllers/search_controller.dart';
+import '../controllers/search_states.dart';
 
 class SearchPage extends StatefulWidget {
   final String content;
@@ -267,6 +267,7 @@ class _SearchPageState extends State<SearchPage> {
 class _NoScalingAnimation extends FloatingActionButtonAnimator {
   double _x;
   double _y;
+
   @override
   Offset getOffset({Offset begin, Offset end, double progress}) {
     _x = begin.dx + (end.dx - begin.dx) * progress;
