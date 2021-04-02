@@ -5,4 +5,5 @@ abstract class TrackersRepository {
   Future<Either<Failure, List<Tracker>>> getTrackers();
   Future<Either<Failure, List<Tracker>>> getCustomTrackers();
   Future<Either<Failure, void>> setCustomTrackers(List<String> customTrackers);
+  Future<Either<Failure, void>> deleteAllCustomTrackers();
 }

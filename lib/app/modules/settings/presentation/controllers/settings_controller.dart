@@ -2,6 +2,7 @@ import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/domain/entities/search_provider.dart';
+import '../../../../core/domain/usecases/delete_all_custom_trackers.dart';
 import '../../../../core/domain/usecases/disable_search_provider.dart';
 import '../../../../core/domain/usecases/enable_search_provider.dart';
 import '../../../../core/domain/usecases/get_custom_trackers.dart';
@@ -18,6 +19,7 @@ abstract class _SettingsControllerBase with Store {
   final DisableSearchProvider _disableSearchProvider;
   final SetCustomTrackers _setCustomTrackers;
   final GetCustomTrackers _getCustomTrackers;
+  final DeleteAllCustomTrackers _deleteAllCustomTrackers;
 
   _SettingsControllerBase(
     this._getEnabledSearchProviders,
@@ -25,6 +27,7 @@ abstract class _SettingsControllerBase with Store {
     this._disableSearchProvider,
     this._setCustomTrackers,
     this._getCustomTrackers,
+    this._deleteAllCustomTrackers,
   ) {
     _getSearchProviders();
     _getCustomTrackersFromCache();
@@ -69,8 +72,7 @@ abstract class _SettingsControllerBase with Store {
 
     result.fold(
       (failure) => print(failure),
-      (success) => customTrackers =
-          success.map<String>((e) => e.toString()).toList().asObservable(),
+      (success) => customTrackers = success.map<String>((e) => e.toString()).toList().asObservable(),
     );
   }
 
@@ -81,6 +83,16 @@ abstract class _SettingsControllerBase with Store {
     result.fold(
       (failure) => print(failure),
       (success) => customTrackers = trackers.asObservable(),
+    );
+  }
+
+  @action
+  Future<void> deleteCustomTrackers() async {
+    final result = await _deleteAllCustomTrackers(NoParams());
+
+    result.fold(
+      (failure) => print(failure),
+      (_) {},
     );
   }
 

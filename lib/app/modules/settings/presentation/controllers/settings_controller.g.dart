@@ -78,6 +78,15 @@ mixin _$SettingsController on _SettingsControllerBase, Store {
         .run(() => super.setCustomTrackers(trackers));
   }
 
+  final _$deleteCustomTrackersAsyncAction =
+      AsyncAction('_SettingsControllerBase.deleteCustomTrackers');
+
+  @override
+  Future<void> deleteCustomTrackers() {
+    return _$deleteCustomTrackersAsyncAction
+        .run(() => super.deleteCustomTrackers());
+  }
+
   final _$_getSearchProvidersAsyncAction =
       AsyncAction('_SettingsControllerBase._getSearchProviders');
 

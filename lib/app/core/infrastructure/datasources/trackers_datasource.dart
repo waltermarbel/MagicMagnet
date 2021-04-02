@@ -4,4 +4,5 @@ abstract class TrackersDataSource {
   Future<List<Tracker>> getTrackers();
   Future<List<Tracker>> getCustomTrackers();
   Future<void> setCustomTrackers(List<String> customTrackers);
+  Future<void> deleteAllCustomTrackers();
 }

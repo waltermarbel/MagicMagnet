@@ -34,10 +34,7 @@ class TrackersDataSourceImplementation implements TrackersDataSource {
       if (!sharedPreferences.containsKey('Custom trackers') ||
           sharedPreferences.getStringList('Custom trackers').isEmpty) {
         if (!sharedPreferences.containsKey('Last Update') ||
-            DateTime.parse(sharedPreferences.getString('Last Update'))
-                    .difference(DateTime.now())
-                    .inHours >
-                24) {
+            DateTime.parse(sharedPreferences.getString('Last Update')).difference(DateTime.now()).inHours > 24) {
           final result = await getTrackersFromGitHub(NoParams());
 
           result.fold(
@@ -90,5 +87,14 @@ class TrackersDataSourceImplementation implements TrackersDataSource {
     }
 
     return trackers;
+  }
+
+  @override
+  Future<void> deleteAllCustomTrackers() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+
+    if (sharedPreferences.containsKey('Custom trackers')) {
+      sharedPreferences.remove('Custom trackers');
+    }
   }
 }

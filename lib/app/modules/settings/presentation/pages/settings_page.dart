@@ -83,9 +83,15 @@ class _SettingsPageState extends ModularState<SettingsPage, SettingsController> 
       await settingsController.setCustomTrackers(trackers).then(
         (_) {
           trackersTextField.text = trackers.isNotEmpty ? trackers.reduce((a, b) => a += '\n$b') : null;
-          print('Saved');
+          print('Saved custom trackers successfully');
         },
       );
+    }
+
+    Future<void> deleteAllCustomTrackers() async {
+      trackersTextField.clear();
+
+      await settingsController.deleteCustomTrackers().then((_) => print('Deleted custom trackers successfully'));
     }
 
     return Listener(
@@ -310,12 +316,27 @@ class _SettingsPageState extends ModularState<SettingsPage, SettingsController> 
                         ),
                         SizedBox(height: 12),
                         RoundedButton(
-                          color: Theme.of(context).primaryColor,
+                          color: Colors.green[800],
                           padding: EdgeInsets.all(16),
                           onTap: () async => await setCustomTrackers(),
                           child: Center(
                             child: Text(
                               'Save custom trackers',
+                              style: Theme.of(context).textTheme.subtitle2.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                        RoundedButton(
+                          color: Colors.redAccent[700],
+                          padding: EdgeInsets.all(16),
+                          onTap: () async => await deleteAllCustomTrackers(),
+                          child: Center(
+                            child: Text(
+                              'Delete all trackers',
                               style: Theme.of(context).textTheme.subtitle2.copyWith(
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,

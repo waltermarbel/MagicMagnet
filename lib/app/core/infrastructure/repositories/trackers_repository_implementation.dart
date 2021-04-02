@@ -41,4 +41,14 @@ class TrackersRepositoryImplementation implements TrackersRepository {
       return left(UnsupportedPlatformFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteAllCustomTrackers() async {
+    try {
+      final usecases = await dataSource.deleteAllCustomTrackers();
+      return right(usecases);
+    } on UnsupportedPlatformException {
+      return left(UnsupportedPlatformFailure());
+    }
+  }
 }
