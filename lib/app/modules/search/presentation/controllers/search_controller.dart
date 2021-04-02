@@ -3,10 +3,6 @@ import 'dart:async';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:mobx/mobx.dart';
 
-import 'package:magicmagnet/app/core/domain/usecases/get_custom_trackers.dart';
-import 'package:magicmagnet/app/core/domain/usecases/get_trackers.dart';
-import 'package:mobx/mobx.dart';
-
 import '../../../../core/domain/usecases/get_enabled_search_providers.dart';
 import 'search_states.dart';
 

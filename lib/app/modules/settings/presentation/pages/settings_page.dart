@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
-import 'package:magicmagnet/app/modules/home/presentation/widgets/rounded_button.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../core/domain/entities/search_provider.dart';
@@ -13,6 +12,7 @@ import '../../../../core/utils/user_interface/admob.dart';
 import '../../../../core/utils/user_interface/no_splash.dart';
 import '../../../../core/utils/user_interface/themes.dart';
 import '../../../home/presentation/widgets/circular_button.dart';
+import '../../../home/presentation/widgets/rounded_button.dart';
 import '../controllers/settings_controller.dart';
 import '../utils/extensions.dart';
 
@@ -21,8 +21,7 @@ class SettingsPage extends StatefulWidget {
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _SettingsPageState
-    extends ModularState<SettingsPage, SettingsController> {
+class _SettingsPageState extends ModularState<SettingsPage, SettingsController> {
   final settingsController = Modular.get<SettingsController>();
   final themeController = Modular.get<ThemeController>();
   final trackersTextField = TextEditingController();
@@ -83,9 +82,7 @@ class _SettingsPageState
 
       await settingsController.setCustomTrackers(trackers).then(
         (_) {
-          trackersTextField.text = trackers.isNotEmpty
-              ? trackers.reduce((a, b) => a += '\n$b')
-              : null;
+          trackersTextField.text = trackers.isNotEmpty ? trackers.reduce((a, b) => a += '\n$b') : null;
           print('Saved');
         },
       );
@@ -95,16 +92,13 @@ class _SettingsPageState
       onPointerDown: (_) {
         final currentFocus = FocusScope.of(context);
 
-        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null)
-          currentFocus.focusedChild.unfocus();
+        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) currentFocus.focusedChild.unfocus();
       },
       child: WillPopScope(
         onWillPop: _willPop,
         child: Observer(builder: (_) {
-          if (settingsController.customTrackers.isNotEmpty &&
-              trackersTextField.text.isEmpty) {
-            trackersTextField.text =
-                settingsController.customTrackers.reduce((a, b) => a += '\n$b');
+          if (settingsController.customTrackers.isNotEmpty && trackersTextField.text.isEmpty) {
+            trackersTextField.text = settingsController.customTrackers.reduce((a, b) => a += '\n$b');
           }
 
           return Scaffold(
@@ -134,10 +128,7 @@ class _SettingsPageState
               ),
               title: Text(
                 'Settings',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    .copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
             body: NoSplash(
@@ -147,22 +138,15 @@ class _SettingsPageState
                   SizedBox(height: 6),
                   Text(
                     'Avaliable sources',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        .copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 6),
                   CheckboxListTile(
                     activeColor: Theme.of(context).primaryColor,
-                    value: settingsController
-                        .hasUsecaseOfType<GetMagnetLinksFromGoogle>(),
+                    value: settingsController.hasUsecaseOfType<GetMagnetLinksFromGoogle>(),
                     title: Text(
                       'Google',
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
                       'Can be slow sometimes, but works very well for dubbed content',
@@ -170,23 +154,17 @@ class _SettingsPageState
                     ),
                     onChanged: (value) {
                       value
-                          ? settingsController
-                              .enableSearchProvider(SearchProvider('Google'))
+                          ? settingsController.enableSearchProvider(SearchProvider('Google'))
                           : settingsController
-                              .disableSearchProvider<GetMagnetLinksFromGoogle>(
-                                  SearchProvider('Google'));
+                              .disableSearchProvider<GetMagnetLinksFromGoogle>(SearchProvider('Google'));
                     },
                   ),
                   CheckboxListTile(
                     activeColor: Theme.of(context).primaryColor,
-                    value: settingsController
-                        .hasUsecaseOfType<GetMagnetLinksFromTPB>(),
+                    value: settingsController.hasUsecaseOfType<GetMagnetLinksFromTPB>(),
                     title: Text(
                       'The Pirate Bay',
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
                       'Very fast, and works for most of contents',
@@ -194,23 +172,17 @@ class _SettingsPageState
                     ),
                     onChanged: (value) {
                       value
-                          ? settingsController.enableSearchProvider(
-                              SearchProvider('The Pirate Bay'))
+                          ? settingsController.enableSearchProvider(SearchProvider('The Pirate Bay'))
                           : settingsController
-                              .disableSearchProvider<GetMagnetLinksFromTPB>(
-                                  SearchProvider('The Pirate Bay'));
+                              .disableSearchProvider<GetMagnetLinksFromTPB>(SearchProvider('The Pirate Bay'));
                     },
                   ),
                   CheckboxListTile(
                     activeColor: Theme.of(context).primaryColor,
-                    value: settingsController
-                        .hasUsecaseOfType<GetMagnetLinksFrom1337X>(),
+                    value: settingsController.hasUsecaseOfType<GetMagnetLinksFrom1337X>(),
                     title: Text(
                       '1337x',
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
                       'Fast as TPB, but with less results',
@@ -218,22 +190,16 @@ class _SettingsPageState
                     ),
                     onChanged: (value) {
                       value
-                          ? settingsController
-                              .enableSearchProvider(SearchProvider('1337x'))
-                          : settingsController.disableSearchProvider<
-                              GetMagnetLinksFrom1337X>(SearchProvider('1337x'));
+                          ? settingsController.enableSearchProvider(SearchProvider('1337x'))
+                          : settingsController.disableSearchProvider<GetMagnetLinksFrom1337X>(SearchProvider('1337x'));
                     },
                   ),
                   CheckboxListTile(
                     activeColor: Theme.of(context).primaryColor,
-                    value: settingsController
-                        .hasUsecaseOfType<GetMagnetLinksFromLimeTorrents>(),
+                    value: settingsController.hasUsecaseOfType<GetMagnetLinksFromLimeTorrents>(),
                     title: Text(
                       'LimeTorrents',
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
                       'Can be slow, but works fine for the most of content',
@@ -241,23 +207,17 @@ class _SettingsPageState
                     ),
                     onChanged: (value) {
                       value
-                          ? settingsController.enableSearchProvider(
-                              SearchProvider('LimeTorrents'))
-                          : settingsController.disableSearchProvider<
-                                  GetMagnetLinksFromLimeTorrents>(
-                              SearchProvider('LimeTorrents'));
+                          ? settingsController.enableSearchProvider(SearchProvider('LimeTorrents'))
+                          : settingsController
+                              .disableSearchProvider<GetMagnetLinksFromLimeTorrents>(SearchProvider('LimeTorrents'));
                     },
                   ),
                   CheckboxListTile(
                     activeColor: Theme.of(context).primaryColor,
-                    value: settingsController
-                        .hasUsecaseOfType<GetMagnetLinksFromNyaa>(),
+                    value: settingsController.hasUsecaseOfType<GetMagnetLinksFromNyaa>(),
                     title: Text(
                       'Nyaa',
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
                       'Very fast, the best provider for anime RAWs',
@@ -265,22 +225,16 @@ class _SettingsPageState
                     ),
                     onChanged: (value) {
                       value
-                          ? settingsController
-                              .enableSearchProvider(SearchProvider('Nyaa'))
-                          : settingsController.disableSearchProvider<
-                              GetMagnetLinksFromNyaa>(SearchProvider('Nyaa'));
+                          ? settingsController.enableSearchProvider(SearchProvider('Nyaa'))
+                          : settingsController.disableSearchProvider<GetMagnetLinksFromNyaa>(SearchProvider('Nyaa'));
                     },
                   ),
                   CheckboxListTile(
                     activeColor: Theme.of(context).primaryColor,
-                    value: settingsController
-                        .hasUsecaseOfType<GetMagnetLinksFromEZTV>(),
+                    value: settingsController.hasUsecaseOfType<GetMagnetLinksFromEZTV>(),
                     title: Text(
                       'EZTV',
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
                       'Usually fast, and focused in TV Shows',
@@ -288,22 +242,16 @@ class _SettingsPageState
                     ),
                     onChanged: (value) {
                       value
-                          ? settingsController
-                              .enableSearchProvider(SearchProvider('EZTV'))
-                          : settingsController.disableSearchProvider<
-                              GetMagnetLinksFromEZTV>(SearchProvider('EZTV'));
+                          ? settingsController.enableSearchProvider(SearchProvider('EZTV'))
+                          : settingsController.disableSearchProvider<GetMagnetLinksFromEZTV>(SearchProvider('EZTV'));
                     },
                   ),
                   CheckboxListTile(
                     activeColor: Theme.of(context).primaryColor,
-                    value: settingsController
-                        .hasUsecaseOfType<GetMagnetLinksFromYTS>(),
+                    value: settingsController.hasUsecaseOfType<GetMagnetLinksFromYTS>(),
                     title: Text(
                       'YTS',
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
                       'Usually fast, and focused in english lightweight movies',
@@ -311,19 +259,14 @@ class _SettingsPageState
                     ),
                     onChanged: (value) {
                       value
-                          ? settingsController
-                              .enableSearchProvider(SearchProvider('YTS'))
-                          : settingsController.disableSearchProvider<
-                              GetMagnetLinksFromYTS>(SearchProvider('YTS'));
+                          ? settingsController.enableSearchProvider(SearchProvider('YTS'))
+                          : settingsController.disableSearchProvider<GetMagnetLinksFromYTS>(SearchProvider('YTS'));
                     },
                   ),
                   SizedBox(height: 12),
                   Text(
                     'Custom trackers',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        .copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -350,10 +293,7 @@ class _SettingsPageState
                               setCustomTrackers();
                             }
                           },
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1
-                              .copyWith(fontWeight: FontWeight.w600),
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(16),
                             border: OutlineInputBorder(
@@ -365,10 +305,7 @@ class _SettingsPageState
                             filled: true,
                             fillColor: Theme.of(context).cardColor,
                             hintText: 'udp://example.custom-tracker.org:9999',
-                            hintStyle: Theme.of(context)
-                                .textTheme
-                                .subtitle1
-                                .copyWith(color: Colors.grey),
+                            hintStyle: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.grey),
                           ),
                         ),
                         SizedBox(height: 12),
@@ -379,10 +316,7 @@ class _SettingsPageState
                           child: Center(
                             child: Text(
                               'Save custom trackers',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle2
-                                  .copyWith(
+                              style: Theme.of(context).textTheme.subtitle2.copyWith(
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   ),
@@ -394,19 +328,13 @@ class _SettingsPageState
                   ),
                   Text(
                     'App preferences',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        .copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
                   ),
                   SwitchListTile(
                     activeColor: Theme.of(context).primaryColor,
                     title: Text(
                       "Current theme: ${themeController.currentTheme.name}",
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
                       'Click to toogle the theme',
@@ -415,10 +343,8 @@ class _SettingsPageState
                     value: themeController.currentTheme == Themes.dark,
                     onChanged: (value) async {
                       value
-                          ? await themeController.changeAppTheme(
-                              theme: Themes.dark)
-                          : await themeController.changeAppTheme(
-                              theme: Themes.light);
+                          ? await themeController.changeAppTheme(theme: Themes.dark)
+                          : await themeController.changeAppTheme(theme: Themes.light);
                     },
                   ),
                 ],
