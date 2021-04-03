@@ -46,7 +46,7 @@ class SearchProvidersDataSourceImplementation implements SearchProvidersDataSour
       }
 
       if (prefs['Google']) {
-        final dataSource = GoogleDataSourceImplementation(httpClient, []);
+        final dataSource = GoogleDataSourceImplementation(httpClient);
         final repository = GoogleRepositoryImplementation(dataSource);
         enabledSearchProviders.add(GetMagnetLinksFromGoogle(repository));
       }
@@ -76,7 +76,7 @@ class SearchProvidersDataSourceImplementation implements SearchProvidersDataSour
       }
 
       if (prefs['YTS']) {
-        final dataSource = YTSDataSourceImplementation(httpClient, []);
+        final dataSource = YTSDataSourceImplementation(httpClient);
         final repository = YTSRepositoryImplementation(dataSource);
         enabledSearchProviders.add(GetMagnetLinksFromYTS(repository));
       }
@@ -110,7 +110,7 @@ class SearchProvidersDataSourceImplementation implements SearchProvidersDataSour
 
         if (sharedPreferences.getBool(dataSource)) {
           if (dataSource == 'Google') {
-            final dataSource = GoogleDataSourceImplementation(httpClient, trackers);
+            final dataSource = GoogleDataSourceImplementation(httpClient);
             final repository = GoogleRepositoryImplementation(dataSource);
             enabledSearchProviders.add(GetMagnetLinksFromGoogle(repository));
           }
@@ -135,7 +135,7 @@ class SearchProvidersDataSourceImplementation implements SearchProvidersDataSour
             enabledSearchProviders.add(GetMagnetLinksFromEZTV(repository));
           }
           if (dataSource == 'YTS') {
-            final dataSource = YTSDataSourceImplementation(httpClient, trackers);
+            final dataSource = YTSDataSourceImplementation(httpClient);
             final repository = YTSRepositoryImplementation(dataSource);
             enabledSearchProviders.add(GetMagnetLinksFromYTS(repository));
           }
@@ -167,7 +167,7 @@ class SearchProvidersDataSourceImplementation implements SearchProvidersDataSour
       if (searchProvider.key == 'Google') {
         await sharedPreferences.setBool(searchProvider.key, true);
 
-        final dataSource = GoogleDataSourceImplementation(httpClient, trackers);
+        final dataSource = GoogleDataSourceImplementation(httpClient);
         final repository = GoogleRepositoryImplementation(dataSource);
         return GetMagnetLinksFromGoogle(repository);
       }
@@ -207,7 +207,7 @@ class SearchProvidersDataSourceImplementation implements SearchProvidersDataSour
       if (searchProvider.key == 'YTS') {
         await sharedPreferences.setBool(searchProvider.key, true);
 
-        final dataSource = YTSDataSourceImplementation(httpClient, trackers);
+        final dataSource = YTSDataSourceImplementation(httpClient);
         final repository = YTSRepositoryImplementation(dataSource);
         return GetMagnetLinksFromYTS(repository);
       }
@@ -227,7 +227,7 @@ class SearchProvidersDataSourceImplementation implements SearchProvidersDataSour
           true,
         );
 
-        final dataSource = GoogleDataSourceImplementation(httpClient, []);
+        final dataSource = GoogleDataSourceImplementation(httpClient);
         final repository = GoogleRepositoryImplementation(dataSource);
         return GetMagnetLinksFromGoogle(repository);
       }
@@ -286,7 +286,7 @@ class SearchProvidersDataSourceImplementation implements SearchProvidersDataSour
           true,
         );
 
-        final dataSource = YTSDataSourceImplementation(httpClient, []);
+        final dataSource = YTSDataSourceImplementation(httpClient);
         final repository = YTSRepositoryImplementation(dataSource);
         return GetMagnetLinksFromYTS(repository);
       }

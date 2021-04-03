@@ -100,22 +100,17 @@ abstract class _SearchControllerBase with Store {
                   state = SearchState.searching;
                 }
 
-                // if (searchProviderUsecase is GetMagnetLinksFromGoogle ||
-                //     searchProviderUsecase is GetMagnetLinksFromYTS) {
-                //   final result = await _getInfoForMagnetLink(
-                //     InfoParams(
-                //       magnetLink,
-                //       trackers,
-                //     ),
-                //   );
+                if (searchProviderUsecase is GetMagnetLinksFromGoogle ||
+                    searchProviderUsecase is GetMagnetLinksFromYTS) {
+                  final result = await _getInfoForMagnetLink(InfoParams(magnetLink, trackers.sublist(0, 2)));
 
-                //   result.fold(
-                //     (left) => state = SearchState.error,
-                //     (right) {
-                //       magnetLinks.elementAt(index).magnetLinkInfo = right;
-                //     },
-                //   );
-                // }
+                  result.fold(
+                    (left) => state = SearchState.error,
+                    (right) {
+                      magnetLinks.elementAt(index).magnetLinkInfo = right;
+                    },
+                  );
+                }
               },
               onDone: () {
                 finishedCounter++;
