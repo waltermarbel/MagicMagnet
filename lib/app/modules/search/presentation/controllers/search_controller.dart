@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
-import 'package:magicmagnet/app/core/domain/usecases/get_trackers.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/domain/usecases/get_enabled_search_providers.dart';
+import '../../../../core/domain/usecases/get_trackers.dart';
 import 'search_states.dart';
 
 part 'search_controller.g.dart';
@@ -100,19 +100,22 @@ abstract class _SearchControllerBase with Store {
                   state = SearchState.searching;
                 }
 
-                if (searchProviderUsecase is GetMagnetLinksFromGoogle ||
-                    searchProviderUsecase is GetMagnetLinksFromYTS) {
-                  final result = await _getInfoForMagnetLink(
-                    InfoParams(magnetLink, trackers),
-                  );
+                // if (searchProviderUsecase is GetMagnetLinksFromGoogle ||
+                //     searchProviderUsecase is GetMagnetLinksFromYTS) {
+                //   final result = await _getInfoForMagnetLink(
+                //     InfoParams(
+                //       magnetLink,
+                //       trackers,
+                //     ),
+                //   );
 
-                  result.fold(
-                    (left) => state = SearchState.error,
-                    (right) {
-                      magnetLinks.elementAt(index).magnetLinkInfo = right;
-                    },
-                  );
-                }
+                //   result.fold(
+                //     (left) => state = SearchState.error,
+                //     (right) {
+                //       magnetLinks.elementAt(index).magnetLinkInfo = right;
+                //     },
+                //   );
+                // }
               },
               onDone: () {
                 finishedCounter++;
