@@ -1,6 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:magic_magnet_engine/magic_magnet_engine.dart';
-import 'package:magicmagnet/app/core/domain/usecases/get_trackers.dart';
 
 import 'presentation/controllers/search_controller.dart';
 import 'presentation/pages/search_page.dart';
