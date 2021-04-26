@@ -14,9 +14,8 @@ dependencies:
   
   # Engine (it's a private repository)
   magic_magnet_engine:
-    path: ../MagicMagnetEngine/
-    # git:
-    #   url: https://github.com/pedrolemoz/MagicMagnetEngine
+    git:
+      url: https://github.com/pedrolemoz/MagicMagnetEngine
 
   # Dependency Injection and Routing
   flutter_modular: ^2.0.1
@@ -28,8 +27,10 @@ dependencies:
   dartz: any
 
   # Local cache
-  shared_preferences: any
-  shared_preferences_windows: any
+  hive: any
+
+  # Path utilities
+  path_provider: any
 
   # Utilities
   url_launcher: any
