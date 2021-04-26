@@ -14,8 +14,9 @@ dependencies:
   
   # Engine (it's a private repository)
   magic_magnet_engine:
-    git:
-      url: https://github.com/pedrolemoz/MagicMagnetEngine
+    path: ../MagicMagnetEngine/
+    # git:
+    #   url: https://github.com/pedrolemoz/MagicMagnetEngine
 
   # Dependency Injection and Routing
   flutter_modular: ^2.0.1

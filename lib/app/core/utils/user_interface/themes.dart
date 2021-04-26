@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 enum Themes { light, dark }
 
 final lightTheme = ThemeData(
-  primaryColor: Color(0xFFFF4B00),
-  accentColor: Color(0xFF0981D1),
-  cardColor: Color(0xFFFAFAFA),
-  scaffoldBackgroundColor: Color(0xFFFFFEFE),
-  backgroundColor: Color(0xFFFFFEFE),
-  unselectedWidgetColor: Color(0xFF272D2F),
+  primaryColor: const Color(0xFFFF4B00),
+  accentColor: const Color(0xFF0981D1),
+  cardColor: const Color(0xFFFAFAFA),
+  scaffoldBackgroundColor: const Color(0xFFFFFEFE),
+  backgroundColor: const Color(0xFFFFFEFE),
+  unselectedWidgetColor: const Color(0xFF272D2F),
   brightness: Brightness.light,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   fontFamily: 'SourceSansPro',
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     headline1: TextStyle(color: Color(0xFF272D2F)),
     headline2: TextStyle(color: Color(0xFF272D2F)),
     headline3: TextStyle(color: Color(0xFF272D2F)),
@@ -27,16 +27,16 @@ final lightTheme = ThemeData(
 );
 
 final darkTheme = ThemeData(
-  primaryColor: Color(0xFFFF4B00),
-  accentColor: Color(0xFF0981D1),
+  primaryColor: const Color(0xFFFF4B00),
+  accentColor: const Color(0xFF0981D1),
   scaffoldBackgroundColor: Colors.black,
   backgroundColor: Colors.black,
-  cardColor: Color(0xFF141414),
+  cardColor: const Color(0xFF141414),
   unselectedWidgetColor: Colors.white,
   brightness: Brightness.dark,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   fontFamily: 'SourceSansPro',
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     headline1: TextStyle(color: Color(0xFFFFFEFE)),
     headline2: TextStyle(color: Color(0xFFFFFEFE)),
     headline3: TextStyle(color: Color(0xFFFFFEFE)),

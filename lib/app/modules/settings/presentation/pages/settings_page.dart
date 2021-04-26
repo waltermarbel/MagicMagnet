@@ -35,9 +35,9 @@ class _SettingsPageState
       settingsBanner = BannerAd(
         adUnitId: AdmobCodes.settingsBannerID,
         size: AdSize.smartBanner,
-        targetingInfo: MobileAdTargetingInfo(),
+        targetingInfo: const MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          debugPrint("BannerAd event is $event");
+          debugPrint('BannerAd event is $event');
         },
       );
 
@@ -48,15 +48,14 @@ class _SettingsPageState
   }
 
   void _showInteresticialAd() {
-    InterstitialAd settingsInteresticial = InterstitialAd(
+    // ignore: unused_local_variable
+    final settingsInteresticial = InterstitialAd(
       adUnitId: AdmobCodes.settingsInteresticialID,
-      targetingInfo: MobileAdTargetingInfo(),
+      targetingInfo: const MobileAdTargetingInfo(),
       listener: (MobileAdEvent event) {
-        debugPrint("InterstitialAd event is $event");
+        debugPrint('InterstitialAd event is $event');
       },
-    );
-
-    settingsInteresticial
+    )
       ..load()
       ..show();
   }
@@ -128,7 +127,7 @@ class _SettingsPageState
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 children: [
-                  SizedBox(height: 6),
+                  const SizedBox(height: 6),
                   Text(
                     'Avaliable sources',
                     style: Theme.of(context)
@@ -136,7 +135,7 @@ class _SettingsPageState
                         .headline6
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 6),
+                  const SizedBox(height: 6),
                   CheckboxListTile(
                     activeColor: Theme.of(context).primaryColor,
                     value: settingsController
@@ -311,7 +310,7 @@ class _SettingsPageState
                   SwitchListTile(
                     activeColor: Theme.of(context).primaryColor,
                     title: Text(
-                      "Current theme: ${themeController.currentTheme.name}",
+                      'Current theme: ${themeController.currentTheme.name}',
                       style: Theme.of(context)
                           .textTheme
                           .subtitle1

@@ -67,6 +67,7 @@ abstract class _SearchControllerBase with Store {
       for (var searchProviderUsecase in _searchProviders) {
         final result = searchProviderUsecase(SearchParameters(content));
 
+        // ignore: cascade_invocations
         result.fold(
           (left) {
             if (left is InvalidSearchParametersFailure) {

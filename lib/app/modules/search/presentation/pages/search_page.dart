@@ -42,24 +42,23 @@ class _SearchPageState extends State<SearchPage> {
       resultsBanner = BannerAd(
         adUnitId: AdmobCodes.resultsBannerID,
         size: AdSize.smartBanner,
-        targetingInfo: MobileAdTargetingInfo(),
+        targetingInfo: const MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          debugPrint("BannerAd event is $event");
+          debugPrint('BannerAd event is $event');
         },
       );
     }
   }
 
   void _showInteresticialAd() {
-    InterstitialAd resultsInteresticial = InterstitialAd(
+    // ignore: unused_local_variable
+    final resultsInteresticial = InterstitialAd(
       adUnitId: AdmobCodes.resultsInteresticialID,
-      targetingInfo: MobileAdTargetingInfo(),
+      targetingInfo: const MobileAdTargetingInfo(),
       listener: (MobileAdEvent event) {
-        debugPrint("InterstitialAd event is $event");
+        debugPrint('InterstitialAd event is $event');
       },
-    );
-
-    resultsInteresticial
+    )
       ..load()
       ..show();
   }
@@ -99,10 +98,10 @@ class _SearchPageState extends State<SearchPage> {
                   ? null
                   : Container(
                       height: 55,
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: RoundedButton(
                         color: Colors.redAccent[700],
-                        padding: EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         onTap: () =>
                             searchController.cancelSearch(widget.content),
                         child: Center(
@@ -144,7 +143,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
               body: NoSplash(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(24),
                   child: Column(
                     children: [
                       Column(
@@ -162,9 +161,9 @@ class _SearchPageState extends State<SearchPage> {
                             '${searchController.magnetLinks.length} results has been found',
                             style: Theme.of(context).textTheme.subtitle2,
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             addRepaintBoundaries: true,
                             cacheExtent: MediaQuery.of(context).size.height * 5,
@@ -192,7 +191,7 @@ class _SearchPageState extends State<SearchPage> {
           if (searchController.state == SearchState.cancelled ||
               searchController.state == SearchState.error ||
               searchController.state == SearchState.fatalError) {
-            Future.delayed(Duration(seconds: 5), () async {
+            Future.delayed(const Duration(seconds: 5), () async {
               await Modular.navigator.maybePop();
               await _willPop();
             });
@@ -225,7 +224,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
               body: NoSplash(
                 child: Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Center(
                     child: Text(
                       searchController.state.message,
@@ -252,7 +251,7 @@ class _SearchPageState extends State<SearchPage> {
                         .headline6
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 32),
                   LoadingIndicator(),
                 ],
               ),

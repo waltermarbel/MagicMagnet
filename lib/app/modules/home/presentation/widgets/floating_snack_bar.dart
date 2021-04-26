@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class FloatingSnackBar extends StatelessWidget {
   final String text;
 
-  const FloatingSnackBar({this.text}) : assert(text != null);
+  const FloatingSnackBar({@required this.text}) : assert(text != null);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class FloatingSnackBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
         padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color(0xFF141414),
           borderRadius: BorderRadius.all(Radius.circular(12)),
           boxShadow: [

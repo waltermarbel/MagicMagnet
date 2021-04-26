@@ -19,25 +19,24 @@ class DetailModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void _showCopyInteresticialAd() {
-      InterstitialAd copyInteresticial = InterstitialAd(
+      // ignore: unused_local_variable
+      final copyInteresticial = InterstitialAd(
         adUnitId: AdmobCodes.copyInteresticialID,
-        targetingInfo: MobileAdTargetingInfo(),
+        targetingInfo: const MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          debugPrint("InterstitialAd event is $event");
+          debugPrint('InterstitialAd event is $event');
         },
-      );
-
-      copyInteresticial
+      )
         ..load()
         ..show();
     }
 
     Future<void> _showOpenInteresticialAd() async {
-      InterstitialAd openInteresticial = InterstitialAd(
+      final InterstitialAd openInteresticial = InterstitialAd(
         adUnitId: AdmobCodes.openInteresticialID,
-        targetingInfo: MobileAdTargetingInfo(),
+        targetingInfo: const MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          debugPrint("InterstitialAd event is $event");
+          debugPrint('InterstitialAd event is $event');
         },
       );
 
@@ -49,7 +48,7 @@ class DetailModal extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.75,
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(12),
           topRight: Radius.circular(12),
         ),
@@ -66,7 +65,7 @@ class DetailModal extends StatelessWidget {
                   .headline6
                   .copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 6),
+            const SizedBox(height: 6),
             Text(
               magnetLink.torrentName,
               style: Theme.of(context)
@@ -74,7 +73,7 @@ class DetailModal extends StatelessWidget {
                   .subtitle1
                   .copyWith(fontWeight: FontWeight.w600),
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +85,7 @@ class DetailModal extends StatelessWidget {
                       .headline6
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Text(
                   magnetLink?.magnetLinkInfo?.seeders != null
                       ? '${magnetLink.magnetLinkInfo.seeders} seeders'
@@ -96,7 +95,7 @@ class DetailModal extends StatelessWidget {
                       .subtitle1
                       .copyWith(fontWeight: FontWeight.w600),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   magnetLink?.magnetLinkInfo?.leechers != null
                       ? '${magnetLink.magnetLinkInfo.leechers} leechers'
@@ -106,7 +105,7 @@ class DetailModal extends StatelessWidget {
                       .subtitle1
                       .copyWith(fontWeight: FontWeight.w600),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   magnetLink?.magnetLinkInfo?.health != null
                       ? '${magnetLink.magnetLinkInfo.health}% healthy (ratio between seeders and leechers)'
@@ -118,7 +117,7 @@ class DetailModal extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,7 +129,7 @@ class DetailModal extends StatelessWidget {
                       .headline6
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Text(
                   magnetLink.originalSource,
                   style: Theme.of(context)
@@ -140,7 +139,7 @@ class DetailModal extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -152,14 +151,14 @@ class DetailModal extends StatelessWidget {
                       .headline6
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     RoundedButton(
                       color: Theme.of(context).accentColor,
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       onTap: () async {
                         if (AppConfig.of(context).isFree) {
                           _showCopyInteresticialAd();
@@ -169,7 +168,7 @@ class DetailModal extends StatelessWidget {
                           magnetLink.magnetLink,
                         ).then(
                           (_) => asuka.showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               backgroundColor: Colors.transparent,
                               padding: EdgeInsets.zero,
                               elevation: 0,
@@ -191,10 +190,10 @@ class DetailModal extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     RoundedButton(
                       color: Theme.of(context).primaryColor,
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       onTap: () async {
                         try {
                           if (AppConfig.of(context).isFree) {
@@ -206,7 +205,7 @@ class DetailModal extends StatelessWidget {
                           );
                         } catch (e) {
                           asuka.showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               backgroundColor: Colors.transparent,
                               padding: EdgeInsets.zero,
                               elevation: 0,
@@ -228,10 +227,10 @@ class DetailModal extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     RoundedButton(
                       color: Colors.amber[600],
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       onTap: () async {
                         try {
                           await launch(
@@ -239,7 +238,7 @@ class DetailModal extends StatelessWidget {
                           );
                         } catch (e) {
                           asuka.showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               backgroundColor: Colors.transparent,
                               padding: EdgeInsets.zero,
                               elevation: 0,

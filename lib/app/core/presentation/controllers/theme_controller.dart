@@ -45,28 +45,28 @@ abstract class _ThemeControllerBase with Store {
       if (theme == Themes.dark) {
         appTheme = darkTheme;
         SystemChrome.setSystemUIOverlayStyle(
-            SystemUiOverlayStyle(statusBarColor: Colors.black));
+            const SystemUiOverlayStyle(statusBarColor: Colors.black));
       } else {
         appTheme = lightTheme;
         SystemChrome.setSystemUIOverlayStyle(
-            SystemUiOverlayStyle(statusBarColor: Color(0xFFFFFEFE)));
+            const SystemUiOverlayStyle(statusBarColor: Color(0xFFFFFEFE)));
       }
 
       await _setPreferredTheme(theme);
     } else {
-      var brightness = WidgetsBinding.instance.window.platformBrightness;
+      final brightness = WidgetsBinding.instance.window.platformBrightness;
 
       if (brightness == Brightness.dark) {
         appTheme = darkTheme;
 
         await _setPreferredTheme(Themes.dark);
         SystemChrome.setSystemUIOverlayStyle(
-            SystemUiOverlayStyle(statusBarColor: Colors.black));
+            const SystemUiOverlayStyle(statusBarColor: Colors.black));
       } else {
         appTheme = lightTheme;
         await _setPreferredTheme(Themes.light);
         SystemChrome.setSystemUIOverlayStyle(
-            SystemUiOverlayStyle(statusBarColor: Color(0xFFFFFEFE)));
+            const SystemUiOverlayStyle(statusBarColor: Color(0xFFFFFEFE)));
       }
     }
   }

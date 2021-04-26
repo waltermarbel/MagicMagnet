@@ -5,6 +5,8 @@ enum Flavor { paid, free }
 
 class AppConfig extends InheritedWidget {
   final Flavor flavor;
+
+  @override
   final Widget child;
 
   AppConfig({@required this.flavor, @required this.child});

@@ -26,9 +26,9 @@ class _HomePageState extends State<HomePage> {
       homeBanner = BannerAd(
         adUnitId: AdmobCodes.homeBannerID,
         size: AdSize.banner,
-        targetingInfo: MobileAdTargetingInfo(),
+        targetingInfo: const MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          debugPrint("BannerAd event is $event");
+          debugPrint('BannerAd event is $event');
         },
       );
 
@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                         scale: 10,
                       ),
                     ),
-                    VerticalDivider(color: Colors.transparent),
+                    const VerticalDivider(color: Colors.transparent),
                     Text(
                       'Magic Magnet',
                       maxLines: 1,
@@ -120,14 +120,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 36),
+                const SizedBox(height: 36),
                 Row(
                   children: [
                     Flexible(
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12)),
                         ),
                         child: TextField(
                           controller: textController,
@@ -155,11 +156,11 @@ class _HomePageState extends State<HomePage> {
                                     Theme.of(context).textTheme.headline6.color,
                               ),
                             ),
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                               vertical: 16,
                               horizontal: 8,
                             ),
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(12.0),

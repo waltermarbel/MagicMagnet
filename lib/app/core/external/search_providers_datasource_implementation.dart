@@ -25,7 +25,7 @@ class SearchProvidersDataSourceImplementation
   @override
   Future<List<Usecase<Stream<MagnetLink>, SearchParameters>>>
       getEnabledSearchProviders() async {
-    var enabledSearchProviders =
+    final enabledSearchProviders =
         <Usecase<Stream<MagnetLink>, SearchParameters>>[];
 
     final dataSources = [

@@ -15,9 +15,9 @@ class LoadingIndicator extends StatelessWidget {
         ),
         customColors: CustomSliderColors(
           dynamicGradient: true,
-          trackColor: Color(0xFFF1F3F4),
+          trackColor: const Color(0xFFF1F3F4),
           progressBarColors: [
-            Color(0xFFFF0000),
+            const Color(0xFFFF0000),
             Theme.of(context).primaryColor,
           ],
         ),

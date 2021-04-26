@@ -19,9 +19,9 @@ class RoundedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: color,
-      borderRadius: BorderRadius.all(Radius.circular(6.0)),
+      borderRadius: const BorderRadius.all(Radius.circular(6.0)),
       child: InkWell(
-        borderRadius: BorderRadius.all(Radius.circular(6.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(6.0)),
         focusColor: color,
         highlightColor: color,
         onTap: onTap,

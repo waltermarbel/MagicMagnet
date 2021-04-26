@@ -20,39 +20,37 @@ class ResultCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void _showDetailInteresticialAd() {
-      InterstitialAd detailInteresticial = InterstitialAd(
+      // ignore: unused_local_variable
+      final detailInteresticial = InterstitialAd(
         adUnitId: AdmobCodes.detailInteresticialID,
-        targetingInfo: MobileAdTargetingInfo(),
+        targetingInfo: const MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          debugPrint("InterstitialAd event is $event");
+          debugPrint('InterstitialAd event is $event');
         },
-      );
-
-      detailInteresticial
+      )
         ..load()
         ..show();
     }
 
     void _showCopyInteresticialAd() {
-      InterstitialAd copyInteresticial = InterstitialAd(
+      // ignore: unused_local_variable
+      final copyInteresticial = InterstitialAd(
         adUnitId: AdmobCodes.copyInteresticialID,
-        targetingInfo: MobileAdTargetingInfo(),
+        targetingInfo: const MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          debugPrint("InterstitialAd event is $event");
+          debugPrint('InterstitialAd event is $event');
         },
-      );
-
-      copyInteresticial
+      )
         ..load()
         ..show();
     }
 
     Future<void> _showOpenInteresticialAd() async {
-      InterstitialAd openInteresticial = InterstitialAd(
+      final InterstitialAd openInteresticial = InterstitialAd(
         adUnitId: AdmobCodes.openInteresticialID,
-        targetingInfo: MobileAdTargetingInfo(),
+        targetingInfo: const MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
-          debugPrint("InterstitialAd event is $event");
+          debugPrint('InterstitialAd event is $event');
         },
       );
 
@@ -64,7 +62,7 @@ class ResultCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: Column(
         children: [
@@ -109,7 +107,7 @@ class ResultCard extends StatelessWidget {
                 Expanded(
                   child: RoundedButton(
                     color: Theme.of(context).accentColor,
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     onTap: () async {
                       if (AppConfig.of(context).isFree) {
                         _showCopyInteresticialAd();
@@ -119,7 +117,7 @@ class ResultCard extends StatelessWidget {
                         magnetLink.magnetLink,
                       ).then(
                         (_) => asuka.showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             backgroundColor: Colors.transparent,
                             padding: EdgeInsets.zero,
                             elevation: 0,
@@ -142,11 +140,11 @@ class ResultCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                VerticalDivider(width: 6),
+                const VerticalDivider(width: 6),
                 Expanded(
                   child: RoundedButton(
                     color: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     onTap: () async {
                       if (AppConfig.of(context).isFree) {
                         await _showOpenInteresticialAd();
@@ -156,7 +154,7 @@ class ResultCard extends StatelessWidget {
                         await launch(magnetLink.magnetLink);
                       } catch (e) {
                         asuka.showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             backgroundColor: Colors.transparent,
                             padding: EdgeInsets.zero,
                             elevation: 0,
