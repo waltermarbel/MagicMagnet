@@ -10,7 +10,7 @@ class SearchModule extends ChildModule {
         Bind((i) => MagnetLinkInfoDataSourceImplementation(i())),
         Bind((i) => MagnetLinkInfoRepositoryImplementation(i())),
         Bind((i) => GetInfoForMagnetLink(i())),
-        Bind((i) => SearchController(i(), i(), i())),
+        Bind((i) => SearchController(i(), i())),
       ];
 
   @override

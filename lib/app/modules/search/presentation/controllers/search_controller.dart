@@ -4,7 +4,6 @@ import 'package:magic_magnet_engine/magic_magnet_engine.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/domain/usecases/get_enabled_search_providers.dart';
-import '../../../../core/domain/usecases/get_trackers.dart';
 import 'search_states.dart';
 
 part 'search_controller.g.dart';
@@ -14,12 +13,10 @@ class SearchController = _SearchControllerBase with _$SearchController;
 abstract class _SearchControllerBase with Store {
   final GetInfoForMagnetLink _getInfoForMagnetLink;
   final GetEnabledSearchProviders _getSearchProviders;
-  final GetTrackers _getTrackers;
 
   _SearchControllerBase(
     this._getInfoForMagnetLink,
     this._getSearchProviders,
-    this._getTrackers,
   );
 
   @observable
@@ -57,13 +54,6 @@ abstract class _SearchControllerBase with Store {
   @action
   Future<void> performSearch(String content) async {
     await _getUsecases();
-    final result = await _getTrackers(NoParams());
-    var trackers = <Tracker>[];
-
-    result.fold(
-      (failure) => state = SearchState.fatalError,
-      (success) => trackers = success,
-    );
 
     print(_searchProviders);
 
@@ -90,7 +80,9 @@ abstract class _SearchControllerBase with Store {
 
             stream = right.listen(
               (magnetLink) async {
-                if (state == SearchState.cancelled || state == SearchState.error || state == SearchState.finished) {
+                if (state == SearchState.cancelled ||
+                    state == SearchState.error ||
+                    state == SearchState.finished) {
                   stream.cancel();
                 }
 
@@ -102,7 +94,8 @@ abstract class _SearchControllerBase with Store {
 
                 if (searchProviderUsecase is GetMagnetLinksFromGoogle ||
                     searchProviderUsecase is GetMagnetLinksFromYTS) {
-                  final result = await _getInfoForMagnetLink(InfoParams(magnetLink, trackers.sublist(0, 2)));
+                  final result =
+                      await _getInfoForMagnetLink(InfoParams(magnetLink));
 
                   result.fold(
                     (left) => state = SearchState.error,
