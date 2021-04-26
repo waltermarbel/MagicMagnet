@@ -338,9 +338,22 @@ class _SettingsPageState
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12),
-                    child: Text(
-                      'Current version: 2.0.1\n\nMagic Magnet is an app created by Pedro Lemos (@pedrolemoz), and it\'s in an early stage.',
-                      style: Theme.of(context).textTheme.subtitle2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Current version: 2.0.1',
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              .copyWith(fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Magic Magnet is an app created by Pedro Lemos (@pedrolemoz), and it\'s in an early stage.',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ],
                     ),
                   )
                 ],
