@@ -41,7 +41,6 @@ dependencies:
   sleek_circular_slider: any
   modal_bottom_sheet: any
   asuka: any
-  adaptive_theme: any
 
   # State management
   mobx: any
