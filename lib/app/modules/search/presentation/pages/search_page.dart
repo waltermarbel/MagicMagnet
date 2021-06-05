@@ -6,7 +6,7 @@ import 'package:unicons/unicons.dart';
 
 import '../../../../core/utils/app_config/app_config.dart';
 import '../../../../core/utils/user_interface/admob.dart';
-import '../../../../core/utils/user_interface/no_splash.dart';
+import '../../../../core/utils/user_interface/disable_splash.dart';
 import '../../../home/presentation/widgets/circular_button.dart';
 import '../../../home/presentation/widgets/loading_indicator.dart';
 import '../../../home/presentation/widgets/result_card.dart';
@@ -81,8 +81,7 @@ class _SearchPageState extends State<SearchPage> {
       onWillPop: _willPop,
       child: Observer(
         builder: (context) {
-          if (searchController.state == SearchState.searching ||
-              searchController.state == SearchState.finished) {
+          if (searchController.state == SearchState.searching || searchController.state == SearchState.finished) {
             if (AppConfig.of(context).isFree) {
               resultsBanner
                 ..load()
@@ -91,10 +90,8 @@ class _SearchPageState extends State<SearchPage> {
 
             return Scaffold(
               floatingActionButtonAnimator: _NoScalingAnimation(),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
-              floatingActionButton: searchController.state ==
-                      SearchState.finished
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+              floatingActionButton: searchController.state == SearchState.finished
                   ? null
                   : Container(
                       height: 55,
@@ -102,16 +99,14 @@ class _SearchPageState extends State<SearchPage> {
                       child: RoundedButton(
                         color: Colors.redAccent[700],
                         padding: const EdgeInsets.all(16),
-                        onTap: () =>
-                            searchController.cancelSearch(widget.content),
+                        onTap: () => searchController.cancelSearch(widget.content),
                         child: Center(
                           child: Text(
                             'Cancel search',
-                            style:
-                                Theme.of(context).textTheme.subtitle2.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
+                            style: Theme.of(context).textTheme.subtitle2.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
                           ),
                         ),
                       ),
@@ -135,13 +130,10 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 title: Text(
                   'Results for ${widget.content}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6
-                      .copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              body: NoSplash(
+              body: DisableSplash(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(24),
                   child: Column(
@@ -152,10 +144,7 @@ class _SearchPageState extends State<SearchPage> {
                         children: [
                           Text(
                             searchController.state.message,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                .copyWith(fontWeight: FontWeight.bold),
+                            style: Theme.of(context).textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
                           ),
                           Text(
                             '${searchController.magnetLinks.length} results has been found',
@@ -170,11 +159,9 @@ class _SearchPageState extends State<SearchPage> {
                             itemCount: searchController.magnetLinks.length,
                             itemBuilder: (context, index) {
                               return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                padding: const EdgeInsets.symmetric(vertical: 8.0),
                                 child: ResultCard(
-                                  magnetLink: searchController.magnetLinks
-                                      .elementAt(index),
+                                  magnetLink: searchController.magnetLinks.elementAt(index),
                                 ),
                               );
                             },
@@ -216,22 +203,16 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 title: Text(
                   'Results for ${widget.content}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6
-                      .copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              body: NoSplash(
+              body: DisableSplash(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Center(
                     child: Text(
                       searchController.state.message,
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -246,10 +227,7 @@ class _SearchPageState extends State<SearchPage> {
                 children: [
                   Text(
                     searchController.state.message,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        .copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 32),
                   LoadingIndicator(),

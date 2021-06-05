@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class NoSplash extends StatelessWidget {
-  NoSplash({this.child});
+class DisableSplash extends StatelessWidget {
+  DisableSplash({this.child});
 
   final Widget child;
 

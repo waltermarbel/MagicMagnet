@@ -28,6 +28,8 @@ dependencies:
 
   # Local cache
   hive: any
+  shared_preferences: any
+  shared_preferences_windows: any
 
   # Path utilities
   path_provider: any
